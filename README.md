@@ -1,7 +1,10 @@
 # adapt-visua11y  
     
 **Visua11y** is an *extension* for the [Adapt framework](https://github.com/adaptlearning/adapt_framework).  
-It which provides visual accessibility improvements
+It provides visual accessibility improvements.
+
+* Changes all css colours to high contrast
+* Turns off all animations
 
 ----------------------------
 **Version number:**  0.0.1   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>  
