@@ -1,0 +1,17 @@
+{
+  "name": "adapt-visua11y",
+  "version": "0.0.1",
+  "framework": ">=5",
+  "homepage": "https://github.com/cgkineo/adapt-visua11y",
+  "issues": "https://github.com/cgkineo/adapt-visua11y/issues/new",
+  "extension" : "visua11y",
+  "displayName" : "Visua11y",
+  "description": "An extension which provides visual accessibility improvements",
+  "main": "/js/adapt-visua11y.js",
+  "keywords": [
+    "adapt-plugin",
+    "adapt-extension"
+  ],
+  "license": "GPL-3.0",
+  "targetAttribute": "_visua11y"
+}
