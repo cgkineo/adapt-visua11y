@@ -13,7 +13,7 @@ class Visua11y extends Backbone.Controller {
   }
 
   get isInverted() {
-    return false;
+    return true;
   }
 
   get fontSize() {

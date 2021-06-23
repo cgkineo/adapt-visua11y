@@ -5,6 +5,10 @@ It provides visual accessibility improvements.
 
 * Changes all css colours to high contrast
 * Turns off all animations
+* Increases font size
+* Enhances contrast and brightness of images
+* Removes background images
+* Defines opacity values more harshly
 
 ----------------------------
 **Version number:**  0.0.1   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>  
