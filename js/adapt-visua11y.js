@@ -126,39 +126,47 @@ class Visua11y extends Backbone.Controller {
     colorRules.forEach(rule => {
       rule.colorPropertyNames.forEach(name => {
         if (name === 'background-image') {
+          // Turn off background images
           rule.style[name] = 'none';
           return;
         }
         if (name === 'opacity') {
-          rule.style[name] = rule.style[name] <= 0.3 ? 0 : 1;
+          // No opacity less than 0.4
+          rule.style[name] = rule.style[name] <= 0.4 ? 0 : 1;
           return;
         }
         const color = rule.hsla[name];
         const isTransparent = (color.a <= 0.4);
         if (isTransparent) {
+          // No color opacity less than 0.4
           const newColor = { ...color, a: 0 };
           rule.style[name] = HSLAObjectToRGBAString(newColor);
           return;
         }
-        const isSemiTransparent = (color.a > 0.4 && color.a <= 0.99);
+        const isSemiTransparent = (color.a > 0.4 && color.a <= 0.99999);
         if (isSemiTransparent) {
+          // Clip opacity between 0.4 and 0.99999
           const newColor = { ...color, a: 1 };
           rule.style[name] = HSLAObjectToRGBAString(newColor);
           return;
         }
         if (name === 'color') {
+          // Text: black or white
           const bottomColor = COLORS[1];
           if (color.l <= 80) {
+            // Force black if lightness is less than 80%
             const newColor = { ...bottomColor };
             newColor.l = this.isInverted ? invert(newColor.l, 100) : newColor.l;
             rule.style[name] = HSLAObjectToRGBAString(newColor);
             return;
           }
+          // Choose between black and white
           const topColor = COLORS[COLORS.length - 1];
           this.calculate(rule, name, color, bottomColor, topColor, 100);
           return;
         }
         for (let i = 1, l = COLORS.length; i < l - 1; i++) {
+          // All other colors picked from color set
           const bottomColor = COLORS[i];
           const topColor = COLORS[i + 1];
           if (this.calculate(rule, name, color, bottomColor, topColor)) return;
@@ -167,6 +175,16 @@ class Visua11y extends Backbone.Controller {
     });
   }
 
+  /**
+   * Given bottomColor and topColor, is color in range and return closest match.
+   * @param {*} rule
+   * @param {*} name
+   * @param {*} color
+   * @param {*} bottomColor
+   * @param {*} topColor
+   * @param {*} threshold
+   * @returns
+   */
   calculate(rule, name, color, bottomColor, topColor, threshold = null) {
     const rangeBottom = bottomColor.b;
     const rangeTop = topColor.b;
@@ -179,7 +197,9 @@ class Visua11y extends Backbone.Controller {
         ? bottomColor
         : topColor
     };
+    // Invert the color lightness if required (change to bright on black)
     newColor.l = this.isInverted ? invert(newColor.l, 100) : newColor.l;
+    // Invert the color saturation if required (change to pastiles on white)
     newColor.s = this.isInverted ? newColor.s : newColor.s * 0.20;
     rule.style[name] = HSLAObjectToRGBAString(newColor);
     return true;
