@@ -1,14 +1,19 @@
-import COLOURS from './COLOURS';
+import NAMED_COLOR from './NAMED_COLOR';
 
 export function COLORtoHSLAObject(c) {
   c = c.toLowerCase();
   const isHEX = c.startsWith('#');
   const isRGB = c.startsWith('rgb');
   const isHSL = c.startsWith('hsl');
-  if (isHSL) return HSLAStringToObject(c);
-  if (isRGB) return RGBAStringToHSLAObject(c);
-  if (isHEX) return RGBAStringToHSLAObject(HEXAStringtoRGBAString(c));
-  return RGBAStringToHSLAObject(HEXAStringtoRGBAString(COLORNAMEtoHEXString(c)));
+  const hsla = isHSL
+    ? HSLAStringToObject(c)
+    : isRGB
+      ? RGBAStringToHSLAObject(c)
+      : isHEX
+        ? RGBAStringToHSLAObject(HEXAStringtoRGBAString(c))
+        : RGBAStringToHSLAObject(HEXAStringtoRGBAString(COLORNAMEtoHEXString(c)));
+  hsla.source = c;
+  return hsla;
 }
 
 export function HSLAStringToObject(hsla) {
@@ -32,8 +37,8 @@ export function HSLAStringToObject(hsla) {
 
 export function COLORNAMEtoHEXString(n) {
   n = n.toLowerCase();
-  if (!COLOURS[n]) throw new Error(`Invalid color: ${n}`);
-  return COLOURS[n];
+  if (!NAMED_COLOR[n]) throw new Error(`Invalid color: ${n}`);
+  return NAMED_COLOR[n];
 }
 
 export function HEXAStringtoRGBAString(h) {
@@ -75,6 +80,7 @@ export function RGBAStringToHSLAObject(rgba) {
   const r = rgba[0] / 255;
   const g = rgba[1] / 255;
   const b = rgba[2] / 255;
+  const brightness = RGBABrightness(r, g, b);
   const a = parseFloat(rgba[3] ?? 1);
   // Find greatest and smallest channel values
   const cmin = Math.min(r, g, b);
@@ -88,13 +94,13 @@ export function RGBAStringToHSLAObject(rgba) {
   if (delta === 0) {
     h = 0;
   } else if (cmax === r) {
-    // Red is max
+  // Red is max
     h = ((g - b) / delta) % 6;
   } else if (cmax === g) {
-    // Green is max
+  // Green is max
     h = (b - r) / delta + 2;
   } else {
-    // Blue is max
+  // Blue is max
     h = (r - g) / delta + 4;
   }
   h = Math.round(h * 60);
@@ -107,7 +113,7 @@ export function RGBAStringToHSLAObject(rgba) {
   // Multiply l and s by 100
   s = +(s * 100).toFixed(1);
   l = +(l * 100).toFixed(1);
-  return { h, s, l, a };
+  return { h, s, l, a, b: brightness };
 }
 
 export function HSLAObjectToRGBAString(hsla) {
@@ -139,33 +145,18 @@ export function HSLAObjectToRGBAString(hsla) {
   return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
 }
 
-export function range(value, min, max) {
-  return value < min ? min : value > max ? max : value;
-}
-
 export function invert(value, max) {
   // return value;
   return max - value;
 }
 
-export function factorize(value, parts, max) {
-  const pacer = (max / parts);
-  return (Math.round(value / pacer) * pacer);
-}
-
-export function HSLAObjectContrast(hsla, hueParts = 4, lightnessParts = 2) {
-  hsla = {
-    ...hsla,
-    ...{
-      // Hue is split into hueParts
-      h: range(factorize(hsla.h, hueParts, 360), 0, 360),
-      // Saturation is always full
-      s: 100,
-      // Lightness is pushed into lightnessParts and inverted
-      l: invert(range(factorize(hsla.l, lightnessParts, 100), 0, 100), 100),
-      // Alpha is either on or off
-      a: Math.floor(hsla.a)
-    }
-  };
-  return hsla;
+export function RGBABrightness(r, g, b) {
+  /*
+    From this W3C document: http://www.webmasterworld.com/r.cgi?f=88&d=9769&url=http://www.w3.org/TR/AERT#color-contrast
+    Color brightness is determined by the following formula:
+    ((Red value X 299) + (Green value X 587) + (Blue value X 114)) / 1000
+    I know this could be more compact, but I think this is easier to read/explain.
+  */
+  const brightness = ((r * 299) + (g * 587) + (b * 114)) / 10;
+  return brightness;
 }
