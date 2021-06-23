@@ -9,9 +9,9 @@ It provides visual accessibility improvements.
 * Enhances contrast and brightness of images
 * Removes background images
 * Defines opacity values more harshly
+* Removes box shadows
 
 ### TODO
-* Shadows > borders
 * Thicker borders
 * UI, switching color profile, animations, opacity, invertion
 * User group colour maps (dyschromatopsia/contrast requirements)

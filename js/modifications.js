@@ -4,10 +4,10 @@ import {
   invert,
   chooseAColor
 } from './utils';
-import PRIMARY_COLORS from './PRIMARY_COLORS';
+import PRIMARY_COLOR from './PRIMARY_COLOR';
 
 /**
- * List of object representing stylesheet modifications
+ * List of objects representing stylesheet modifications
  *
  * Example:
  *
@@ -19,7 +19,7 @@ import PRIMARY_COLORS from './PRIMARY_COLORS';
  *  }
  * ]
  *
- * The this context of each function is a reference to Adapt.visua11y
+ * The `this` context of each function is a reference to Adapt.visua11y
  */
 export default [
   [
@@ -55,7 +55,7 @@ export default [
       if (!this.colorProfile) return;
       const color = COLORtoHSLAObject(output);
       // Text: black or white
-      const bottomColor = PRIMARY_COLORS[1];
+      const bottomColor = PRIMARY_COLOR[1];
       if (color.l <= 80) {
         // Force black if lightness is less than 80%
         const newColor = {
@@ -65,7 +65,7 @@ export default [
         return HSLAObjectToRGBAString(newColor);
       }
       // Choose between black and white
-      const topColor = PRIMARY_COLORS[PRIMARY_COLORS.length - 1];
+      const topColor = PRIMARY_COLOR[PRIMARY_COLOR.length - 1];
       return HSLAObjectToRGBAString(chooseAColor(color, bottomColor, topColor, 100));
     }
   ],
@@ -76,9 +76,9 @@ export default [
     function (output) {
       if (!this.colorProfile) return;
       const color = COLORtoHSLAObject(output);
-      for (let i = 1, l = PRIMARY_COLORS.length; i < l - 1; i++) {
-        const bottomColor = PRIMARY_COLORS[i];
-        const topColor = PRIMARY_COLORS[i + 1];
+      for (let i = 1, l = PRIMARY_COLOR.length; i < l - 1; i++) {
+        const bottomColor = PRIMARY_COLOR[i];
+        const topColor = PRIMARY_COLOR[i + 1];
         const newColor = chooseAColor(color, bottomColor, topColor);
         if (newColor) return HSLAObjectToRGBAString(newColor);
       }

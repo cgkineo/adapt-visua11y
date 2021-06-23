@@ -135,6 +135,7 @@ class Visua11y extends Backbone.Controller {
 
   apply() {
     this.resetRules();
+    this.applyColorProfile();
     this.applyDocumentFontSize();
     this.applyDisableAnimations();
     this.applyInvertedStyling();
@@ -145,6 +146,11 @@ class Visua11y extends Backbone.Controller {
 
   resetRules() {
     this.rules.forEach(rule => rule.colorPropertyNames.forEach(name => (rule.output[name] = rule.original[name])));
+  }
+
+  applyColorProfile() {
+    $('html').toggleClass('has-color-profile', Boolean(this.colorProfile));
+    $('html').attr('data-color-profile', `${this.colorProfile}${this.isInverted ? '-inverted' : ''}`);
   }
 
   applyDocumentFontSize() {
