@@ -1,10 +1,6 @@
 import Backbone from 'backbone';
 import Adapt from 'core/js/adapt';
-import {
-  COLORtoHSLAObject,
-  HSLAObjectToRGBAString,
-  invert
-} from './utils';
+import modifications from './modifications';
 
 class Visua11y extends Backbone.Controller {
 
@@ -12,11 +8,15 @@ class Visua11y extends Backbone.Controller {
     this.listenTo(Adapt, 'adapt:start', this.onAdaptStart);
   }
 
+  get colorProfile() {
+    return 'highcontrast';
+  }
+
   get isInverted() {
     return true;
   }
 
-  get fontSize() {
+  get documentFontSize() {
     return '18pt';
   }
 
@@ -24,47 +24,25 @@ class Visua11y extends Backbone.Controller {
     return true;
   }
 
-  get COLORS() {
-    return [
-      'transparent',
-      'black',
-      ...[
-        // Translating a non AA course with very similar colors will fail
-        // Find a better way to map existing colour ranges to a list of colours
-        '#cc0000',
-        '#ee00ee',
-        '#ff5e00',
-        '#00ee00',
-        '#11dddd',
-        '#ffbb11',
-        '#ffbbaa'
-      ],
-      'white'
-    ].map(color => COLORtoHSLAObject(color)).sort((a, b) => {
-      return a.b - b.b;
-    });
+  get increaseOpacity() {
+    return true;
+  }
+
+  get removeBackgroundImages() {
+    return true;
   }
 
   onAdaptStart() {
+    this.rules = this.getCSSRules();
+    this.originalDocumentFontSize = window.getComputedStyle(document.querySelector('html')).fontSize;
+    this.applyDocumentFontSize();
+    this.applyDisableAnimations();
+    this.applyInvertedStyling();
+    this.applyModifications();
+    this.applyOutputRules();
+  }
 
-    if (this.fontSize) {
-      document.querySelector('html').style.fontSize = this.fontSize;
-    }
-
-    if (this.isInverted) {
-      $('html').addClass('is-color-inverted');
-    }
-
-    if (this.disableAnimations) {
-      // Turn off jquery animations
-      $.fx.off = true;
-      // Turn off velocity animations
-      $.Velocity.mock = true;
-      $('html').addClass('is-animation-disabled');
-    }
-
-    const COLORS = this.COLORS;
-
+  getCSSRules() {
     // Collect all rules
     const stylesheets = Array.prototype.slice.call(document.styleSheets, 0);
     const allRules = stylesheets.reduce((allRules, stylesheet) => {
@@ -74,7 +52,8 @@ class Visua11y extends Backbone.Controller {
         return {
           selectorText: rule.selectorText,
           style: rule.style,
-          hsla: {},
+          output: {},
+          original: {},
           colorPropertyNames: null
         };
       }));
@@ -85,7 +64,8 @@ class Visua11y extends Backbone.Controller {
           return {
             selectorText: rule.selectorText,
             style: rule.style,
-            hsla: {},
+            output: {},
+            original: {},
             colorPropertyNames: null
           };
         });
@@ -99,110 +79,65 @@ class Visua11y extends Backbone.Controller {
       allRules.unshift({
         selectorText: 'body',
         style: document.body.style,
-        hsla: {},
+        output: {},
+        original: {},
         colorPropertyNames: null
       });
     }
 
     // Filter colour rules add their hsla values and lightnesses
-    const colorRules = allRules.filter(rule => {
+    const rules = allRules.filter(rule => {
       rule.colorPropertyNames = Array.prototype.slice.call(rule.style)
-        .filter(name => /color|background-image|opacity/i.test(name))
         .filter(name => {
-          if (name === 'background-image') return true;
-          if (name === 'opacity') return true;
-          try {
-            const hsla = COLORtoHSLAObject(rule.style[name]);
-            rule.hsla[name] = hsla;
-            return true;
-          } catch (err) {
-            return false;
-          }
+          return modifications.some(([matchName, validation]) => {
+            if (typeof matchName === 'string' && matchName !== name) return false;
+            if (typeof matchName === 'function' && !matchName(name)) return false;
+            try {
+              validation && validation.call(this, rule.style[name]);
+              rule.original[name] = rule.style[name];
+              rule.output[name] = rule.style[name];
+              return true;
+            } catch (err) {
+              return false;
+            }
+          });
         });
       return rule.colorPropertyNames.length;
     });
+    return rules;
+  }
 
-    // Recalculate each color
-    colorRules.forEach(rule => {
+  applyDocumentFontSize() {
+    document.querySelector('html').style.fontSize = this.documentFontSize ?? this.originalDocumentFontSize;
+  }
+
+  applyDisableAnimations() {
+    // Turn off jquery animations
+    $.fx.off = this.disableAnimations;
+    // Turn off velocity animations
+    $.Velocity.mock = this.disableAnimations;
+    // Turn off css transitions and animations
+    $('html').toggleClass('is-animation-disabled', this.disableAnimations);
+  }
+
+  applyInvertedStyling() {
+    $('html').toggleClass('is-color-inverted', this.isInverted);
+  }
+
+  applyModifications() {
+    this.rules.forEach(rule => {
       rule.colorPropertyNames.forEach(name => {
-        if (name === 'background-image') {
-          // Turn off background images
-          rule.style[name] = 'none';
-          return;
-        }
-        if (name === 'opacity') {
-          // No opacity less than 0.4
-          rule.style[name] = rule.style[name] <= 0.4 ? 0 : 1;
-          return;
-        }
-        const color = rule.hsla[name];
-        const isTransparent = (color.a <= 0.4);
-        if (isTransparent) {
-          // No color opacity less than 0.4
-          const newColor = { ...color, a: 0 };
-          rule.style[name] = HSLAObjectToRGBAString(newColor);
-          return;
-        }
-        const isSemiTransparent = (color.a > 0.4 && color.a <= 0.99999);
-        if (isSemiTransparent) {
-          // Clip opacity between 0.4 and 0.99999
-          const newColor = { ...color, a: 1 };
-          rule.style[name] = HSLAObjectToRGBAString(newColor);
-          return;
-        }
-        if (name === 'color') {
-          // Text: black or white
-          const bottomColor = COLORS[1];
-          if (color.l <= 80) {
-            // Force black if lightness is less than 80%
-            const newColor = { ...bottomColor };
-            newColor.l = this.isInverted ? invert(newColor.l, 100) : newColor.l;
-            rule.style[name] = HSLAObjectToRGBAString(newColor);
-            return;
-          }
-          // Choose between black and white
-          const topColor = COLORS[COLORS.length - 1];
-          this.calculate(rule, name, color, bottomColor, topColor, 100);
-          return;
-        }
-        for (let i = 1, l = COLORS.length; i < l - 1; i++) {
-          // All other colors picked from color set
-          const bottomColor = COLORS[i];
-          const topColor = COLORS[i + 1];
-          if (this.calculate(rule, name, color, bottomColor, topColor)) return;
-        }
+        modifications.forEach(([matchName, validation, modifier]) => {
+          if (typeof matchName === 'string' && matchName !== name) return;
+          if (typeof matchName === 'function' && !matchName(name)) return;
+          rule.output[name] = modifier.call(this, rule.output[name], rule.original[name]);
+        });
       });
     });
   }
 
-  /**
-   * Given bottomColor and topColor, is color in range and return closest match.
-   * @param {*} rule
-   * @param {*} name
-   * @param {*} color
-   * @param {*} bottomColor
-   * @param {*} topColor
-   * @param {*} threshold
-   * @returns
-   */
-  calculate(rule, name, color, bottomColor, topColor, threshold = null) {
-    const rangeBottom = bottomColor.b;
-    const rangeTop = topColor.b;
-    const bottomDistance = Math.abs(color.b - rangeBottom);
-    const topDistance = Math.abs(color.b - rangeTop);
-    threshold = threshold ?? Math.abs(rangeTop - rangeBottom);
-    if (bottomDistance > threshold || topDistance > threshold) return false;
-    const newColor = {
-      ...(bottomDistance <= topDistance)
-        ? bottomColor
-        : topColor
-    };
-    // Invert the color lightness if required (change to bright on black)
-    newColor.l = this.isInverted ? invert(newColor.l, 100) : newColor.l;
-    // Invert the color saturation if required (change to pastiles on white)
-    newColor.s = this.isInverted ? newColor.s : newColor.s * 0.20;
-    rule.style[name] = HSLAObjectToRGBAString(newColor);
-    return true;
+  applyOutputRules() {
+    this.rules.forEach(rule => rule.colorPropertyNames.forEach(name => (rule.style[name] = rule.output[name])));
   }
 
 }

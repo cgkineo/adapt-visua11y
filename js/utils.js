@@ -160,3 +160,19 @@ export function RGBABrightness(r, g, b) {
   const brightness = ((r * 299) + (g * 587) + (b * 114)) / 10;
   return brightness;
 }
+
+export function chooseAColor(color, bottomColor, topColor, threshold = null) {
+  const rangeBottom = bottomColor.b;
+  const rangeTop = topColor.b;
+  const bottomDistance = Math.abs(color.b - rangeBottom);
+  const topDistance = Math.abs(color.b - rangeTop);
+  threshold = threshold ?? Math.abs(rangeTop - rangeBottom);
+  if (bottomDistance > threshold || topDistance > threshold) return false;
+  const newColor = {
+    ...(bottomDistance <= topDistance)
+      ? bottomColor
+      : topColor,
+    a: color.a // Make sure to being alpha through for later analysis
+  };
+  return newColor;
+}
