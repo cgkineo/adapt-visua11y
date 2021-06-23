@@ -13,7 +13,7 @@ class Visua11y extends Backbone.Controller {
   }
 
   get isInverted() {
-    return true;
+    return false;
   }
 
   get fontSize() {
@@ -51,6 +51,10 @@ class Visua11y extends Backbone.Controller {
       document.querySelector('html').style.fontSize = this.fontSize;
     }
 
+    if (this.isInverted) {
+      $('html').addClass('is-color-inverted');
+    }
+
     if (this.disableAnimations) {
       // Turn off jquery animations
       $.fx.off = true;
@@ -65,13 +69,28 @@ class Visua11y extends Backbone.Controller {
     const stylesheets = Array.prototype.slice.call(document.styleSheets, 0);
     const allRules = stylesheets.reduce((allRules, stylesheet) => {
       const rules = Array.prototype.slice.call(stylesheet.rules, 0);
-      allRules.push(...rules.map(rule => ({
-        selectorText: rule.selectorText,
-        style: rule.style,
-        hsla: {},
-        colorPropertyNames: null
+      allRules.push(...rules.map(rule => {
+        if (!(rule instanceof CSSStyleRule)) return false;
+        return {
+          selectorText: rule.selectorText,
+          style: rule.style,
+          hsla: {},
+          colorPropertyNames: null
+        };
+      }));
+      allRules.push(..._.flatten(rules.map(rule => {
+        if (!(rule instanceof CSSMediaRule)) return false;
+        const rules = Array.prototype.slice.call(rule.cssRules, 0);
+        return rules.map(rule => {
+          return {
+            selectorText: rule.selectorText,
+            style: rule.style,
+            hsla: {},
+            colorPropertyNames: null
+          };
+        });
       })));
-      return allRules;
+      return allRules.filter(Boolean);
     }, []).filter(rule => rule.selectorText);
 
     if (!document.body.style.backgroundColor) {
@@ -88,9 +107,10 @@ class Visua11y extends Backbone.Controller {
     // Filter colour rules add their hsla values and lightnesses
     const colorRules = allRules.filter(rule => {
       rule.colorPropertyNames = Array.prototype.slice.call(rule.style)
-        .filter(name => /color|background-image/i.test(name))
+        .filter(name => /color|background-image|opacity/i.test(name))
         .filter(name => {
           if (name === 'background-image') return true;
+          if (name === 'opacity') return true;
           try {
             const hsla = COLORtoHSLAObject(rule.style[name]);
             rule.hsla[name] = hsla;
@@ -109,12 +129,21 @@ class Visua11y extends Backbone.Controller {
           rule.style[name] = 'none';
           return;
         }
+        if (name === 'opacity') {
+          rule.style[name] = rule.style[name] <= 0.3 ? 0 : 1;
+          return;
+        }
         const color = rule.hsla[name];
-        const isTransparent = (color.a !== 1);
+        const isTransparent = (color.a <= 0.4);
         if (isTransparent) {
           const newColor = { ...color, a: 0 };
           rule.style[name] = HSLAObjectToRGBAString(newColor);
-          console.log(`${rule.selectorText} ${name}: ${HSLAObjectToRGBAString(color)} to ${HSLAObjectToRGBAString(newColor)}`);
+          return;
+        }
+        const isSemiTransparent = (color.a > 0.4 && color.a <= 0.99);
+        if (isSemiTransparent) {
+          const newColor = { ...color, a: 1 };
+          rule.style[name] = HSLAObjectToRGBAString(newColor);
           return;
         }
         if (name === 'color') {
@@ -151,6 +180,7 @@ class Visua11y extends Backbone.Controller {
         : topColor
     };
     newColor.l = this.isInverted ? invert(newColor.l, 100) : newColor.l;
+    newColor.s = this.isInverted ? newColor.s : newColor.s * 0.20;
     rule.style[name] = HSLAObjectToRGBAString(newColor);
     return true;
   }
