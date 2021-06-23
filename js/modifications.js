@@ -6,7 +6,30 @@ import {
 } from './utils';
 import PRIMARY_COLORS from './PRIMARY_COLORS';
 
+/**
+ * List of object representing stylesheet modifications
+ *
+ * Example:
+ *
+ * [
+ *  {
+ *    stylePropertyName|stylePropertyName(name), // string or function returning boolean
+ *    null|validation(value), // function to throw error on failure
+ *    modifier(output, original, style) // returns modified value or undefined
+ *  }
+ * ]
+ *
+ * The this context of each function is a reference to Adapt.visua11y
+ */
 export default [
+  [
+    // Remove box shadows
+    'box-shadow',
+    null,
+    function () {
+      return 'none';
+    }
+  ],
   [
     // Increase opacity either way
     'opacity',
@@ -29,7 +52,7 @@ export default [
     'color',
     COLORtoHSLAObject,
     function (output) {
-      if (!this.colorProfile) return output;
+      if (!this.colorProfile) return;
       const color = COLORtoHSLAObject(output);
       // Text: black or white
       const bottomColor = PRIMARY_COLORS[1];
@@ -37,7 +60,7 @@ export default [
         // Force black if lightness is less than 80%
         const newColor = {
           ...bottomColor,
-          a: color.a // Make sure to being alpha through for later analysis
+          a: color.a // Make sure to bring alpha through for later analysis
         };
         return HSLAObjectToRGBAString(newColor);
       }
@@ -51,7 +74,7 @@ export default [
     name => name !== 'color' && /color/i.test(name),
     COLORtoHSLAObject,
     function (output) {
-      if (!this.colorProfile) return output;
+      if (!this.colorProfile) return;
       const color = COLORtoHSLAObject(output);
       for (let i = 1, l = PRIMARY_COLORS.length; i < l - 1; i++) {
         const bottomColor = PRIMARY_COLORS[i];
@@ -59,7 +82,6 @@ export default [
         const newColor = chooseAColor(color, bottomColor, topColor);
         if (newColor) return HSLAObjectToRGBAString(newColor);
       }
-      return HSLAObjectToRGBAString(color);
     }
   ],
   [
@@ -67,7 +89,7 @@ export default [
     name => /color/i.test(name),
     COLORtoHSLAObject,
     function (output) {
-      if (!this.increaseOpacity) return output;
+      if (!this.increaseOpacity) return;
       const color = COLORtoHSLAObject(output);
       const isTransparent = (color.a <= 0.4);
       if (isTransparent) {
@@ -81,7 +103,6 @@ export default [
         const newColor = { ...color, a: 1 };
         return HSLAObjectToRGBAString(newColor);
       }
-      return HSLAObjectToRGBAString(color);
     }
   ],
   [
@@ -89,6 +110,7 @@ export default [
     name => /color/i.test(name),
     COLORtoHSLAObject,
     function (output) {
+      if (!this.colorProfile) return;
       const color = COLORtoHSLAObject(output);
       // Invert the color lightness if required (change to bright on black)
       color.l = this.isInverted ? invert(color.l, 100) : color.l;

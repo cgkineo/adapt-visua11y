@@ -35,36 +35,6 @@ export function HSLAStringToObject(hsla) {
   return { h, s, l, a };
 }
 
-export function COLORNAMEtoHEXString(n) {
-  n = n.toLowerCase();
-  if (!NAMED_COLOR[n]) throw new Error(`Invalid color: ${n}`);
-  return NAMED_COLOR[n];
-}
-
-export function HEXAStringtoRGBAString(h) {
-  let r = 0;
-  let g = 0;
-  let b = 0;
-  let a = 255;
-  if (h.length === 5) {
-    r = '0x' + h[1] + h[1];
-    g = '0x' + h[2] + h[2];
-    b = '0x' + h[3] + h[3];
-    a = '0x' + h[4] + h[4];
-  } else if (h.length === 7) {
-    r = '0x' + h[1] + h[2];
-    g = '0x' + h[3] + h[4];
-    b = '0x' + h[5] + h[6];
-  } else if (h.length === 9) {
-    r = '0x' + h[1] + h[2];
-    g = '0x' + h[3] + h[4];
-    b = '0x' + h[5] + h[6];
-    a = '0x' + h[7] + h[8];
-  }
-  a = +(a / 255).toFixed(3);
-  return `rgba(${r},${g},${b},${a})`;
-}
-
 export function RGBAStringToHSLAObject(rgba) {
   const sep = rgba.indexOf(',') > -1 ? ',' : ' ';
   rgba = rgba.split('(')[1].split(')')[0].split(sep);
@@ -116,6 +86,47 @@ export function RGBAStringToHSLAObject(rgba) {
   return { h, s, l, a, b: brightness };
 }
 
+export function RGBABrightness(r, g, b) {
+  /*
+    From this W3C document: http://www.webmasterworld.com/r.cgi?f=88&d=9769&url=http://www.w3.org/TR/AERT#color-contrast
+    Color brightness is determined by the following formula:
+    ((Red value X 299) + (Green value X 587) + (Blue value X 114)) / 1000
+    I know this could be more compact, but I think this is easier to read/explain.
+  */
+  const brightness = ((r * 299) + (g * 587) + (b * 114)) / 10;
+  return brightness;
+}
+
+export function HEXAStringtoRGBAString(h) {
+  let r = 0;
+  let g = 0;
+  let b = 0;
+  let a = 255;
+  if (h.length === 5) {
+    r = '0x' + h[1] + h[1];
+    g = '0x' + h[2] + h[2];
+    b = '0x' + h[3] + h[3];
+    a = '0x' + h[4] + h[4];
+  } else if (h.length === 7) {
+    r = '0x' + h[1] + h[2];
+    g = '0x' + h[3] + h[4];
+    b = '0x' + h[5] + h[6];
+  } else if (h.length === 9) {
+    r = '0x' + h[1] + h[2];
+    g = '0x' + h[3] + h[4];
+    b = '0x' + h[5] + h[6];
+    a = '0x' + h[7] + h[8];
+  }
+  a = +(a / 255).toFixed(3);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+export function COLORNAMEtoHEXString(n) {
+  n = n.toLowerCase();
+  if (!NAMED_COLOR[n]) throw new Error(`Invalid color: ${n}`);
+  return NAMED_COLOR[n];
+}
+
 export function HSLAObjectToRGBAString(hsla) {
   let { h, s, l, a } = hsla;
   s /= 100;
@@ -146,19 +157,7 @@ export function HSLAObjectToRGBAString(hsla) {
 }
 
 export function invert(value, max) {
-  // return value;
   return max - value;
-}
-
-export function RGBABrightness(r, g, b) {
-  /*
-    From this W3C document: http://www.webmasterworld.com/r.cgi?f=88&d=9769&url=http://www.w3.org/TR/AERT#color-contrast
-    Color brightness is determined by the following formula:
-    ((Red value X 299) + (Green value X 587) + (Blue value X 114)) / 1000
-    I know this could be more compact, but I think this is easier to read/explain.
-  */
-  const brightness = ((r * 299) + (g * 587) + (b * 114)) / 10;
-  return brightness;
 }
 
 export function chooseAColor(color, bottomColor, topColor, threshold = null) {
