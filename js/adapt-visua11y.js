@@ -3,6 +3,8 @@ import Adapt from 'core/js/adapt';
 import modifications from './modifications';
 import { COLORtoHSLAObject, HSLAObjectToRGBAObject, RGBAObjecttoHEX, HEXtoCOLOR } from './utils';
 import PROFILES from './PROFILES';
+import ColorButtonView from './ColorButtonView';
+import ZoomButtonView from './ZoomButtonView';
 
 class Visua11y extends Backbone.Controller {
 
@@ -47,7 +49,7 @@ class Visua11y extends Backbone.Controller {
   }
 
   get documentFontSize() {
-    return this._documentFontSize;
+    return this._documentFontSize || this._originalDocumentFontSize;
   }
 
   set documentFontSize(value) {
@@ -84,13 +86,28 @@ class Visua11y extends Backbone.Controller {
 
   onAdaptStart() {
     this._originalDocumentFontSize = window.getComputedStyle(document.querySelector('html')).fontSize;
-    this._colorProfileId = '';
-    this._documentFontSize = null;
-    this._disableAnimations = false;
-    this._increaseOpacity = false;
-    this._removeBackgroundImages = false;
+    this.restore();
+    this.setupUI();
     this.rules = this.getCSSRules();
     this.apply();
+  }
+
+  restore() {
+    const cookies = document.cookie.split(';');
+    const index = cookies.findIndex(cookie => cookie.includes('visua11y='));
+    const cookie = cookies[index];
+    const value = cookie && JSON.parse(decodeURIComponent(cookie.replace('visua11y=', '')));
+    this._colorProfileId = value?.id ?? '';
+    this._documentFontSize = value?.size ?? null;
+    this._disableAnimations = value?.anims ?? false;
+    this._increaseOpacity = value?.opac ?? false;
+    this._removeBackgroundImages = value?.backimg ?? false;
+  }
+
+  setupUI() {
+    if (!Adapt.course.get('_visua11y')?._isEnabled) return;
+    $('.nav__drawer-btn').after(new ColorButtonView().$el);
+    $('.nav__drawer-btn').after(new ZoomButtonView().$el);
   }
 
   printSortedProfiles() {
@@ -152,21 +169,40 @@ class Visua11y extends Backbone.Controller {
   }
 
   apply() {
+    this.save();
     this.resetRules();
     if (Adapt.course.get('_visua11y')?._isEnabled) {
       this.applyColorProfile();
       this.applyDocumentFontSize();
       this.applyDisableAnimations();
-      this.applyModifications();
+      this.applyIncreaseOpacity();
       this.applyRemoveBackgroundImages();
+      this.applyModifications();
     } else {
       this.removeColorProfile();
       this.removeDocumentFontSize();
       this.removeDisableAnimations();
+      this.removeIncreaseOpacity();
       this.removeRemoveBackgroundImages();
     }
     this.applyOutputRules();
     $(window).resize();
+  }
+
+  save() {
+    const cookies = document.cookie.split(';').map(a => a.trim());
+    const index = cookies.findIndex(cookie => cookie.includes('visua11y='));
+    if (index !== -1) {
+      cookies.splice(index, 1);
+    }
+    const value = encodeURIComponent(JSON.stringify({
+      id: this._colorProfileId,
+      size: this._documentFontSize,
+      anim: this._disableAnimations,
+      opac: this._increaseOpacity,
+      backimg: this._removeBackgroundImages
+    }));
+    document.cookie = `visua11y=${value}; ${cookies.join('; ')};`;
   }
 
   resetRules() {
@@ -210,6 +246,16 @@ class Visua11y extends Backbone.Controller {
     $.Velocity.mock = false;
     // Turn off css transitions and animations
     $('html').removeClass('a11y-disable-animations');
+  }
+
+  applyIncreaseOpacity() {
+    // Turn off background images
+    $('html').toggleClass('a11y-increase-opacity', this.increaseOpacity);
+  }
+
+  removeIncreaseOpacity() {
+    // Turn off background images
+    $('html').removeClass('a11y-increase-opacity');
   }
 
   applyRemoveBackgroundImages() {

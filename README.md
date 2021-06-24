@@ -3,18 +3,18 @@
 **Visua11y** is an *extension* for the [Adapt framework](https://github.com/adaptlearning/adapt_framework).  
 It provides visual accessibility improvements.
 
-* Changes all css colours to high contrast
+* Changes all colours to different profiles
 * Turns off all animations
 * Increases font size
-* Enhances contrast and brightness of images
 * Removes background images
 * Defines opacity values more harshly
-* Removes box shadows
+
+### Note
+IE11 cannot apply filters. This means that images and videos will not be transformed in IE11.
 
 ### TODO
 * Thicker borders
 * UI, switching color profile, animations, opacity, invertion
-* User group colour maps (dyschromatopsia/contrast requirements)
 
 ----------------------------
 **Version number:**  0.0.1   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>  

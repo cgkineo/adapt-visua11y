@@ -14,18 +14,19 @@ body > *:not(.notify),
 .notify > * {
 
   [data-color-profile=highcontrast-light] & {
-    filter: contrast(110%) brightness(110%);
+    img, video, canvas {
+      filter: contrast(110%) brightness(110%);
+    }
   }
 
   .ie[data-color-profile=highcontrast-dark] & {
-    filter: contrast(110%) brightness(110%);
     img, video, canvas {
-      filter: invert(100%);
+      filter: invert(100%) contrast(110%) brightness(110%);
     }
   }
 
   [data-color-profile=highcontrast-dark] & {
-    filter: invert(100%) contrast(110%) brightness(110%);
+    filter: invert(100%);
   }
 
 
