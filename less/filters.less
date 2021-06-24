@@ -1,0 +1,69 @@
+/**
+ * Apply white background to app for inversion late
+ */
+#app {
+  background-color: white;
+}
+
+/**
+ * Apply filters to body children and notify children separately
+ * Filter affects fixed position elements
+ * Note: filters do not work in ie11
+ */
+body > *:not(.notify),
+.notify > * {
+
+  [data-color-profile=highcontrast-light] & {
+    filter: contrast(110%) brightness(110%);
+  }
+
+  .ie[data-color-profile=highcontrast-dark] & {
+    filter: contrast(110%) brightness(110%);
+    img, video, canvas {
+      filter: invert(100%);
+    }
+  }
+
+  [data-color-profile=highcontrast-dark] & {
+    filter: invert(100%) contrast(110%) brightness(110%);
+  }
+
+
+  [data-color-profile=achromatopsia] & {
+    filter: grayscale(100%);
+  }
+
+  [data-color-profile=protanopia] & {
+    filter: url(assets/visua11y-filters.svg#protanopia)
+  }
+
+  [data-color-profile=deuteranopia] & {
+    filter: url(assets/visua11y-filters.svg#deuteranopia)
+  }
+
+  [data-color-profile=tritanopia] & {
+    filter: url(assets/visua11y-filters.svg#tritanopia)
+  }
+
+  [data-color-profile=achromatopsia] & {
+    filter: url(assets/visua11y-filters.svg#achromatopsia)
+  }
+
+  [data-color-profile=protanomaly] & {
+    filter: url(assets/visua11y-filters.svg#protanomaly)
+  }
+
+  [data-color-profile=deuteranomaly] & {
+    filter: url(assets/visua11y-filters.svg#deuteranomaly)
+  }
+
+  [data-color-profile=tritanomaly] & {
+    filter: url(assets/visua11y-filters.svg#tritanomaly)
+  }
+
+  [data-color-profile=achromatomaly] & {
+    filter: url(assets/visua11y-filters.svg#achromatomaly)
+  }
+
+}
+

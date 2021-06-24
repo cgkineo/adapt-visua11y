@@ -11,6 +11,4 @@ export default [
   '#ffbb11',
   '#ffbbaa',
   'white'
-].map(color => COLORtoHSLAObject(color)).sort((a, b) => {
-  return a.b - b.b;
-});
+].map(color => COLORtoHSLAObject(color));

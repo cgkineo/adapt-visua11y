@@ -127,7 +127,7 @@ export function COLORNAMEtoHEXString(n) {
   return NAMED_COLOR[n];
 }
 
-export function HSLAObjectToRGBAString(hsla) {
+export function HSLAObjectToRGBAObject(hsla) {
   let { h, s, l, a } = hsla;
   s /= 100;
   l /= 100;
@@ -153,11 +153,24 @@ export function HSLAObjectToRGBAString(hsla) {
   r = Math.round((r + m) * 255);
   g = Math.round((g + m) * 255);
   b = Math.round((b + m) * 255);
+  return { r, g, b, a };
+}
+
+export function HSLAObjectToRGBAString(hsla) {
+  const { r, g, b, a } = HSLAObjectToRGBAObject(hsla);
   return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
 }
 
-export function invert(value, max) {
-  return max - value;
+export function RGBAObjecttoHEX(rgba) {
+  if (rgba.a === 1) {
+    return `#${((1 << 24) + (parseInt(rgba.r) << 16) + (parseInt(rgba.g) << 8) + (parseInt(rgba.b))).toString(16).slice(1)}`;
+  }
+  return `#${((1 << 24) + (parseInt(rgba.r) << 16) + (parseInt(rgba.g) << 8) + (parseInt(rgba.b))).toString(16).slice(1)}${((1 << 8) + rgba.a).toString(16).slice(1)}`;
+}
+
+export function HEXtoCOLOR(hex) {
+  hex = hex.toLowerCase();
+  return Object.entries(NAMED_COLOR).find(([name, h]) => h.toLocaleLowerCase() === hex)?.[0] ?? hex;
 }
 
 export function chooseAColor(color, bottomColor, topColor, threshold = null) {

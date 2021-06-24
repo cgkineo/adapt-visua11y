@@ -1,10 +1,10 @@
 import {
   COLORtoHSLAObject,
   HSLAObjectToRGBAString,
-  invert,
   chooseAColor
 } from './utils';
-import PRIMARY_COLOR from './PRIMARY_COLOR';
+import MATCH_COLOR from './MATCH_COLOR';
+import NAMED_COLOR from './NAMED_COLOR';
 
 /**
  * List of objects representing stylesheet modifications
@@ -27,6 +27,7 @@ export default [
     'box-shadow',
     null,
     function () {
+      if (!this.increaseOpacity) return;
       return 'none';
     }
   ],
@@ -35,7 +36,7 @@ export default [
     'opacity',
     null,
     function (output) {
-      if (!this.increaseOpacity) return output;
+      if (!this.increaseOpacity) return;
       return output <= 0.4 ? 0 : 1;
     }
   ],
@@ -43,8 +44,8 @@ export default [
     // Remove background images
     'background-image',
     null,
-    function (output, original) {
-      return this.removeBackgroundImages ? 'none' : original;
+    function (output, original, style) {
+      return this.removeBackgroundImages ? 'none' : undefined;
     }
   ],
   [
@@ -52,10 +53,10 @@ export default [
     'color',
     COLORtoHSLAObject,
     function (output) {
-      if (!this.colorProfile) return;
+      if (!this.colorProfileId) return;
       const color = COLORtoHSLAObject(output);
       // Text: black or white
-      const bottomColor = PRIMARY_COLOR[1];
+      const bottomColor = MATCH_COLOR[1];
       if (color.l <= 80) {
         // Force black if lightness is less than 80%
         const newColor = {
@@ -65,7 +66,7 @@ export default [
         return HSLAObjectToRGBAString(newColor);
       }
       // Choose between black and white
-      const topColor = PRIMARY_COLOR[PRIMARY_COLOR.length - 1];
+      const topColor = MATCH_COLOR[MATCH_COLOR.length - 1];
       return HSLAObjectToRGBAString(chooseAColor(color, bottomColor, topColor, 100));
     }
   ],
@@ -74,11 +75,11 @@ export default [
     name => name !== 'color' && /color/i.test(name),
     COLORtoHSLAObject,
     function (output) {
-      if (!this.colorProfile) return;
+      if (!this.colorProfileId) return;
       const color = COLORtoHSLAObject(output);
-      for (let i = 1, l = PRIMARY_COLOR.length; i < l - 1; i++) {
-        const bottomColor = PRIMARY_COLOR[i];
-        const topColor = PRIMARY_COLOR[i + 1];
+      for (let i = 1, l = MATCH_COLOR.length; i < l - 1; i++) {
+        const bottomColor = MATCH_COLOR[i];
+        const topColor = MATCH_COLOR[i + 1];
         const newColor = chooseAColor(color, bottomColor, topColor);
         if (newColor) return HSLAObjectToRGBAString(newColor);
       }
@@ -94,7 +95,7 @@ export default [
       const isTransparent = (color.a <= 0.4);
       if (isTransparent) {
         // No color opacity less than 0.4
-        const newColor = { ...color, a: 0 };
+        const newColor = COLORtoHSLAObject(NAMED_COLOR.transparent);
         return HSLAObjectToRGBAString(newColor);
       }
       const isSemiTransparent = (color.a > 0.4 && color.a <= 0.99999);
@@ -106,17 +107,20 @@ export default [
     }
   ],
   [
-    // Invert colors accordingly
+    // Apply named profile
     name => /color/i.test(name),
     COLORtoHSLAObject,
     function (output) {
-      if (!this.colorProfile) return;
+      if (!this.colorProfileId) return;
+      const SWAP_COLOR = this.colorProfiles.find(profile => profile._id === this.colorProfileId)._colors;
+      if (!SWAP_COLOR) return;
+      const swapColor = SWAP_COLOR.map(color => COLORtoHSLAObject(color));
       const color = COLORtoHSLAObject(output);
-      // Invert the color lightness if required (change to bright on black)
-      color.l = this.isInverted ? invert(color.l, 100) : color.l;
-      // Invert the color saturation if required (change to pastiles on white)
-      color.s = this.isInverted ? color.s : color.s * 0.20;
-      return HSLAObjectToRGBAString(color);
+      const colorIndex = MATCH_COLOR.findIndex(primaryColor => {
+        return (color.h === primaryColor.h && color.s === primaryColor.s && color.l === primaryColor.l && color.a === primaryColor.a);
+      });
+      if (colorIndex === -1) return;
+      return HSLAObjectToRGBAString(swapColor[colorIndex]);
     }
   ]
 ];

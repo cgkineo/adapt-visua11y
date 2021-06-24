@@ -1,6 +1,8 @@
 import Backbone from 'backbone';
 import Adapt from 'core/js/adapt';
 import modifications from './modifications';
+import { COLORtoHSLAObject, HSLAObjectToRGBAObject, RGBAObjecttoHEX, HEXtoCOLOR } from './utils';
+import PROFILES from './PROFILES';
 
 class Visua11y extends Backbone.Controller {
 
@@ -8,22 +10,40 @@ class Visua11y extends Backbone.Controller {
     this.listenTo(Adapt, 'adapt:start', this.onAdaptStart);
   }
 
-  get colorProfile() {
-    return this._colorProfile;
+  get colorProfileName() {
+    return this.colorProfiles.find(prof => prof._id === this._colorProfileId)?.name;
   }
 
-  set colorProfile(value) {
-    this._colorProfile = value;
+  get colorProfileId() {
+    return this._colorProfileId;
+  }
+
+  set colorProfileId(value) {
+    this._colorProfileId = value;
     this.apply();
   }
 
-  get isInverted() {
-    return this._isInverted;
-  }
-
-  set isInverted(value) {
-    this._isInverted = value;
-    this.apply();
+  get colorProfiles() {
+    return Adapt.course.get('_visua11y')._profiles.map(profile => {
+      const found = PROFILES.find(prof => prof._id === profile._id);
+      const override = found
+        ? {
+          ...found,
+          ...profile
+        }
+        : profile;
+      if ($('html').is('.ie') && found._invert) {
+        override._colors = override._colors.map(color => {
+          const hsla = COLORtoHSLAObject(color);
+          const rgba = HSLAObjectToRGBAObject(hsla);
+          rgba.r = 255 - rgba.r;
+          rgba.g = 255 - rgba.g;
+          rgba.b = 255 - rgba.b;
+          return RGBAObjecttoHEX(rgba);
+        });
+      }
+      return override;
+    });
   }
 
   get documentFontSize() {
@@ -64,14 +84,23 @@ class Visua11y extends Backbone.Controller {
 
   onAdaptStart() {
     this._originalDocumentFontSize = window.getComputedStyle(document.querySelector('html')).fontSize;
-    this._colorProfile = 'highcontrast';
-    this._isInverted = true;
-    this._documentFontSize = '18pt';
-    this._disableAnimations = true;
-    this._increaseOpacity = true;
-    this._removeBackgoundImages = true;
+    this._colorProfileId = '';
+    this._documentFontSize = null;
+    this._disableAnimations = false;
+    this._increaseOpacity = false;
+    this._removeBackgroundImages = false;
     this.rules = this.getCSSRules();
     this.apply();
+  }
+
+  printSortedProfiles() {
+    this.colorProfiles.forEach(profile => {
+      if (!profile._colors) return;
+      console.log(profile._id);
+      console.log(JSON.stringify(profile._colors.map(color => COLORtoHSLAObject(color)).sort((a, b) => {
+        return a.b - b.b;
+      }).map(HSLAObjectToRGBAObject).map(RGBAObjecttoHEX).map(HEXtoCOLOR), null, 2));
+    });
   }
 
   getCSSRules() {
@@ -102,17 +131,6 @@ class Visua11y extends Backbone.Controller {
       })));
       return allRules.filter(Boolean);
     }, []).filter(rule => rule.selectorText);
-    // Force a background color of white if none specified
-    if (!document.body.style.backgroundColor) {
-      document.body.style.backgroundColor = 'white';
-      allRules.unshift({
-        selectorText: 'body',
-        style: document.body.style,
-        output: {},
-        original: {},
-        colorPropertyNames: null
-      });
-    }
     // Filter rules with valid modifications, capture their original values
     const rules = allRules.filter(rule => {
       rule.colorPropertyNames = Array.prototype.slice.call(rule.style)
@@ -135,11 +153,18 @@ class Visua11y extends Backbone.Controller {
 
   apply() {
     this.resetRules();
-    this.applyColorProfile();
-    this.applyDocumentFontSize();
-    this.applyDisableAnimations();
-    this.applyInvertedStyling();
-    this.applyModifications();
+    if (Adapt.course.get('_visua11y')?._isEnabled) {
+      this.applyColorProfile();
+      this.applyDocumentFontSize();
+      this.applyDisableAnimations();
+      this.applyModifications();
+      this.applyRemoveBackgroundImages();
+    } else {
+      this.removeColorProfile();
+      this.removeDocumentFontSize();
+      this.removeDisableAnimations();
+      this.removeRemoveBackgroundImages();
+    }
     this.applyOutputRules();
     $(window).resize();
   }
@@ -149,12 +174,24 @@ class Visua11y extends Backbone.Controller {
   }
 
   applyColorProfile() {
-    $('html').toggleClass('has-color-profile', Boolean(this.colorProfile));
-    $('html').attr('data-color-profile', `${this.colorProfile}${this.isInverted ? '-inverted' : ''}`);
+    const profileId = `${this.colorProfileId}${this.isMediaInverted ? '-inverted' : ''}`;
+    const $html = $('html');
+    $html.toggleClass('has-color-profile', Boolean(this.colorProfileId));
+    profileId ? $html.attr('data-color-profile', profileId) : $html.removeAttr('data-color-profile');
+  }
+
+  removeColorProfile() {
+    $('html')
+      .removeClass('has-color-profile')
+      .removeAttr('data-color-profile');
   }
 
   applyDocumentFontSize() {
     document.querySelector('html').style.fontSize = this.documentFontSize ?? this._originalDocumentFontSize;
+  }
+
+  removeDocumentFontSize() {
+    document.querySelector('html').style.fontSize = this._originalDocumentFontSize;
   }
 
   applyDisableAnimations() {
@@ -163,11 +200,26 @@ class Visua11y extends Backbone.Controller {
     // Turn off velocity animations
     $.Velocity.mock = this.disableAnimations;
     // Turn off css transitions and animations
-    $('html').toggleClass('is-animation-disabled', this.disableAnimations);
+    $('html').toggleClass('a11y-disable-animations', this.disableAnimations);
   }
 
-  applyInvertedStyling() {
-    $('html').toggleClass('is-color-inverted', Boolean(this.colorProfile && this.isInverted));
+  removeDisableAnimations() {
+    // Turn off jquery animations
+    $.fx.off = false;
+    // Turn off velocity animations
+    $.Velocity.mock = false;
+    // Turn off css transitions and animations
+    $('html').removeClass('a11y-disable-animations');
+  }
+
+  applyRemoveBackgroundImages() {
+    // Turn off background images
+    $('html').toggleClass('a11y-remove-background-images', this.removeBackgroundImages);
+  }
+
+  removeRemoveBackgroundImages() {
+    // Turn off background images
+    $('html').removeClass('a11y-remove-background-images');
   }
 
   applyModifications() {
