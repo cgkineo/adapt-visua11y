@@ -1,28 +1,18 @@
 import Backbone from 'backbone';
 import Adapt from 'core/js/adapt';
-import modifications from './modifications';
-import { COLORtoHSLAObject, HSLAObjectToRGBAObject, RGBAObjecttoHEX, HEXtoCOLOR } from './utils';
+import Rule from './Rule';
+import Color from './Color';
 import PROFILES from './PROFILES';
 import ColorButtonView from './ColorButtonView';
 import ZoomButtonView from './ZoomButtonView';
+import ContrastButtonView from './ContrastButtonView';
+import InvertButtonView from './InvertButtonView';
+import { polarize } from './transformations';
 
 class Visua11y extends Backbone.Controller {
 
   initialize() {
     this.listenTo(Adapt, 'adapt:start', this.onAdaptStart);
-  }
-
-  get colorProfileName() {
-    return this.colorProfiles.find(prof => prof._id === this._colorProfileId)?.name;
-  }
-
-  get colorProfileId() {
-    return this._colorProfileId;
-  }
-
-  set colorProfileId(value) {
-    this._colorProfileId = value;
-    this.apply();
   }
 
   get colorProfiles() {
@@ -34,18 +24,36 @@ class Visua11y extends Backbone.Controller {
           ...profile
         }
         : profile;
-      if ($('html').is('.ie') && found._invert) {
-        override._colors = override._colors.map(color => {
-          const hsla = COLORtoHSLAObject(color);
-          const rgba = HSLAObjectToRGBAObject(hsla);
-          rgba.r = 255 - rgba.r;
-          rgba.g = 255 - rgba.g;
-          rgba.b = 255 - rgba.b;
-          return RGBAObjecttoHEX(rgba);
-        });
-      }
       return override;
     });
+  }
+
+  get colorProfileId() {
+    return this._colorProfileId;
+  }
+
+  set colorProfileId(value) {
+    this._colorProfileId = value;
+    this._outputColors = null;
+    this.apply();
+  }
+
+  get colorProfile() {
+    return this.colorProfiles.find(profile => profile._id === this.colorProfileId);
+  }
+
+  get colorProfileName() {
+    return this.colorProfile?.name;
+  }
+
+  get isInverted() {
+    return this._isInverted;
+  }
+
+  set isInverted(value) {
+    this._isInverted = value;
+    this._outputColors = null;
+    this.apply();
   }
 
   get documentFontSize() {
@@ -75,6 +83,16 @@ class Visua11y extends Backbone.Controller {
     this.apply();
   }
 
+  get increaseContrast() {
+    return this._increaseContrast;
+  }
+
+  set increaseContrast(value) {
+    this._increaseContrast = value;
+    this._outputColors = null;
+    this.apply();
+  }
+
   get removeBackgroundImages() {
     return this._removeBackgroundImages;
   }
@@ -84,109 +102,50 @@ class Visua11y extends Backbone.Controller {
     this.apply();
   }
 
+  get distinctColors() {
+    if (this._distinctColors) return this._distinctColors;
+
+    const allColors = _.uniq(_.flatten(this.rules.map(rule => rule.distinctColors)).map(Color.toColorString));
+    const colors = allColors
+      .map(Color.parse)
+      .filter(color => !Color.isTransparent(color));
+
+    this._distinctColors = [
+      Color.BLACK,
+      ...colors.sort((a, b) => a.luminance - b.luminance),
+      Color.WHITE
+    ];
+
+    return this._distinctColors;
+  }
+
+  get outputColors() {
+    const isInverted = this.isInverted;
+    const increaseContrast = this.increaseContrast;
+    if (!this._outputColors) {
+      const distinctColors = this.distinctColors;
+      let outputColors = distinctColors;
+      if (increaseContrast) {
+        const brightnesses = distinctColors.map(c => c.l);
+        outputColors = polarize(brightnesses).map(c => isInverted ? 100 - c : c).map((l, index) => {
+          const c = distinctColors[index];
+          return Color.parse(`hsla(${c.h},${c.s},${l},${c.a})`);
+        });
+      } else if (isInverted) {
+        outputColors = outputColors.map(c => isInverted ? Color.parse(`hsla(${c.h},${c.s},${100 - c.l},${c.a})`) : c);
+      }
+      this._outputColors = outputColors.map(c => c.clone().applyFilter(this.colorProfileId));
+    }
+    const output = this._outputColors.slice(0);
+    return output;
+  }
+
   onAdaptStart() {
     this._originalDocumentFontSize = window.getComputedStyle(document.querySelector('html')).fontSize;
     this.restore();
     this.setupUI();
-    this.rules = this.getCSSRules();
+    this.rules = Rule.getAllModifiable(this);
     this.apply();
-  }
-
-  restore() {
-    const cookies = document.cookie.split(';');
-    const index = cookies.findIndex(cookie => cookie.includes('visua11y='));
-    const cookie = cookies[index];
-    const value = cookie && JSON.parse(decodeURIComponent(cookie.replace('visua11y=', '')));
-    this._colorProfileId = value?.id ?? '';
-    this._documentFontSize = value?.size ?? null;
-    this._disableAnimations = value?.anims ?? false;
-    this._increaseOpacity = value?.opac ?? false;
-    this._removeBackgroundImages = value?.backimg ?? false;
-  }
-
-  setupUI() {
-    if (!Adapt.course.get('_visua11y')?._isEnabled) return;
-    $('.nav__drawer-btn').after(new ColorButtonView().$el);
-    $('.nav__drawer-btn').after(new ZoomButtonView().$el);
-  }
-
-  printSortedProfiles() {
-    this.colorProfiles.forEach(profile => {
-      if (!profile._colors) return;
-      console.log(profile._id);
-      console.log(JSON.stringify(profile._colors.map(color => COLORtoHSLAObject(color)).sort((a, b) => {
-        return a.b - b.b;
-      }).map(HSLAObjectToRGBAObject).map(RGBAObjecttoHEX).map(HEXtoCOLOR), null, 2));
-    });
-  }
-
-  getCSSRules() {
-    // Collect all rules
-    const stylesheets = Array.prototype.slice.call(document.styleSheets, 0);
-    const allRules = stylesheets.reduce((allRules, stylesheet) => {
-      const rules = Array.prototype.slice.call(stylesheet.rules, 0);
-      allRules.push(...rules.map(rule => {
-        if (!(rule instanceof CSSStyleRule)) return false;
-        return {
-          selectorText: rule.selectorText,
-          style: rule.style,
-          output: {},
-          original: {},
-          colorPropertyNames: null
-        };
-      }));
-      allRules.push(..._.flatten(rules.map(rule => {
-        if (!(rule instanceof CSSMediaRule)) return false;
-        const rules = Array.prototype.slice.call(rule.cssRules, 0);
-        return rules.map(rule => ({
-          selectorText: rule.selectorText,
-          style: rule.style,
-          output: {},
-          original: {},
-          colorPropertyNames: null
-        }));
-      })));
-      return allRules.filter(Boolean);
-    }, []).filter(rule => rule.selectorText);
-    // Filter rules with valid modifications, capture their original values
-    const rules = allRules.filter(rule => {
-      rule.colorPropertyNames = Array.prototype.slice.call(rule.style)
-        .filter(name => modifications.some(([matchName, validation]) => {
-          if (typeof matchName === 'string' && matchName !== name) return false;
-          if (typeof matchName === 'function' && !matchName(name)) return false;
-          try {
-            validation && validation.call(this, rule.style[name]);
-            rule.original[name] = rule.style[name];
-            rule.output[name] = rule.style[name];
-            return true;
-          } catch (err) {
-            return false;
-          }
-        }));
-      return rule.colorPropertyNames.length;
-    });
-    return rules;
-  }
-
-  apply() {
-    this.save();
-    this.resetRules();
-    if (Adapt.course.get('_visua11y')?._isEnabled) {
-      this.applyColorProfile();
-      this.applyDocumentFontSize();
-      this.applyDisableAnimations();
-      this.applyIncreaseOpacity();
-      this.applyRemoveBackgroundImages();
-      this.applyModifications();
-    } else {
-      this.removeColorProfile();
-      this.removeDocumentFontSize();
-      this.removeDisableAnimations();
-      this.removeIncreaseOpacity();
-      this.removeRemoveBackgroundImages();
-    }
-    this.applyOutputRules();
-    $(window).resize();
   }
 
   save() {
@@ -197,93 +156,77 @@ class Visua11y extends Backbone.Controller {
     }
     const value = encodeURIComponent(JSON.stringify({
       id: this._colorProfileId,
+      inv: this._isInverted,
       size: this._documentFontSize,
       anim: this._disableAnimations,
       opac: this._increaseOpacity,
+      cont: this._increaseContrast,
       backimg: this._removeBackgroundImages
     }));
     document.cookie = `visua11y=${value}; ${cookies.join('; ')};`;
   }
 
-  resetRules() {
-    this.rules.forEach(rule => rule.colorPropertyNames.forEach(name => (rule.output[name] = rule.original[name])));
+  restore() {
+    const cookies = document.cookie.split(';');
+    const index = cookies.findIndex(cookie => cookie.includes('visua11y='));
+    const cookie = cookies[index];
+    const value = cookie && JSON.parse(decodeURIComponent(cookie.replace('visua11y=', '')));
+    this._colorProfileId = value?.id ?? 'default';
+    this._isInverted = value?.inv ?? false;
+    this._documentFontSize = value?.size ?? null;
+    this._disableAnimations = value?.anim ?? false;
+    this._increaseOpacity = value?.opac ?? false;
+    this._increaseContrast = value?.cont ?? false;
+    this._removeBackgroundImages = value?.backimg ?? false;
   }
 
-  applyColorProfile() {
-    const profileId = `${this.colorProfileId}${this.isMediaInverted ? '-inverted' : ''}`;
+  setupUI() {
+    if (!Adapt.course.get('_visua11y')?._isEnabled) return;
+    $('.nav__drawer-btn').after(new InvertButtonView().$el);
+    $('.nav__drawer-btn').after(new ContrastButtonView().$el);
+    $('.nav__drawer-btn').after(new ColorButtonView().$el);
+    $('.nav__drawer-btn').after(new ZoomButtonView().$el);
+  }
+
+  apply() {
+    this.save();
+    this.rules.forEach(rule => rule.reset());
     const $html = $('html');
-    $html.toggleClass('has-color-profile', Boolean(this.colorProfileId));
-    profileId ? $html.attr('data-color-profile', profileId) : $html.removeAttr('data-color-profile');
+    if (Adapt.course.get('_visua11y')?._isEnabled) {
+      this.colorProfileId ? $html.attr('data-color-profile', this.colorProfileId) : $html.removeAttr('data-color-profile');
+      $html[0].style.fontSize = this.documentFontSize ?? this._originalDocumentFontSize;
+      // Turn off jquery animations
+      $.fx.off = this.disableAnimations;
+      // Turn off velocity animations
+      $.Velocity.mock = this.disableAnimations;
+      // Turn off css transitions and animations
+      $html
+        .toggleClass('a11y-inverted', this.isInverted)
+        .toggleClass('a11y-disable-animations', this.disableAnimations)
+        .toggleClass('a11y-increase-opacity', this.increaseOpacity)
+        .toggleClass('a11y-increase-contrast', this.increaseContrast)
+        .toggleClass('a11y-remove-background-images', this.removeBackgroundImages);
+      this.rules.forEach(rule => rule.modify(this));
+    } else {
+      $html
+        .removeAttr('data-color-profile')
+        .removeAttr('data-color-inverted');
+      $html[0].style.fontSize = this._originalDocumentFontSize;
+      // Turn off jquery animations
+      $.fx.off = false;
+      // Turn off velocity animations
+      $.Velocity.mock = false;
+      // Turn off css transitions and animations
+      $html
+        .removeClass('a11y-inverted')
+        .removeClass('a11y-disable-animations')
+        .removeClass('a11y-increase-opacity')
+        .removeClass('a11y-increase-contrast')
+        .removeClass('a11y-remove-background-images');
+    }
+    this.rules.forEach(rule => rule.apply());
+    $(window).resize();
   }
-
-  removeColorProfile() {
-    $('html')
-      .removeClass('has-color-profile')
-      .removeAttr('data-color-profile');
-  }
-
-  applyDocumentFontSize() {
-    document.querySelector('html').style.fontSize = this.documentFontSize ?? this._originalDocumentFontSize;
-  }
-
-  removeDocumentFontSize() {
-    document.querySelector('html').style.fontSize = this._originalDocumentFontSize;
-  }
-
-  applyDisableAnimations() {
-    // Turn off jquery animations
-    $.fx.off = this.disableAnimations;
-    // Turn off velocity animations
-    $.Velocity.mock = this.disableAnimations;
-    // Turn off css transitions and animations
-    $('html').toggleClass('a11y-disable-animations', this.disableAnimations);
-  }
-
-  removeDisableAnimations() {
-    // Turn off jquery animations
-    $.fx.off = false;
-    // Turn off velocity animations
-    $.Velocity.mock = false;
-    // Turn off css transitions and animations
-    $('html').removeClass('a11y-disable-animations');
-  }
-
-  applyIncreaseOpacity() {
-    // Turn off background images
-    $('html').toggleClass('a11y-increase-opacity', this.increaseOpacity);
-  }
-
-  removeIncreaseOpacity() {
-    // Turn off background images
-    $('html').removeClass('a11y-increase-opacity');
-  }
-
-  applyRemoveBackgroundImages() {
-    // Turn off background images
-    $('html').toggleClass('a11y-remove-background-images', this.removeBackgroundImages);
-  }
-
-  removeRemoveBackgroundImages() {
-    // Turn off background images
-    $('html').removeClass('a11y-remove-background-images');
-  }
-
-  applyModifications() {
-    this.rules.forEach(rule => rule.colorPropertyNames.forEach(name => {
-      modifications.forEach(([matchName, validation, modifier]) => {
-        if (typeof matchName === 'string' && matchName !== name) return;
-        if (typeof matchName === 'function' && !matchName(name)) return;
-        const value = modifier.call(this, rule.output[name], rule.original[name], rule.style);
-        if (value === undefined) return;
-        rule.output[name] = value;
-      });
-    }));
-  }
-
-  applyOutputRules() {
-    this.rules.forEach(rule => rule.colorPropertyNames.forEach(name => (rule.style[name] = rule.output[name])));
-  }
-
 }
 
 export default (Adapt.visua11y = new Visua11y());

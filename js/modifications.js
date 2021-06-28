@@ -1,10 +1,4 @@
-import {
-  COLORtoHSLAObject,
-  HSLAObjectToRGBAString,
-  chooseAColor
-} from './utils';
-import MATCH_COLOR from './MATCH_COLOR';
-import NAMED_COLOR from './NAMED_COLOR';
+import Color from './Color';
 
 /**
  * List of objects representing stylesheet modifications
@@ -36,91 +30,71 @@ export default [
     'opacity',
     null,
     function (output) {
-      if (!this.increaseOpacity) return;
-      return output <= 0.4 ? 0 : 1;
+      if (!this.increaseOpacity || isNaN(output)) return;
+      return parseInt(output) <= 0.4 ? 0 : 1;
     }
   ],
   [
     // Remove background images
     'background-image',
     null,
-    function (output, original, style) {
+    function () {
       return this.removeBackgroundImages ? 'none' : undefined;
     }
   ],
   [
     // Change text to white / black
     'color',
-    COLORtoHSLAObject,
+    Color.parse,
     function (output) {
-      if (!this.colorProfileId) return;
-      const color = COLORtoHSLAObject(output);
+      if (!this.increaseContrast) return;
+      const color = Color.parse(output); // COLORtoHSLAObject(output);
+      if (color.isTransparent) return;
       // Text: black or white
-      const bottomColor = MATCH_COLOR[1];
-      if (color.l <= 80) {
+      const bottomColor = Color.BLACK;
+      if (color.luminance <= 80) {
         // Force black if lightness is less than 80%
-        const newColor = {
-          ...bottomColor,
-          a: color.a // Make sure to bring alpha through for later analysis
-        };
-        return HSLAObjectToRGBAString(newColor);
+        return bottomColor.toRGBAString();
       }
       // Choose between black and white
-      const topColor = MATCH_COLOR[MATCH_COLOR.length - 1];
-      return HSLAObjectToRGBAString(chooseAColor(color, bottomColor, topColor, 100));
+      const topColor = Color.WHITE;
+      return Color.bestLuminanceMatch(color, bottomColor, topColor, 255).toRGBAString();
     }
   ],
   [
-    // Change non-text colors to primary colors
-    name => name !== 'color' && /color/i.test(name),
-    COLORtoHSLAObject,
-    function (output) {
-      if (!this.colorProfileId) return;
-      const color = COLORtoHSLAObject(output);
-      for (let i = 1, l = MATCH_COLOR.length; i < l - 1; i++) {
-        const bottomColor = MATCH_COLOR[i];
-        const topColor = MATCH_COLOR[i + 1];
-        const newColor = chooseAColor(color, bottomColor, topColor);
-        if (newColor) return HSLAObjectToRGBAString(newColor);
-      }
-    }
-  ],
-  [
-    // Increase text opacity either way
-    name => /color/i.test(name),
-    COLORtoHSLAObject,
+    // Increase opacity on colors
+    function(name) {
+      return /color/i.test(name);
+    },
+    Color.parse,
     function (output) {
       if (!this.increaseOpacity) return;
-      const color = COLORtoHSLAObject(output);
+      const color = Color.parse(output); // COLORtoHSLAObject(output);
       const isTransparent = (color.a <= 0.4);
       if (isTransparent) {
         // No color opacity less than 0.4
-        const newColor = COLORtoHSLAObject(NAMED_COLOR.transparent);
-        return HSLAObjectToRGBAString(newColor);
+        return Color.TRANSPARENT.toRGBAString();
       }
-      const isSemiTransparent = (color.a > 0.4 && color.a <= 0.99999);
-      if (isSemiTransparent) {
-        // Clip opacity between 0.4 and 0.99999
-        const newColor = { ...color, a: 1 };
-        return HSLAObjectToRGBAString(newColor);
-      }
+      // Bump opacity between 0.4 and 1 to 1
+      color.a = 1;
+      return color.toRGBAString();
     }
   ],
   [
-    // Apply named profile
+    // Apply output color profile
     name => /color/i.test(name),
-    COLORtoHSLAObject,
+    Color.parse,
     function (output) {
-      if (!this.colorProfileId) return;
-      const SWAP_COLOR = this.colorProfiles.find(profile => profile._id === this.colorProfileId)._colors;
-      if (!SWAP_COLOR) return;
-      const swapColor = SWAP_COLOR.map(color => COLORtoHSLAObject(color));
-      const color = COLORtoHSLAObject(output);
-      const colorIndex = MATCH_COLOR.findIndex(primaryColor => {
-        return (color.h === primaryColor.h && color.s === primaryColor.s && color.l === primaryColor.l && color.a === primaryColor.a);
+      let color = Color.parse(output);
+      if (color.isTransparent) return color.toRGBAString();
+      const swapColor = this.outputColors;
+      const colorIndex = this.distinctColors.findIndex(primaryColor => {
+        return (color.r === primaryColor.r && color.g === primaryColor.g && color.b === primaryColor.b && color.a === primaryColor.a);
       });
-      if (colorIndex === -1) return;
-      return HSLAObjectToRGBAString(swapColor[colorIndex]);
+      if (colorIndex !== -1) {
+        color = swapColor[colorIndex].clone();
+      }
+      return color.toRGBAString();
     }
   ]
 ];

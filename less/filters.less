@@ -1,69 +1,172 @@
 /**
- * Apply white background to app for inversion late
- */
-#app {
-  background-color: white;
-}
+ * Apply svg filter to img, video and canvas to match the text/color changes.
 
-/**
- * Apply filters to body children and notify children separately
+ * Note:
+ * Apploes filters to body children and notify children separately
  * Filter affects fixed position elements
- * Note: filters do not work in ie11
+ * Filters do not work in ie11
  */
 body > *:not(.notify),
 .notify > * {
 
-  [data-color-profile=highcontrast-light] & {
-    img, video, canvas {
+  img, video, canvas {
+
+    .a11y-inverted & {
+      filter: invert(100%);
+    }
+
+    .a11y-increase-contrast & {
       filter: contrast(110%) brightness(110%);
     }
-  }
 
-  .ie[data-color-profile=highcontrast-dark] & {
-    img, video, canvas {
+    .a11y-increase-contrast.a11y-inverted & {
       filter: invert(100%) contrast(110%) brightness(110%);
     }
-  }
 
-  [data-color-profile=highcontrast-dark] & {
-    filter: invert(100%);
-  }
+    [data-color-profile=achromatopsia] & {
+      filter: grayscale(100%);
+    }
 
+    .a11y-increase-contrast[data-color-profile=achromatopsia] & {
+      filter: grayscale(100%) contrast(110%) brightness(110%);
+    }
 
-  [data-color-profile=achromatopsia] & {
-    filter: grayscale(100%);
-  }
+    .a11y-inverted[data-color-profile=achromatopsia]D & {
+      filter: invert(100%) grayscale(100%);
+    }
 
-  [data-color-profile=protanopia] & {
-    filter: url(assets/visua11y-filters.svg#protanopia)
-  }
+    .a11y-increase-contrast.a11y-inverted[data-color-profile=achromatopsia] & {
+      filter: invert(100%) grayscale(100%) contrast(110%) brightness(110%);
+    }
 
-  [data-color-profile=deuteranopia] & {
-    filter: url(assets/visua11y-filters.svg#deuteranopia)
-  }
+    [data-color-profile=protanopia] & {
+      filter: url(assets/visua11y-filters.svg#protanopia);
+    }
 
-  [data-color-profile=tritanopia] & {
-    filter: url(assets/visua11y-filters.svg#tritanopia)
-  }
+    .a11y-increase-contrast[data-color-profile=protanopia] & {
+      filter: url(assets/visua11y-filters.svg#protanopia) contrast(110%) brightness(110%);
+    }
 
-  [data-color-profile=achromatopsia] & {
-    filter: url(assets/visua11y-filters.svg#achromatopsia)
-  }
+    .a11y-inverted[data-color-profile=protanopia] & {
+      filter: invert(100%) url(assets/visua11y-filters.svg#protanopia);
+    }
 
-  [data-color-profile=protanomaly] & {
-    filter: url(assets/visua11y-filters.svg#protanomaly)
-  }
+    .a11y-increase-contrast.a11y-inverted[data-color-profile=protanopia] & {
+      filter: invert(100%) url(assets/visua11y-filters.svg#protanopia) contrast(110%) brightness(110%);
+    }
 
-  [data-color-profile=deuteranomaly] & {
-    filter: url(assets/visua11y-filters.svg#deuteranomaly)
-  }
+    [data-color-profile=deuteranopia] & {
+      filter: url(assets/visua11y-filters.svg#deuteranopia);
+    }
 
-  [data-color-profile=tritanomaly] & {
-    filter: url(assets/visua11y-filters.svg#tritanomaly)
-  }
+    .a11y-increase-contrast[data-color-profile=deuteranopia] & {
+      filter: url(assets/visua11y-filters.svg#deuteranopia) contrast(110%) brightness(110%);
+    }
 
-  [data-color-profile=achromatomaly] & {
-    filter: url(assets/visua11y-filters.svg#achromatomaly)
+    .a11y-inverted[data-color-profile=deuteranopia] & {
+      filter: invert(100%) url(assets/visua11y-filters.svg#deuteranopia);
+    }
+
+    .a11y-increase-contrast.a11y-inverted[data-color-profile=deuteranopia] & {
+      filter: invert(100%) url(assets/visua11y-filters.svg#deuteranopia) contrast(110%) brightness(110%);
+    }
+
+    [data-color-profile=tritanopia] & {
+      filter: url(assets/visua11y-filters.svg#tritanopia);
+    }
+
+    .a11y-increase-contrast[data-color-profile=tritanopia] & {
+      filter: url(assets/visua11y-filters.svg#tritanopia) contrast(110%) brightness(110%);
+    }
+
+    .a11y-inverted[data-color-profile=tritanopia] & {
+      filter: invert(100%) url(assets/visua11y-filters.svg#tritanopia);
+    }
+
+    .a11y-increase-contrast.a11y-inverted[data-color-profile=tritanopia] & {
+      filter: invert(100%) url(assets/visua11y-filters.svg#tritanopia) contrast(110%) brightness(110%);
+    }
+
+    [data-color-profile=achromatopsia] & {
+      filter: url(assets/visua11y-filters.svg#achromatopsia);
+    }
+
+    .a11y-increase-contrast[data-color-profile=achromatopsia] & {
+      filter: url(assets/visua11y-filters.svg#achromatopsia) contrast(110%) brightness(110%);
+    }
+
+    .a11y-inverted[data-color-profile=achromatopsia] & {
+      filter: invert(100%) url(assets/visua11y-filters.svg#achromatopsia);
+    }
+
+    .a11y-increase-contrast.a11y-inverted[data-color-profile=achromatopsia] & {
+      filter: invert(100%) url(assets/visua11y-filters.svg#achromatopsia) contrast(110%) brightness(110%);
+    }
+
+    [data-color-profile=protanomaly] & {
+      filter: url(assets/visua11y-filters.svg#protanomaly);
+    }
+
+    .a11y-increase-contrast[data-color-profile=protanomaly] & {
+      filter: url(assets/visua11y-filters.svg#protanomaly) contrast(110%) brightness(110%);
+    }
+
+    .a11y-inverted[data-color-profile=protanomaly] & {
+      filter: invert(100%) url(assets/visua11y-filters.svg#protanomaly);
+    }
+
+    .a11y-increase-contrast.a11y-inverted[data-color-profile=protanomaly] & {
+      filter: invert(100%) url(assets/visua11y-filters.svg#protanomaly) contrast(110%) brightness(110%);
+    }
+
+    [data-color-profile=deuteranomaly] & {
+      filter: url(assets/visua11y-filters.svg#deuteranomaly);
+    }
+
+    .a11y-increase-contrast[data-color-profile=deuteranomaly] & {
+      filter: url(assets/visua11y-filters.svg#deuteranomaly) contrast(110%) brightness(110%);
+    }
+
+    .a11y-inverted[data-color-profile=deuteranomaly] & {
+      filter: invert(100%) url(assets/visua11y-filters.svg#deuteranomaly);
+    }
+
+    .a11y-increase-contrast.a11y-inverted[data-color-profile=deuteranomaly] & {
+      filter: invert(100%) url(assets/visua11y-filters.svg#deuteranomaly) contrast(110%) brightness(110%);
+    }
+
+    [data-color-profile=tritanomaly] & {
+      filter: url(assets/visua11y-filters.svg#tritanomaly);
+    }
+
+    .a11y-increase-contrast[data-color-profile=tritanomaly] & {
+      filter: url(assets/visua11y-filters.svg#tritanomaly) contrast(110%) brightness(110%);
+    }
+
+    .a11y-inverted[data-color-profile=tritanomaly] & {
+      filter: invert(100%) url(assets/visua11y-filters.svg#tritanomaly);
+    }
+
+    .a11y-increase-contrast.a11y-inverted[data-color-profile=tritanomaly] & {
+      filter: invert(100%) url(assets/visua11y-filters.svg#tritanomaly) contrast(110%) brightness(110%);
+    }
+
+    [data-color-profile=achromatomaly] & {
+      filter: url(assets/visua11y-filters.svg#achromatomaly);
+    }
+
+    .a11y-increase-contrast[data-color-profile=achromatomaly] & {
+      filter: url(assets/visua11y-filters.svg#achromatomaly) contrast(110%) brightness(110%);
+    }
+
+    .a11y-inverted[data-color-profile=achromatomaly] & {
+      filter: invert(100%) url(assets/visua11y-filters.svg#achromatomaly);
+    }
+
+    .a11y-increase-contrast.a11y-inverted[data-color-profile=achromatomaly] & {
+      filter: invert(100%) url(assets/visua11y-filters.svg#achromatomaly) contrast(110%) brightness(110%);
+    }
+
   }
 
 }
