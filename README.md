@@ -8,13 +8,14 @@ It provides visual accessibility improvements.
 * Increases font size
 * Removes background images
 * Defines opacity values more harshly
+* Polarize contrast
 
 ### Note
 IE11 cannot apply filters. This means that images and videos will not be transformed in IE11.
 
 ### TODO
 * Thicker borders
-* UI, switching color profile, animations, opacity, invertion
+* UI: Switch color profile, turn off animations, increase opacity + contrast, invert
 
 ----------------------------
 **Version number:**  0.0.1   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a>  
