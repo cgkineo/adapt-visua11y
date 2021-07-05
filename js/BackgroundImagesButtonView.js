@@ -1,6 +1,6 @@
 import Adapt from 'core/js/adapt';
 
-class ContrastButtonView extends Backbone.View {
+class BackgroundImagesButtonView extends Backbone.View {
 
   tagName() {
     return 'button';
@@ -23,17 +23,17 @@ class ContrastButtonView extends Backbone.View {
   render() {
     const template = Handlebars.templates.visua11yButton;
     const data = {
-      name: `Contrast ${!Adapt.visua11y.increaseContrast ? 'on' : 'off'}`
+      name: `Background images ${!Adapt.visua11y.removeBackgroundImages ? 'on' : 'off'}`
     };
     this.$el.html(template(data));
   }
 
   onClick(event) {
     if (event && event.preventDefault) event.preventDefault();
-    Adapt.visua11y.increaseContrast = !Adapt.visua11y.increaseContrast;
+    Adapt.visua11y.removeBackgroundImages = !Adapt.visua11y.removeBackgroundImages;
     this.render();
   }
 
 }
 
-export default ContrastButtonView;
+export default BackgroundImagesButtonView;

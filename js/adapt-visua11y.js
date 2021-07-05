@@ -7,7 +7,11 @@ import ColorButtonView from './ColorButtonView';
 import ZoomButtonView from './ZoomButtonView';
 import ContrastButtonView from './ContrastButtonView';
 import InvertButtonView from './InvertButtonView';
+import AnimationsButtonView from './AnimationsButtonView';
+import BackgroundImagesButtonView from './BackgroundImagesButtonView';
+
 import { polarize } from './transformations';
+import OpacityButtonView from './OpacityButtonView';
 
 class Visua11y extends Backbone.Controller {
 
@@ -182,8 +186,11 @@ class Visua11y extends Backbone.Controller {
 
   setupUI() {
     if (!Adapt.course.get('_visua11y')?._isEnabled) return;
+    $('.nav__drawer-btn').after(new AnimationsButtonView().$el);
+    $('.nav__drawer-btn').after(new BackgroundImagesButtonView().$el);
     $('.nav__drawer-btn').after(new InvertButtonView().$el);
     $('.nav__drawer-btn').after(new ContrastButtonView().$el);
+    $('.nav__drawer-btn').after(new OpacityButtonView().$el);
     $('.nav__drawer-btn').after(new ColorButtonView().$el);
     $('.nav__drawer-btn').after(new ZoomButtonView().$el);
   }

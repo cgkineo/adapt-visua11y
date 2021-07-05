@@ -23,7 +23,7 @@ class InvertButtonView extends Backbone.View {
   render() {
     const template = Handlebars.templates.visua11yButton;
     const data = {
-      name: 'Invert'
+      name: `Invert ${!Adapt.visua11y.isInverted ? 'on' : 'off'}`
     };
     this.$el.html(template(data));
   }
