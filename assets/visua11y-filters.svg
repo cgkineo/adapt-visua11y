@@ -24,5 +24,8 @@
  <filter id="achromatomaly">
  <feColorMatrix in="SourceGraphic" type="matrix" values="0.618, 0.320, 0.062, 0, 0 0.163, 0.775, 0.062, 0, 0 0.163, 0.320, 0.516, 0, 0 0, 0, 0, 1, 0"/>
  </filter>
+ <filter id="dyslexia">
+ <feColorMatrix in="SourceGraphic" type="matrix" values="0.9, 0.1, 0, 0, 0 0.1, 0.9, 0, 0, 0 0, 0, 0.7, 0, 0 0, 0, 0, 1, 0"/>
+ </filter>
  </defs>
 </svg>

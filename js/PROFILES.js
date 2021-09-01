@@ -1,38 +1,44 @@
+/* eslint-disable quotes */
+/* eslint-disable quote-props */
 export default [
   {
-    name: 'Default',
-    _id: 'default'
+    "name": "Default",
+    "_id": "default"
   },
   {
-    name: 'Protanopia',
-    _id: 'protanopia'
+    "name": "Greyscale (Achromatopsia)",
+    "_id": "achromatopsia"
   },
   {
-    name: 'Deuteranopia',
-    _id: 'deuteranopia'
+    "name": "Red/green (Protanopia)",
+    "_id": "protanopia"
   },
   {
-    name: 'Tritanopia',
-    _id: 'tritanopia'
+    "name": "Green/red (Deuteranopia)",
+    "_id": "deuteranopia"
   },
   {
-    name: 'Achromatopsia',
-    _id: 'achromatopsia'
+    "name": "Blue/yellow (Tritanopia)",
+    "_id": "tritanopia"
   },
   {
-    name: 'Protanomaly',
-    _id: 'protanomaly'
+    "name": "Yellow tint (Dyslexia)",
+    "_id": "dyslexia"
   },
   {
-    name: 'Deuteranomaly',
-    _id: 'deuteranomaly'
+    "name": "Protanomaly",
+    "_id": "protanomaly"
   },
   {
-    name: 'Tritanomaly',
-    _id: 'tritanomaly'
+    "name": "Deuteranomaly",
+    "_id": "deuteranomaly"
   },
   {
-    name: 'Achromatomaly',
-    _id: 'achromatomaly'
+    "name": "Tritanomaly",
+    "_id": "tritanomaly"
+  },
+  {
+    "name": "Achromatomaly",
+    "_id": "achromatomaly"
   }
 ];

@@ -1,0 +1,29 @@
+"_visua11y": {
+  "_isEnabled": true,
+  "_profiles": [
+    {
+      "name": "Default",
+      "_id": "default"
+    },
+    {
+      "name": "Greyscale (Achromatopsia)",
+      "_id": "achromatopsia"
+    },
+    {
+      "name": "Red/green (Protanopia)",
+      "_id": "protanopia"
+    },
+    {
+      "name": "Green/red (Deuteranopia)",
+      "_id": "deuteranopia"
+    },
+    {
+      "name": "Blue/yellow (Tritanopia)",
+      "_id": "tritanopia"
+    },
+    {
+      "name": "Yellow tint (Dyslexia)",
+      "_id": "dyslexia"
+    }
+  ]
+}

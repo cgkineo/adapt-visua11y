@@ -41,7 +41,7 @@ export default class Rule {
       modifications.forEach(([matchName, validation, modifier]) => {
         if (typeof matchName === 'string' && matchName !== name) return;
         if (typeof matchName === 'function' && !matchName.call(context, name)) return;
-        const value = modifier.call(context, this.output[index], this.original[index], this.style);
+        const value = modifier.call(context, this.output[index], this.original[index], this.style, this.selectorText);
         if (value === undefined) return;
         this.output[index] = value;
       });

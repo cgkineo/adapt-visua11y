@@ -43,6 +43,62 @@ export default [
     }
   ],
   [
+    // Change line height
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/line-height
+    'line-height',
+    null,
+    function (output) {
+      if (output === 'normal') output = 1.2;
+      output = String(output);
+      const value = parseFloat(output);
+      if (isNaN(value)) return output;
+      const lineHeightMultiplier = this.lineHeightMultiplier ?? 1;
+      const adjusted = (value === 0)
+        ? lineHeightMultiplier
+        : value * lineHeightMultiplier;
+      const unit = output.match(/[^0-9.]+/)?.[0];
+      return adjusted + (unit ?? '');
+    }
+  ],
+  [
+    // Change letter spacing
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/letter-spacing
+    'letter-spacing',
+    null,
+    function (output) {
+      if (output === 'normal') output = 0;
+      output = String(output);
+      const value = parseFloat(output);
+      if (isNaN(value)) return output;
+      const letterSpacingMultiplier = this.letterSpacingMultiplier ?? 1;
+      const adjusted = (value === 0)
+        ? (letterSpacingMultiplier - 1)
+        : value * (letterSpacingMultiplier - 1);
+      const unit = output.match(/[^0-9.]+/)?.[0];
+      const modified = adjusted + (unit ?? 'em');
+      return modified;
+    }
+  ],
+  [
+    // Change letter spacing
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/word-spacing
+    'word-spacing',
+    null,
+    function (output) {
+      if (output === 'normal') output = 0;
+      output = String(output);
+      const value = parseFloat(output);
+      if (isNaN(value)) return output;
+      const wordSpacingMultiplier = this.wordSpacingMultiplier ?? 1;
+      const adjusted = (value === 0)
+        ? (wordSpacingMultiplier - 1)
+        : value * (wordSpacingMultiplier - 1);
+      const unit = output.match(/[^0-9.]+/)?.[0];
+      const modified = adjusted + (unit ?? 'em');
+      return modified;
+    }
+  ],
+  [
     // Change text to white / black
     'color',
     Color.parse,
