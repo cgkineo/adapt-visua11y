@@ -3,7 +3,7 @@ import Adapt from 'core/js/adapt';
 import CSSRule from './CSSRule';
 import Color from './Color';
 import DEFAULTS from './DEFAULTS';
-import { lowBrightness, highContrast, invert, applyProfileFilters } from './COLOR_TRANSFORMATIONS';
+import { highContrast, invert, lowBrightness, profileFilter } from './ColorTransformations';
 import Visua11yButtonView from './Visua11yButtonView';
 
 /**
@@ -50,17 +50,9 @@ class Visua11y extends Backbone.Controller {
   }
 
   set colorProfileId(value) {
-    this._colorProfileId = value;
+    this._colorProfileId = value.toLowerCase();
     this._outputColors = null;
     this.apply();
-  }
-
-  get colorProfile() {
-    return this.colorProfiles.find(profile => profile._id === this.colorProfileId);
-  }
-
-  get colorProfileName() {
-    return this.colorProfile?.name;
   }
 
   get invert() {
@@ -189,7 +181,7 @@ class Visua11y extends Backbone.Controller {
       if (this.highContrast) outputColors = highContrast(outputColors);
       if (this.invert) outputColors = invert(outputColors);
       if (this.lowBrightness) outputColors = lowBrightness(outputColors);
-      this._outputColors = applyProfileFilters(outputColors, this.colorProfileId);
+      this._outputColors = profileFilter(outputColors, this.colorProfileId);
     }
     const output = this._outputColors.slice(0);
     return output;

@@ -1,4 +1,5 @@
 import Color from './Color';
+import FILTERS from './COLOR_FILTERS';
 
 const HIGH_CONTRAST = [
   [0, 10, 0], // Move 0-10 to 0
@@ -60,6 +61,18 @@ export function lowBrightness(colors) {
   });
 }
 
-export function applyProfileFilters(colors, colorProfileId) {
-  return colors.map(c => c.clone().applyFilter(colorProfileId));
+export function profileFilter(colors, colorProfileId) {
+  return colors.map(c => {
+    const filter = FILTERS[colorProfileId];
+    if (!filter) return c.clone();
+    const R = c.r;
+    const G = c.g;
+    const B = c.b;
+    const A = c.a;
+    const r = (filter[0][0] * R) + (filter[0][1] * G) + (filter[0][2] * B) + (filter[0][3] * A) + filter[0][4];
+    const g = (filter[1][0] * R) + (filter[1][1] * G) + (filter[1][2] * B) + (filter[1][3] * A) + filter[1][4];
+    const b = (filter[2][0] * R) + (filter[2][1] * G) + (filter[2][2] * B) + (filter[2][3] * A) + filter[2][4];
+    const a = (filter[3][0] * R) + (filter[3][1] * G) + (filter[3][2] * B) + (filter[3][3] * A) + filter[3][4];
+    return Color.parse(`rgba(${r},${g},${b},${a})`);
+  });
 }

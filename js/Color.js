@@ -1,5 +1,4 @@
 import NAMED_COLOR from './COLOR_NAMES';
-import FILTERS from './COLOR_FILTERS';
 
 class Color {
 
@@ -206,22 +205,6 @@ class Color {
 
   get isTransparent() {
     return (this.a === 0);
-  }
-
-  applyFilter(name) {
-    const filter = FILTERS[name];
-    if (!filter) return this;
-    const R = this.r;
-    const G = this.g;
-    const B = this.b;
-    const A = this.a;
-    const r = (filter[0][0] * R) + (filter[0][1] * G) + (filter[0][2] * B) + (filter[0][3] * A) + filter[0][4];
-    const g = (filter[1][0] * R) + (filter[1][1] * G) + (filter[1][2] * B) + (filter[1][3] * A) + filter[1][4];
-    const b = (filter[2][0] * R) + (filter[2][1] * G) + (filter[2][2] * B) + (filter[2][3] * A) + filter[2][4];
-    const a = (filter[3][0] * R) + (filter[3][1] * G) + (filter[3][2] * B) + (filter[3][3] * A) + filter[3][4];
-    this.source = `rgba(${r},${g},${b},${a})`;
-    this.parseRGBAString(this.source);
-    return this;
   }
 
   /** @returns {Color} */
