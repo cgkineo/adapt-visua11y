@@ -6,9 +6,714 @@
     "pluginLocations": {
       "type": "object",
       "properties": {
-        "config": {
+        "course": {
           "type": "object",
-          "properties": {}
+          "properties": {
+            "_visua11y": {
+              "type": "object",
+              "required": false,
+              "legend": "Trickle",
+              "properties": {
+                 "_isEnabled": {
+                  "type": "boolean",
+                  "required": false,
+                  "title": "Enable Trickle",
+                  "inputType": "Checkbox",
+                  "validators": []
+                },
+                "_colorProfiles": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Color profiles",
+                  "properties": {
+                    "default": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Default",
+                      "title": "Default profile name",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "achromatopsia": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Greyscale (Achromatopsia)",
+                      "title": "Achromatopsia profile name",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "protanopia": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Red/green (Protanopia)",
+                      "title": "Protanopia profile name",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "deuteranopia": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Green/red (Deuteranopia)",
+                      "title": "Deuteranopia profile name",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "tritanopia": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Blue/yellow (Tritanopia)",
+                      "title": "Tritanopia profile name",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "dyslexia": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Yellow tint (Dyslexia)",
+                      "title": "Dyslexia profile name",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
+                },
+                "_colorProfile": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Color profile",
+                  "properties": {
+                    "_isEnabled": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Enable",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    },
+                    "title": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Colour profile",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_default": {
+                      "type": "string",
+                      "required": false,
+                      "default": "default",
+                      "title": "Default color profile",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
+                },
+                "_highContrast": {
+                  "type": "object",
+                  "required": false,
+                  "title": "High contrast",
+                  "properties": {
+                    "_isEnabled": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Enable",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    },
+                    "title": {
+                      "type": "string",
+                      "required": false,
+                      "default": "High contrast",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_default": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": false,
+                      "title": "Default",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
+                },
+                "_noTransparency": {
+                  "type": "object",
+                  "required": false,
+                  "title": "No transparency",
+                  "properties": {
+                    "_isEnabled": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Enable",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    },
+                    "title": {
+                      "type": "string",
+                      "required": false,
+                      "default": "No transparency",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_default": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": false,
+                      "title": "Default",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
+                },
+                "_lowBrightness": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Low brightness",
+                  "properties": {
+                    "_isEnabled": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Enable",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    },
+                    "title": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Low brightness",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_default": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": false,
+                      "title": "Default",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
+                },
+                "_invert": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Invert",
+                  "properties": {
+                    "_isEnabled": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Enable",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    },
+                    "title": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Invert",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_default": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": false,
+                      "title": "Default",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
+                },
+                "_noAnimations": {
+                  "type": "object",
+                  "required": false,
+                  "title": "No animations",
+                  "properties": {
+                    "_isEnabled": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Enable",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    },
+                    "title": {
+                      "type": "string",
+                      "required": false,
+                      "default": "No animations",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_default": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": false,
+                      "title": "Default",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
+                },
+                "_noBackgroundImages": {
+                  "type": "object",
+                  "required": false,
+                  "title": "No background images",
+                  "properties": {
+                    "_isEnabled": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Enable",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    },
+                    "title": {
+                      "type": "string",
+                      "required": false,
+                      "default": "No background images",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_default": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": false,
+                      "title": "Default",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
+                },
+                "_fontSize": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Font size",
+                  "properties": {
+                    "_isEnabled": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Enable",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    },
+                    "title": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Font size",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "smallLabel": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Small",
+                      "title": "Small label",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_small": {
+                      "type": "string",
+                      "required": false,
+                      "default": "9pt",
+                      "title": "Small default",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "mediumLabel": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Medium",
+                      "title": "Medium label",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_medium": {
+                      "type": "string",
+                      "required": false,
+                      "default": "",
+                      "title": "Medium default",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "largeLabel": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Large label",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_large": {
+                      "type": "string",
+                      "required": false,
+                      "default": "18pt",
+                      "title": "Large default",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_default": {
+                      "type": "string",
+                      "required": false,
+                      "default": "",
+                      "title": "Default",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
+                },
+                "_lineHeight": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Line height",
+                  "properties": {
+                    "_isEnabled": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Enable",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    },
+                    "title": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Line height",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "smallLabel": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Small",
+                      "title": "Small label",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_small": {
+                      "type": "number",
+                      "required": false,
+                      "default": 0.9,
+                      "title": "Small default",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "mediumLabel": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Medium",
+                      "title": "Medium label",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_medium": {
+                      "type": "number",
+                      "required": false,
+                      "default": 1,
+                      "title": "Medium default",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "largeLabel": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Large label",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_large": {
+                      "type": "number",
+                      "required": false,
+                      "default": 1.2,
+                      "title": "Large default",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_default": {
+                      "type": "number",
+                      "required": false,
+                      "default": 1,
+                      "title": "Default",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
+                },
+                "_paragraphSpacing": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Paragraph spacing",
+                  "properties": {
+                    "_isEnabled": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Enable",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    },
+                    "title": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Paragraph spacing",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "smallLabel": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Small",
+                      "title": "Small label",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_small": {
+                      "type": "number",
+                      "required": false,
+                      "default": 0,
+                      "title": "Small default",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "mediumLabel": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Medium",
+                      "title": "Medium label",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_medium": {
+                      "type": "number",
+                      "required": false,
+                      "default": 1,
+                      "title": "Medium default",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "largeLabel": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Large label",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_large": {
+                      "type": "number",
+                      "required": false,
+                      "default": 2,
+                      "title": "Large default",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_default": {
+                      "type": "number",
+                      "required": false,
+                      "default": 1,
+                      "title": "Default",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
+                },
+                "_letterSpacing": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Letter spacing",
+                  "properties": {
+                    "_isEnabled": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Enable",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    },
+                    "title": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Letter spacing",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "smallLabel": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Small",
+                      "title": "Small label",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_small": {
+                      "type": "number",
+                      "required": false,
+                      "default": 0.97,
+                      "title": "Small default",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "mediumLabel": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Medium",
+                      "title": "Medium label",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_medium": {
+                      "type": "number",
+                      "required": false,
+                      "default": 1,
+                      "title": "Medium default",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "largeLabel": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Large label",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_large": {
+                      "type": "number",
+                      "required": false,
+                      "default": 1.2,
+                      "title": "Large default",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_default": {
+                      "type": "number",
+                      "required": false,
+                      "default": 1,
+                      "title": "Default",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
+                },
+                "_wordSpacing": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Word spacing",
+                  "properties": {
+                    "_isEnabled": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Enable",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    },
+                    "title": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Word spacing",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "smallLabel": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Small",
+                      "title": "Small label",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_small": {
+                      "type": "number",
+                      "required": false,
+                      "default": 0.97,
+                      "title": "Small default",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "mediumLabel": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Medium",
+                      "title": "Medium label",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_medium": {
+                      "type": "number",
+                      "required": false,
+                      "default": 1,
+                      "title": "Medium default",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "largeLabel": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Large label",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_large": {
+                      "type": "number",
+                      "required": false,
+                      "default": 1.2,
+                      "title": "Large default",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_default": {
+                      "type": "number",
+                      "required": false,
+                      "default": 1,
+                      "title": "Default",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
+                },
+                "_button": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Buttons",
+                  "properties": {
+                    "resetText": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Reset",
+                      "title": "Reset text",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "closeText": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Close",
+                      "title": "Close text",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
