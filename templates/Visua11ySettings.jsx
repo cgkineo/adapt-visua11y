@@ -1,82 +1,104 @@
 import Adapt from 'core/js/adapt';
-import React, { useState } from 'react';
+import React from 'react';
 
-export default function Visua11ySettings() {
+export default function Visua11ySettings(config) {
   const visua11y = Adapt.visua11y;
-  const _globals = Adapt.course.get('_globals');
-  const [state, setState] = useState({});
+
   function onReset() {
     visua11y.reset();
   }
-  function onApply() {
+
+  function onClose() {
     visua11y.settingsPrompt.closeNotify();
   }
+
   function onChange(event) {
     const { name, checked, value, type } = event.target;
-    state[name] = state[name] ?? Adapt.visua11y[name];
-    setState(state);
     visua11y[name] = type === 'checkbox' ? checked : value;
   }
+
   return (
     <div className="visua11ysettings">
-      <div className="colorprofileid">
-        <label><div className='icon'></div>Colour profile</label>
+      {config._colorProfile._isEnabled && <div className="colorprofileid">
+        <label><div className='icon'></div>{config._colorProfile.title}</label>
         <select name='colorProfileId' onChange={onChange} value={visua11y.colorProfileId}>
           {visua11y.colorProfiles.map(({ name, _id }) => <option key={_id} value={_id}>{name}</option>)}
         </select>
-      </div>
-      <div className="increasecontrast">
-        <label><div className='icon'></div>High contrast</label>
-        <input type='checkbox' name='increaseContrast' checked={visua11y.increaseContrast} onChange={onChange} />
-      </div>
-      <div className="decreasebrightness">
-        <label><div className='icon'></div>Low brightness</label>
-        <input type='checkbox' name='decreaseBrightness' checked={visua11y.decreaseBrightness} onChange={onChange} />
-      </div>
-      <div className="isinverted">
-        <label><div className='icon'></div>Invert</label>
-        <input type='checkbox' name='isInverted' checked={visua11y.isInverted} onChange={onChange} />
-      </div>
-      <div className="disableanimation">
-        <label><div className='icon'></div>No animations</label>
-        <input type='checkbox' name='disableAnimations' checked={visua11y.disableAnimations} onChange={onChange} />
-      </div>
-      <div className="removebackgroundimages">
-        <label><div className='icon'></div>No background images</label>
-        <input type='checkbox' name='removeBackgroundImages' checked={visua11y.removeBackgroundImages} onChange={onChange} />
-      </div>
-      <div className="fontsize">
-        <label><div className='icon'></div>Font size</label>
-        <label>Small</label>
-        <input type='radio' value='9pt' checked={visua11y.documentFontSize === '9pt'} name='documentFontSize' onChange={onChange} />
-        <label>Default</label>
-        <input type='radio' value={visua11y.originalDocumentFontSize} checked={visua11y.documentFontSize === visua11y.originalDocumentFontSize} name='documentFontSize' onChange={onChange} />
-        <label>Large</label>
-        <input type='radio' value='18pt' checked={visua11y.documentFontSize === '18pt'} name='documentFontSize' onChange={onChange} />
-      </div>
-      <div className="lineheight">
-        <label><div className='icon'></div>Line height</label>
-        <label>Small</label>
-        <input type='radio' value='0.9' checked={visua11y.lineHeightMultiplier === 0.9} name='lineHeightMultiplier' onChange={onChange} />
-        <label>Default</label>
-        <input type='radio' value='1' checked={visua11y.lineHeightMultiplier === 1} name='lineHeightMultiplier' onChange={onChange} />
-        <label>Large</label>
-        <input type='radio' value='1.2' checked={visua11y.lineHeightMultiplier === 1.2} name='lineHeightMultiplier' onChange={onChange} />
-      </div>
-      <div className="letterspacing">
-        <label><div className='icon'></div>Letter spacing</label>
-        <label>Small</label>
-        <input type='radio' value='0.97' checked={visua11y.letterSpacingMultiplier === 0.97} name='letterSpacingMultiplier' onChange={onChange} />
-        <label>Default</label>
-        <input type='radio' value='1' checked={visua11y.letterSpacingMultiplier === 1} name='letterSpacingMultiplier' onChange={onChange} />
-        <label>Large</label>
-        <input type='radio' value='1.2' checked={visua11y.letterSpacingMultiplier === 1.2} name='letterSpacingMultiplier' onChange={onChange} />
+      </div>}
+      {config._highContrast._isEnabled && <div className="highcontrast">
+        <label><div className='icon'></div>{config._highContrast.title}</label>
+        <input type='checkbox' name='highContrast' checked={visua11y.highContrast} onChange={onChange} />
+      </div>}
+      {config._noTransparency._isEnabled && <div className="notransparency">
+        <label><div className='icon'></div>{config._noTransparency.title}</label>
+        <input type='checkbox' name='noTransparency' checked={visua11y.noTransparency} onChange={onChange} />
+      </div>}
+      {config._lowBrightness._isEnabled && <div className="lowbrightness">
+        <label><div className='icon'></div>{config._lowBrightness.title}</label>
+        <input type='checkbox' name='lowBrightness' checked={visua11y.lowBrightness} onChange={onChange} />
+      </div>}
+      {config._invert._isEnabled && <div className="invert">
+        <label><div className='icon'></div>{config._invert.title}</label>
+        <input type='checkbox' name='invert' checked={visua11y.invert} onChange={onChange} />
+      </div>}
+      {config._noAnimations._isEnabled && <div className="noanimations">
+        <label><div className='icon'></div>{config._noAnimations.title}</label>
+        <input type='checkbox' name='noAnimations' checked={visua11y.noAnimations} onChange={onChange} />
+      </div>}
+      {config._noBackgroundImages._isEnabled && <div className="nobackgroundimages">
+        <label><div className='icon'></div>{config._noBackgroundImages.title}</label>
+        <input type='checkbox' name='noBackgroundImages' checked={visua11y.noBackgroundImages} onChange={onChange} />
+      </div>}
+      {config._fontSize._isEnabled && <div className="fontsize">
+        <label><div className='icon'></div>{config._fontSize.title}</label>
+        <label>{config._fontSize.smallLabel}</label>
+        <input type='radio' value={config._fontSize._small} checked={visua11y.fontSize === config._fontSize._small} name='fontSize' onChange={onChange} />
+        <label>{config._fontSize.mediumLabel}</label>
+        <input type='radio' value={visua11y.originalFontSize} checked={visua11y.fontSize === visua11y.originalFontSize} name='fontSize' onChange={onChange} />
+        <label>{config._fontSize.largeLabel}</label>
+        <input type='radio' value={config._fontSize._large} checked={visua11y.fontSize === config._fontSize._large} name='fontSize' onChange={onChange} />
+      </div>}
+      {config._lineHeight._isEnabled && <div className="lineheight">
+        <label><div className='icon'></div>{config._lineHeight.title}</label>
+        <label>{config._lineHeight.smallLabel}</label>
+        <input type='radio' value={config._lineHeight._small} checked={visua11y.lineHeight === config._lineHeight._small} name='lineHeight' onChange={onChange} />
+        <label>{config._lineHeight.mediumLabel}</label>
+        <input type='radio' value={config._lineHeight._medium} checked={visua11y.lineHeight === config._lineHeight._medium} name='lineHeight' onChange={onChange} />
+        <label>{config._lineHeight.largeLabel}</label>
+        <input type='radio' value={config._lineHeight._large} checked={visua11y.lineHeight === config._lineHeight._large} name='lineHeight' onChange={onChange} />
+      </div>}
+      {config._paragraphSpacing._isEnabled && <div className="paragraphspacing">
+        <label><div className='icon'></div>{config._paragraphSpacing.title}</label>
+        <label>{config._paragraphSpacing.smallLabel}</label>
+        <input type='radio' value={config._paragraphSpacing._small} checked={visua11y.paragraphSpacing === config._paragraphSpacing._small} name='paragraphSpacing' onChange={onChange} />
+        <label>{config._paragraphSpacing.mediumLabel}</label>
+        <input type='radio' value={config._paragraphSpacing._medium} checked={visua11y.paragraphSpacing === config._paragraphSpacing._medium} name='paragraphSpacing' onChange={onChange} />
+        <label>{config._paragraphSpacing.largeLabel}</label>
+        <input type='radio' value={config._paragraphSpacing._large} checked={visua11y.paragraphSpacing === config._paragraphSpacing._large} name='paragraphSpacing' onChange={onChange} />
+      </div>}
+      {config._letterSpacing._isEnabled && <div className="letterspacing">
+        <label><div className='icon'></div>{config._letterSpacing.title}</label>
+        <label>{config._letterSpacing.smallLabel}</label>
+        <input type='radio' value={config._letterSpacing._small} checked={visua11y.letterSpacing === config._letterSpacing._small} name='letterSpacing' onChange={onChange} />
+        <label>{config._letterSpacing.mediumLabel}</label>
+        <input type='radio' value={config._letterSpacing._medium} checked={visua11y.letterSpacing === config._letterSpacing._medium} name='letterSpacing' onChange={onChange} />
+        <label>{config._letterSpacing.largeLabel}</label>
+        <input type='radio' value={config._letterSpacing._large} checked={visua11y.letterSpacing === config._letterSpacing._large} name='letterSpacing' onChange={onChange} />
+      </div>}
+      {config._wordSpacing._isEnabled && <div className="wordspacing">
+        <label><div className='icon'></div>{config._wordSpacing.title}</label>
+        <label>{config._wordSpacing.smallLabel}</label>
+        <input type='radio' value={config._wordSpacing._small} checked={visua11y.wordSpacing === config._wordSpacing._small} name='wordSpacing' onChange={onChange} />
+        <label>{config._wordSpacing.mediumLabel}</label>
+        <input type='radio' value={config._wordSpacing._medium} checked={visua11y.wordSpacing === config._wordSpacing._medium} name='wordSpacing' onChange={onChange} />
+        <label>{config._wordSpacing.largeLabel}</label>
+        <input type='radio' value={config._wordSpacing._large} checked={visua11y.wordSpacing === config._wordSpacing._large} name='wordSpacing' onChange={onChange} />
+      </div>}
+      <div className="buttons">
+        <button className="btn-text" onClick={onReset}>{config._button.resetText}</button>
       </div>
       <div className="buttons">
-        <button className="btn-text" onClick={onReset}>Reset</button>
-      </div>
-      <div className="buttons">
-        <button className="btn-text" onClick={onApply}>Ok</button>
+        <button className="btn-text" onClick={onClose}>{config._button.closeText}</button>
       </div>
     </div>
   );

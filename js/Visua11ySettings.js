@@ -12,7 +12,7 @@ export default class Visua11ySettings extends Backbone.View {
   }
 
   render() {
-    ReactDOM.render(<templates.Visua11ySettings />, this.el);
+    ReactDOM.render(<templates.Visua11ySettings {...Adapt.visua11y.config} />, this.el);
   }
 
 }

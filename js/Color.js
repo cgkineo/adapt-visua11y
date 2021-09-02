@@ -1,7 +1,5 @@
-import NAMED_COLOR from './NAMED_COLOR';
-import {
-  filters
-} from './transformations';
+import NAMED_COLOR from './COLOR_NAMES';
+import FILTERS from './COLOR_FILTERS';
 
 class Color {
 
@@ -211,7 +209,7 @@ class Color {
   }
 
   applyFilter(name) {
-    const filter = filters[name];
+    const filter = FILTERS[name];
     if (!filter) return this;
     const R = this.r;
     const G = this.g;
@@ -250,13 +248,12 @@ class Color {
     return Color.parse(color).isTransparent;
   }
 
-  static bestLuminanceMatch(color, bottomColor, topColor, threshold = null) {
+  static bestLuminanceMatch(color, bottomColor, topColor) {
     const colorLuminance = Math.round(color.luminance);
     const rangeBottom = Math.round(bottomColor.luminance);
     const rangeTop = Math.round(topColor.luminance);
     const bottomDistance = Math.abs(colorLuminance - rangeBottom);
     const topDistance = Math.abs(colorLuminance - rangeTop);
-    // threshold = threshold ?? Math.abs(rangeTop - rangeBottom);
     if (colorLuminance < rangeBottom || colorLuminance > rangeTop) {
       return false;
     }

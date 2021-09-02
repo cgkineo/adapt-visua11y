@@ -1,7 +1,7 @@
-import modifications from './modifications';
+import CSSRuleModifiers from './CSSRULE_MODIFIERS';
 import Color from './Color';
 
-export default class Rule {
+export default class CSSRule {
 
   constructor({
     selectorText = '',
@@ -15,10 +15,10 @@ export default class Rule {
   }
 
   initialize(context) {
-    this.propertyNames = Array.prototype.slice.call(this.style)
-      .filter(name => modifications.some(([matchName, validation]) => {
+    this.propertyNames = Array.prototype.slice.call(this.style).concat(['margin-top', 'margin-bottom'])
+      .filter(name => CSSRuleModifiers.some(([matchName, validation]) => {
         if (typeof matchName === 'string' && matchName !== name) return false;
-        if (typeof matchName === 'function' && !matchName.call(context, name)) return false;
+        if (typeof matchName === 'function' && !matchName.call(context, name, this.selectorText)) return false;
         try {
           const original = this.style[name];
           validation && validation.call(context, original);
@@ -38,10 +38,10 @@ export default class Rule {
 
   modify(context) {
     this.propertyNames.forEach((name, index) => {
-      modifications.forEach(([matchName, validation, modifier]) => {
+      CSSRuleModifiers.forEach(([matchName, validation, modifier]) => {
         if (typeof matchName === 'string' && matchName !== name) return;
-        if (typeof matchName === 'function' && !matchName.call(context, name)) return;
-        const value = modifier.call(context, this.output[index], this.original[index], this.style, this.selectorText);
+        if (typeof matchName === 'function' && !matchName.call(context, name, this.selectorText)) return;
+        const value = modifier.call(context, this.output[index], this.original[index], this.style, this.selectorText, this.propertyNames[index]);
         if (value === undefined) return;
         this.output[index] = value;
       });
@@ -58,12 +58,9 @@ export default class Rule {
 
   get distinctColors() {
     const colors = _.uniq(this.propertyNames.map((name, index) => {
-
-      console.log(this.original[index]);
       try {
         return Color.parse(this.original[index]);
       } catch (err) {
-        console.log('error', this.original[index]);
         return false;
       }
     }).filter(Boolean));
@@ -72,21 +69,21 @@ export default class Rule {
 
   static getAllModifiable(context) {
     const stylesheets = Array.prototype.slice.call(document.styleSheets, 0);
-    const allRules = stylesheets.reduce((allRules, stylesheet) => {
+    const allCSSRules = stylesheets.reduce((allCSSRules, stylesheet) => {
       const rules = Array.prototype.slice.call(stylesheet.rules, 0);
-      allRules.push(...rules.map(rule => {
+      allCSSRules.push(...rules.map(rule => {
         if (!(rule instanceof CSSStyleRule)) return false;
-        return new Rule(rule);
+        return new CSSRule(rule);
       }));
-      allRules.push(..._.flatten(rules.map(rule => {
+      allCSSRules.push(..._.flatten(rules.map(rule => {
         if (!(rule instanceof CSSMediaRule)) return false;
         const rules = Array.prototype.slice.call(rule.cssRules, 0);
-        return rules.map(rule => new Rule(rule));
+        return rules.map(rule => new CSSRule(rule));
       })));
-      return allRules.filter(Boolean);
+      return allCSSRules.filter(Boolean);
     }, []).filter(rule => rule.selectorText);
     // Filter rules with valid modifier matches
-    const rules = allRules.map(rule => rule.initialize(context)).filter(rule => rule.isMatch());
+    const rules = allCSSRules.map(rule => rule.initialize(context)).filter(rule => rule.isMatch());
     return rules;
   }
 

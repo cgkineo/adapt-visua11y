@@ -1,5 +1,6 @@
-// course.json
-"_visua11y": {
+/* eslint-disable quotes */
+/* eslint-disable quote-props */
+export default {
   "_isEnabled": false,
   "_colorProfiles": {
     "default": "Default",
@@ -70,7 +71,7 @@
     "_isEnabled": true,
     "title": "Paragraph spacing",
     "smallLabel": "Small",
-    "_small": 0.8,
+    "_small": 0,
     "mediumLabel": "Medium",
     "_medium": 1,
     "largeLabel": "Large",
@@ -103,4 +104,4 @@
     "resetText": "Reset",
     "closeText": "Close"
   }
-}
+};
