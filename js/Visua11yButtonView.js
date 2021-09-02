@@ -1,4 +1,6 @@
 import Adapt from 'core/js/adapt';
+import Visua11ySettings from './Visua11ySettings';
+import notify from 'core/js/notify';
 
 class AnimationsButtonView extends Backbone.View {
 
@@ -22,15 +24,16 @@ class AnimationsButtonView extends Backbone.View {
 
   render() {
     const template = Handlebars.templates.visua11yButton;
-    const data = {
-      name: `Animations ${!Adapt.visua11y.disableAnimations ? 'on' : 'off'}`
-    };
+    const data = {};
     this.$el.html(template(data));
   }
 
   onClick(event) {
     if (event && event.preventDefault) event.preventDefault();
-    Adapt.visua11y.disableAnimations = !Adapt.visua11y.disableAnimations;
+    Adapt.visua11y.settingsPrompt = notify.prompt({
+      _view: new Visua11ySettings(),
+      _showCloseButton: false
+    });
     this.render();
   }
 

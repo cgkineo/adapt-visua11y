@@ -1,0 +1,44 @@
+/**
+ * Apply svg filter to img, video, canvas and mejs-poster to match the text/color changes.
+
+ * Note:
+ * Applies filters to body children and notify children separately as filter affects fixed position elements
+ * Filters do not work in ie11
+ */
+html[data-color-profile] {
+
+  body > *:not(.notify),
+  .notify > * {
+
+    img, video, canvas, .mejs-poster {
+      filter: invert(var(--visua11y-invert)) var(--visua11y-color-profile-url) contrast(var(--visua11y-contrast)) brightness(var(--visua11y-brightness));
+    }
+
+  }
+
+}
+
+/**
+ * Disable css animations and transitions
+ */
+.a11y-no-animations * {
+  -webkit-animation: none !important;
+  -moz-animation: none !important;
+  -o-animation: none !important;
+  -ms-animation: none !important;
+  animation: none !important;
+  -o-transition-property: none !important;
+  -moz-transition-property: none !important;
+  -ms-transition-property: none !important;
+  -webkit-transition-property: none !important;
+  transition-property: none !important;
+}
+
+/**
+ * Remove img tags with aria-hidden
+ * TODO: might need to be img tags without aria-label or alt as there are
+ * content images with aria-hidden that need to be shown (gmcq)
+ */
+.a11y-no-background-images {
+  img[aria-hidden=true] { display: none }
+}
