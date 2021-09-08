@@ -5,13 +5,29 @@
  * Applies filters to body children and notify children separately as filter affects fixed position elements
  * Filters do not work in ie11
  */
-html[data-color-profile] {
+html:not([data-color-profile=default]) {
 
   body > *:not(.notify),
   .notify > * {
 
     img, video, canvas, .mejs-poster {
       filter: invert(var(--visua11y-invert)) var(--visua11y-color-profile-url) contrast(var(--visua11y-contrast)) brightness(var(--visua11y-brightness));
+    }
+
+  }
+
+}
+
+/**
+ * Exclude filter url when on default profile
+ */
+html[data-color-profile=default] {
+
+  body > *:not(.notify),
+  .notify > * {
+
+    img, video, canvas, .mejs-poster {
+      filter: invert(var(--visua11y-invert)) contrast(var(--visua11y-contrast)) brightness(var(--visua11y-brightness));
     }
 
   }

@@ -12,12 +12,12 @@
             "_visua11y": {
               "type": "object",
               "required": false,
-              "legend": "Trickle",
+              "legend": "Visua11y",
               "properties": {
                  "_isEnabled": {
                   "type": "boolean",
                   "required": false,
-                  "title": "Enable Trickle",
+                  "title": "Enable Visua11y",
                   "inputType": "Checkbox",
                   "validators": []
                 },
@@ -483,7 +483,7 @@
                     "_small": {
                       "type": "number",
                       "required": false,
-                      "default": 0,
+                      "default": 0.5,
                       "title": "Small default",
                       "inputType": "Text",
                       "validators": []

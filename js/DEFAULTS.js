@@ -71,7 +71,7 @@ export default {
     "_isEnabled": true,
     "title": "Paragraph spacing",
     "smallLabel": "Small",
-    "_small": 0,
+    "_small": 0.5,
     "mediumLabel": "Medium",
     "_medium": 1,
     "largeLabel": "Large",

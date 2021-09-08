@@ -203,7 +203,14 @@ class Visua11y extends Backbone.Controller {
     ].reduce((measures, tagName) => {
       const tag = document.createElement(tagName);
       document.body.appendChild(tag);
-      measures[tagName] = Object.assign({}, window.getComputedStyle(tag));
+      const computedStyle = window.getComputedStyle(tag);
+      measures[tagName] = {};
+      for (const k in computedStyle) {
+        try {
+          measures[tagName][k] = computedStyle[k];
+        } catch (err) {
+        }
+      }
       tag.remove();
       return measures;
     }, {});

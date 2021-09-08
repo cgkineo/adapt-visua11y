@@ -102,7 +102,7 @@ export default [
     // Change paragraph spacing
     // https://developer.mozilla.org/en-US/docs/Web/CSS/word-spacing
     (name, selector) => {
-      if (!['margin-top', 'margin-bottom'].some(p => p === name)) return;
+      if (!['margin-top', 'margin-bottom', 'margin-block-start', 'margin-block-end'].some(p => p === name)) return;
       const elements = selector.split(/[*, >~+|]/).filter(Boolean).map(e => e.toLowerCase());
       if (elements.length === 0) return;
       const isPTagSelector = [elements[0], elements[elements.length - 1]].some(e => (/^p[^\w]+/.test(e) || e === 'p') && !e.includes(':'));
