@@ -267,7 +267,6 @@ class Visua11y extends Backbone.Controller {
 
   apply() {
     if (!this.config?._isEnabled) return;
-    this.triggerChanged();
     this.save();
     this.rules.forEach(rule => rule.reset());
     const $html = $('html');
@@ -291,10 +290,12 @@ class Visua11y extends Backbone.Controller {
     this.rules.forEach(rule => rule.modify(this));
     this.rules.forEach(rule => rule.apply());
     $(window).resize();
+    this.triggerChanged();
   }
 
   triggerChanged() {
     this.trigger('changed');
+    Adapt.trigger('visua11y:changed');
   }
 
   reset() {
@@ -310,7 +311,6 @@ class Visua11y extends Backbone.Controller {
     this._noTransparency = this.config._noTransparency._default;
     this._lowBrightness = this.config._lowBrightness._default;
     this._noBackgroundImages = this.config._noBackgroundImages._default;
-    this.triggerChanged();
     this.save();
     this.rules.forEach(rule => rule.reset());
     const $html = $('html');
@@ -328,6 +328,7 @@ class Visua11y extends Backbone.Controller {
       .removeClass('a11y-no-background-images');
     this.rules.forEach(rule => rule.apply());
     $(window).resize();
+    this.triggerChanged();
   }
 }
 
