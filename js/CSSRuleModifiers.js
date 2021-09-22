@@ -43,6 +43,21 @@ export default [
     }
   ],
   [
+    // Filter psuedo element background images
+    (name, selector) => {
+      return (name === 'background-image') && (
+        String(selector).endsWith(':before') ||
+        String(selector).endsWith(':after')
+      );
+    },
+    null,
+    function (output, original, style) {
+      if (output === 'none') return;
+      style.filter = 'invert(var(--visua11y-invert)) var(--visua11y-color-profile-url) contrast(var(--visua11y-contrast)) brightness(var(--visua11y-brightness))';
+      return output;
+    }
+  ],
+  [
     // Change line height
     // https://developer.mozilla.org/en-US/docs/Web/CSS/line-height
     'line-height',

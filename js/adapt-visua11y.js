@@ -163,7 +163,7 @@ class Visua11y extends Backbone.Controller {
 
   get distinctColors() {
     if (this._distinctColors) return this._distinctColors;
-    const allColors = _.uniq(_.flatten(this.rules.map(rule => rule.distinctColors)).map(Color.toColorString));
+    const allColors = _.uniq(_.flatten(this.rules.map(rule => rule.distinctColors)).map(Color.toRGBAString));
     const colors = allColors
       .map(Color.parse)
       .filter(color => !Color.isTransparent(color));
