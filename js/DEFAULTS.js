@@ -111,6 +111,7 @@ export default {
     "_default": 1
   },
   "_button": {
+    "navigationAriaLabel": "Visual accessibility settings",
     "resetText": "Reset",
     "closeText": "Close"
   }

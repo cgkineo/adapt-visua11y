@@ -6,6 +6,25 @@
     "pluginLocations": {
       "type": "object",
       "properties": {
+        "config": {
+          "type": "object",
+          "properties": {
+            "_visua11y": {
+              "type": "object",
+              "required": false,
+              "legend": "Visua11y",
+              "properties": {
+                 "_isEnabled": {
+                  "type": "boolean",
+                  "required": false,
+                  "title": "Enable Visua11y for Language Picker",
+                  "inputType": "Checkbox",
+                  "validators": []
+                }
+              }
+            }
+          }
+        },
         "course": {
           "type": "object",
           "properties": {
@@ -20,6 +39,68 @@
                   "title": "Enable Visua11y",
                   "inputType": "Checkbox",
                   "validators": []
+                },
+                "description": {
+                  "type": "string",
+                  "required": false,
+                  "default": "Use the controls below to customise your learning experience to your individual needs.",
+                  "title": "Popup body text",
+                  "inputType": "Text",
+                  "validators": []
+                },
+                "_groups": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Grouping title text",
+                  "properties": {
+                    "visualDisplay": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Enhance visual display",
+                      "title": "Visual display",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "distractions": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Reduce distractions",
+                      "title": "Distractions",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "readability": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Readability",
+                      "title": "Readability",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
+                },
+                "_preview": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Preview text",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Title",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "character": {
+                      "type": "string",
+                      "required": false,
+                      "default": "A",
+                      "title": "Character",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
                 },
                 "_colorProfiles": {
                   "type": "object",
@@ -693,6 +774,14 @@
                   "required": false,
                   "title": "Buttons",
                   "properties": {
+                    "navigationAriaLabel": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Visual accessibility settings",
+                      "title": "Navigation button alt text",
+                      "inputType": "Text",
+                      "validators": []
+                    },
                     "resetText": {
                       "type": "string",
                       "required": false,

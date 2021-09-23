@@ -34,11 +34,13 @@ class Visua11y extends Backbone.Controller {
 
   initialize() {
     this.apply = _.debounce(this.apply.bind(this), 50);
+    this.listenTo(Adapt, 'configModel:dataLoaded', this.onPreAdaptStart);
     this.listenTo(Adapt, 'adapt:start', this.onAdaptStart);
+    this._adaptStarted = false;
   }
 
   get config () {
-    return _deepDefaults(Adapt.course.get('_visua11y'), DEFAULTS);
+    return _deepDefaults((this._adaptStarted ? Adapt.course : Adapt.config).get('_visua11y'), DEFAULTS);
   }
 
   get colorProfiles() {
@@ -187,11 +189,26 @@ class Visua11y extends Backbone.Controller {
     return output;
   }
 
-  onAdaptStart() {
+  onPreAdaptStart() {
+    // Language picker support
+    if (!this.config?._isEnabled) return;
     this.measure();
     this.restore();
     this.setupNavigationButton();
     this.rules = CSSRule.getAllModifiable(this);
+    this.apply();
+  }
+
+  onAdaptStart() {
+    this._adaptStarted = true;
+    if (this.rules) {
+      this.setupNavigationButton();
+      return;
+    }
+    this.measure();
+    this.restore();
+    this.setupNavigationButton();
+    this.rules = this.rules || CSSRule.getAllModifiable(this);
     this.apply();
   }
 
@@ -314,6 +331,11 @@ class Visua11y extends Backbone.Controller {
     this.save();
     this.rules.forEach(rule => rule.reset());
     const $html = $('html');
+    const documentStyle = document.documentElement.style;
+    documentStyle.setProperty('--visua11y-color-profile-url', 'url(assets/visua11y-filters.svg#default)');
+    documentStyle.setProperty('--visua11y-invert', '0%');
+    documentStyle.setProperty('--visua11y-contrast', '100%');
+    documentStyle.setProperty('--visua11y-brightness', '100%');
     $html
       .removeAttr('data-color-profile')
       .removeAttr('data-color-inverted');
