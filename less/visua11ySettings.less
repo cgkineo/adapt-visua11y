@@ -1,7 +1,149 @@
-.visua11ysettings {
+// Notify override
+// --------------------------------------------------
+.notify__popup.is-visua11ysettings {
+  background-color: transparent;
+}
 
+// UI settings
+// --------------------------------------------------
+.visua11ysettings {
+  // TODO RTL styling
+  max-width: @device-width-small;
+  margin: auto;
+
+  &__inner {
+    padding: @item-padding (@item-padding / 2);
+    background-color: @notify;
+    border-radius: 3px;
+  }
+
+  &__description {
+    padding-left: @item-padding / 2;
+    padding-right: @item-padding / 2;
+    margin-bottom: @item-padding;
+  }
+
+  &__group {
+    padding: @item-padding / 2;
+    margin-bottom: @item-padding;
+    background-color: darken(@notify, 5%);
+    border-radius: 3px;
+  }
+
+  &__group-title {
+    margin-top: @item-title-margin / 2;
+    margin-bottom: @item-title-margin;
+    .item-title;
+  }
+
+  &__item {
+    padding: @item-padding (@item-padding / 2);
+    padding-right: @icon-size + @item-padding;
+    position: relative;
+    border-top: 1px solid fade(@notify-inverted, 30%);
+  }
+
+  .visua11ysettings__item > input {
+    position: absolute;
+    top: 50%;
+    right: @item-padding / 2;
+    transform: translateY(-50%);
+    //TODO replace input with checkbox icon/toggle etc
+    //TODO for consistency across browsers
+    width: @icon-size;
+    height: @icon-size;
+  }
+
+  // Visual display group
+  // --------------------------------------------------
+  &__group-profiles {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+
+    @media (min-width: @device-width-medium) {
+      flex-direction: row;
+    }
+  }
+
+  .colorprofileid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .colorprofileid select {
+    margin-top: @item-margin;
+    margin-bottom: @item-margin;
+  }
+
+  // Readability group
+  // --------------------------------------------------
+  &__group-readability {
+    .visua11ysettings__item {
+      display: flex;
+      flex-direction: column;
+
+      @media (min-width: @device-width-medium) {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .visua11ysettings__item-title {
+      margin-bottom: @item-margin;
+
+      @media (min-width: @device-width-medium) {
+        margin-right: @item-margin;
+        margin-bottom: inherit;
+      }
+    }
+
+    .visua11ysettings__item-option-container {
+      display: inline-flex;
+      flex-wrap: wrap;
+    }
+
+    .visua11ysettings__item-option {
+      display: inline-block;
+      position: relative;
+      margin: @item-margin / 2;
+    }
+
+    input {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    input + label .item-text {
+      padding: (@item-padding / 2) @item-padding;
+      border-radius: 50px;
+      background-color: @notify-icon;
+      color: @notify-icon-inverted;
+      //border: 1px solid @notify-icon;
+    }
+
+    input:checked + label .item-text {
+      background-color: @notify-icon-hover;
+      color: @notify-icon-inverted-hover;
+      //border-color: @notify-icon-inverted-hover;
+      //box-shadow: 0 2px 5px fade(@black, 30%);
+    }
+  }
+
+  // Item icons
+  // --------------------------------------------------
   .icon {
     display: inline-block;
+    vertical-align: middle;
+    margin-right: .5rem;
   }
 
   .colorprofileid .icon {
@@ -43,4 +185,30 @@
     .icon-visua11y-text-width;
   }
 
+  // Config buttons
+  // --------------------------------------------------
+  .btn__container {
+    text-align: right;
+  }
+
+  .btn-reset {
+    background-color: @notify-btn;
+    color: @notify-btn-inverted;
+
+    .no-touch &:hover {
+      background-color: @notify-btn-hover;
+      color: @notify-btn-inverted-hover;
+    }
+  }
+
+  .btn-close {
+    margin-left: @btn-padding;
+    background-color: @notify-btn-inverted;
+    color: @notify-btn;
+
+    .no-touch &:hover {
+      background-color: @notify-btn-inverted-hover;
+      color: @notify-btn-hover;
+    }
+  }
 }

@@ -1,0 +1,76 @@
+
+// ! dependant on v5 Vanilla variables
+.preview {
+  border: 1px solid @background;
+  background-color: @background-inverted;
+  border-radius: 3px;
+  width: 15rem;
+  //? max-width set to prevent overrunning on mobile when _fontSize is _large
+  //? max-width value based on 320px screensize (smallest use case) 
+  max-width: 270px;
+  margin-bottom: 1rem;
+
+  &__nav {
+    height: .75rem;
+    // TODO remove override (for testing, default var is white on white bg)
+    background-color: red;//@nav;
+    border-radius: 3px 3px 0 0;
+  }
+
+  &__header {
+    padding: 1rem;
+    color: @heading-color;
+    font-size: 1.5rem;
+    font-weight: @font-weight-bold;
+  }
+
+  &__content {
+    padding: 0 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__text {
+    width: 47.5%;
+    
+    .top {
+      display: flex;
+    }
+
+    .letter {
+      margin-right: .5rem;
+      color: @font-color;
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .lines {
+      width: 100%;
+    }
+
+    .line {
+      height: .25rem;
+      margin-bottom: .25rem;
+      width: 100%;
+      background-color: @font-color;
+    }
+  }
+
+  &__comp {
+    width: 47.5%;
+
+    .item {
+      height: .5rem;
+      width: 100%;
+      margin-bottom: .25rem;
+      background-color: @item-color;
+    }
+
+    .btn {
+      height: .5rem;
+      width: 50%;
+      background-color: @btn-color;
+    }
+  }
+}

@@ -4,7 +4,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { templates } from 'core/js/reactHelpers';
 
-export default class Visua11ySettings extends Backbone.View {
+export default class Visua11ySettingsView extends Backbone.View {
+
+  className() {
+    return 'visua11ysettings';
+  }
 
   initialize() {
     this.render();

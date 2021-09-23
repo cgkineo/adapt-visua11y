@@ -1,5 +1,5 @@
 import Adapt from 'core/js/adapt';
-import Visua11ySettings from './Visua11ySettings';
+import Visua11ySettingsView from './Visua11ySettingsView';
 import notify from 'core/js/notify';
 
 class AnimationsButtonView extends Backbone.View {
@@ -31,7 +31,8 @@ class AnimationsButtonView extends Backbone.View {
   onClick(event) {
     if (event && event.preventDefault) event.preventDefault();
     Adapt.visua11y.settingsPrompt = notify.prompt({
-      _view: new Visua11ySettings(),
+      _view: new Visua11ySettingsView(),
+      _classes: 'is-visua11ysettings',
       _showCloseButton: false
     });
     this.render();

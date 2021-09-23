@@ -2,6 +2,16 @@
 /* eslint-disable quote-props */
 export default {
   "_isEnabled": false,
+  "description": "Use the controls below to customise your learning experience to your individual needs.",
+  "_groups": {
+    "visualDisplay": "Enhance visual display",
+    "distractions": "Reduce distractions",
+    "readability": "Readability"
+  },
+  "_preview": {
+    "title": "Title",
+    "character": "A"
+  },
   "_colorProfiles": {
     "default": "Default",
     "achromatopsia": "Greyscale (Achromatopsia)",

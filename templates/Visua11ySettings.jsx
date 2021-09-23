@@ -1,4 +1,5 @@
 import Adapt from 'core/js/adapt';
+import { templates } from 'core/js/reactHelpers';
 import React from 'react';
 
 export default function Visua11ySettings(config) {
@@ -18,88 +19,308 @@ export default function Visua11ySettings(config) {
   }
 
   return (
-    <div className="visua11ysettings">
-      {config._colorProfile._isEnabled && <div className="colorprofileid">
-        <label><div className='icon'></div>{config._colorProfile.title}</label>
-        <select name='colorProfileId' onChange={onChange} value={visua11y.colorProfileId}>
-          {visua11y.colorProfiles.map(({ name, _id }) => <option key={_id} value={_id}>{name}</option>)}
-        </select>
-      </div>}
-      {config._highContrast._isEnabled && <div className="highcontrast">
-        <label><div className='icon'></div>{config._highContrast.title}</label>
-        <input type='checkbox' name='highContrast' checked={visua11y.highContrast} onChange={onChange} />
-      </div>}
-      {config._noTransparency._isEnabled && <div className="notransparency">
-        <label><div className='icon'></div>{config._noTransparency.title}</label>
-        <input type='checkbox' name='noTransparency' checked={visua11y.noTransparency} onChange={onChange} />
-      </div>}
-      {config._lowBrightness._isEnabled && <div className="lowbrightness">
-        <label><div className='icon'></div>{config._lowBrightness.title}</label>
-        <input type='checkbox' name='lowBrightness' checked={visua11y.lowBrightness} onChange={onChange} />
-      </div>}
-      {config._invert._isEnabled && <div className="invert">
-        <label><div className='icon'></div>{config._invert.title}</label>
-        <input type='checkbox' name='invert' checked={visua11y.invert} onChange={onChange} />
-      </div>}
-      {config._noAnimations._isEnabled && <div className="noanimations">
-        <label><div className='icon'></div>{config._noAnimations.title}</label>
-        <input type='checkbox' name='noAnimations' checked={visua11y.noAnimations} onChange={onChange} />
-      </div>}
-      {config._noBackgroundImages._isEnabled && <div className="nobackgroundimages">
-        <label><div className='icon'></div>{config._noBackgroundImages.title}</label>
-        <input type='checkbox' name='noBackgroundImages' checked={visua11y.noBackgroundImages} onChange={onChange} />
-      </div>}
-      {config._fontSize._isEnabled && <div className="fontsize">
-        <label><div className='icon'></div>{config._fontSize.title}</label>
-        <label>{config._fontSize.smallLabel}</label>
-        <input type='radio' value={config._fontSize._small} checked={visua11y.fontSize === config._fontSize._small} name='fontSize' onChange={onChange} />
-        <label>{config._fontSize.mediumLabel}</label>
-        <input type='radio' value={visua11y.originalFontSize} checked={visua11y.fontSize === visua11y.originalFontSize} name='fontSize' onChange={onChange} />
-        <label>{config._fontSize.largeLabel}</label>
-        <input type='radio' value={config._fontSize._large} checked={visua11y.fontSize === config._fontSize._large} name='fontSize' onChange={onChange} />
-      </div>}
-      {config._lineHeight._isEnabled && <div className="lineheight">
-        <label><div className='icon'></div>{config._lineHeight.title}</label>
-        <label>{config._lineHeight.smallLabel}</label>
-        <input type='radio' value={config._lineHeight._small} checked={visua11y.lineHeight === config._lineHeight._small} name='lineHeight' onChange={onChange} />
-        <label>{config._lineHeight.mediumLabel}</label>
-        <input type='radio' value={config._lineHeight._medium} checked={visua11y.lineHeight === config._lineHeight._medium} name='lineHeight' onChange={onChange} />
-        <label>{config._lineHeight.largeLabel}</label>
-        <input type='radio' value={config._lineHeight._large} checked={visua11y.lineHeight === config._lineHeight._large} name='lineHeight' onChange={onChange} />
-      </div>}
-      {config._paragraphSpacing._isEnabled && <div className="paragraphspacing">
-        <label><div className='icon'></div>{config._paragraphSpacing.title}</label>
-        <label>{config._paragraphSpacing.smallLabel}</label>
-        <input type='radio' value={config._paragraphSpacing._small} checked={visua11y.paragraphSpacing === config._paragraphSpacing._small} name='paragraphSpacing' onChange={onChange} />
-        <label>{config._paragraphSpacing.mediumLabel}</label>
-        <input type='radio' value={config._paragraphSpacing._medium} checked={visua11y.paragraphSpacing === config._paragraphSpacing._medium} name='paragraphSpacing' onChange={onChange} />
-        <label>{config._paragraphSpacing.largeLabel}</label>
-        <input type='radio' value={config._paragraphSpacing._large} checked={visua11y.paragraphSpacing === config._paragraphSpacing._large} name='paragraphSpacing' onChange={onChange} />
-      </div>}
-      {config._letterSpacing._isEnabled && <div className="letterspacing">
-        <label><div className='icon'></div>{config._letterSpacing.title}</label>
-        <label>{config._letterSpacing.smallLabel}</label>
-        <input type='radio' value={config._letterSpacing._small} checked={visua11y.letterSpacing === config._letterSpacing._small} name='letterSpacing' onChange={onChange} />
-        <label>{config._letterSpacing.mediumLabel}</label>
-        <input type='radio' value={config._letterSpacing._medium} checked={visua11y.letterSpacing === config._letterSpacing._medium} name='letterSpacing' onChange={onChange} />
-        <label>{config._letterSpacing.largeLabel}</label>
-        <input type='radio' value={config._letterSpacing._large} checked={visua11y.letterSpacing === config._letterSpacing._large} name='letterSpacing' onChange={onChange} />
-      </div>}
-      {config._wordSpacing._isEnabled && <div className="wordspacing">
-        <label><div className='icon'></div>{config._wordSpacing.title}</label>
-        <label>{config._wordSpacing.smallLabel}</label>
-        <input type='radio' value={config._wordSpacing._small} checked={visua11y.wordSpacing === config._wordSpacing._small} name='wordSpacing' onChange={onChange} />
-        <label>{config._wordSpacing.mediumLabel}</label>
-        <input type='radio' value={config._wordSpacing._medium} checked={visua11y.wordSpacing === config._wordSpacing._medium} name='wordSpacing' onChange={onChange} />
-        <label>{config._wordSpacing.largeLabel}</label>
-        <input type='radio' value={config._wordSpacing._large} checked={visua11y.wordSpacing === config._wordSpacing._large} name='wordSpacing' onChange={onChange} />
-      </div>}
-      <div className="buttons">
-        <button className="btn-text" onClick={onReset}>{config._button.resetText}</button>
+    <div className='visua11ysettings__inner' role='list'>
+
+      {config.description &&
+      <div className='visua11ysettings__description'>
+        {config.description}
       </div>
-      <div className="buttons">
-        <button className="btn-text" onClick={onClose}>{config._button.closeText}</button>
+      }
+
+      {(config._colorProfile._isEnabled ||
+        config._highContrast._isEnabled ||
+        config._noTransparency._isEnabled ||
+        config._lowBrightness._isEnabled ||
+        config._invert._isEnabled) &&
+
+        <div className='visua11ysettings__group visua11ysettings__group-visualdisplay' role='listitem' aria-labelledby='visualdisplay'>
+          {/* Should 'visua11ysettings__group-title' read as a title or is the lablled list enough? */}
+          {config._groups.visualDisplay &&
+          <div className='visua11ysettings__group-title' id='visualdisplay'>
+            {config._groups.visualDisplay}
+          </div>
+          }
+
+          <div className='visua11ysettings__group-profiles'>
+            <div className='colorprofiles'>
+              {config._colorProfile._isEnabled &&
+              <div className='colorprofileid'>
+                <templates.Visua11yPreview {...config}/>
+                <label className='visua11ysettings__item-label' htmlFor='colorProfileId'>
+                  <div className='icon'></div>
+                  {config._colorProfile.title}
+                </label>
+                <select id='colorProfileId' name='colorProfileId' onChange={onChange} value={visua11y.colorProfileId}>
+                  {visua11y.colorProfiles.map(({ name, _id }) => <option key={_id} value={_id}>{name}</option>)}
+                </select>
+              </div>
+              }
+            </div>
+
+            <div className='otherprofiles'>
+              {config._highContrast._isEnabled &&
+              <div className='visua11ysettings__item highcontrast'>
+                <label className='visua11ysettings__item-label' htmlFor='highContrast'>
+                  <div className='icon'></div>
+                  {config._highContrast.title}
+                </label>
+                <input type='checkbox' id='highContrast' name='highContrast' checked={visua11y.highContrast} onChange={onChange} />
+              </div>
+              }
+
+              {config._noTransparency._isEnabled &&
+              <div className='visua11ysettings__item notransparency'>
+                <label className='visua11ysettings__item-label' htmlFor='notransparency'>
+                  <div className='icon'></div>
+                  {config._noTransparency.title}
+                </label>
+                <input type='checkbox' id='noTransparency' name='noTransparency' checked={visua11y.noTransparency} onChange={onChange} />
+              </div>
+              }
+
+              {config._lowBrightness._isEnabled &&
+              <div className='visua11ysettings__item lowbrightness'>
+                <label className='visua11ysettings__item-label' htmlFor='lowbrightness'>
+                  <div className='icon'></div>
+                  {config._lowBrightness.title}
+                </label>
+                <input type='checkbox' id='lowBrightness' name='lowBrightness' checked={visua11y.lowBrightness} onChange={onChange} />
+              </div>
+              }
+
+              {config._invert._isEnabled &&
+              <div className='visua11ysettings__item invert'>
+                <label className='visua11ysettings__item-label' htmlFor='invert'>
+                  <div className='icon'></div>
+                  {config._invert.title}
+                </label>
+                <input type='checkbox' id='invert' name='invert' checked={visua11y.invert} onChange={onChange} />
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      {(config._noAnimations._isEnabled ||
+        config._noBackgroundImages._isEnabled) &&
+
+        <div className='visua11ysettings__group visua11ysettings__group-distractions' role='listitem' aria-labelledby='distractions'>
+          {config._groups.distractions &&
+          <div className='visua11ysettings__group-title' id='distractions'>
+            {config._groups.distractions}
+          </div>
+          }
+
+          {config._noAnimations._isEnabled &&
+          <div className='visua11ysettings__item noanimations'>
+            <label className='visua11ysettings__item-label' htmlFor='noanimations'>
+              <div className='icon'></div>
+              {config._noAnimations.title}
+            </label>
+            <input type='checkbox' id='noAnimations' name='noAnimations' checked={visua11y.noAnimations} onChange={onChange} />
+          </div>
+          }
+
+          {config._noBackgroundImages._isEnabled &&
+          <div className='visua11ysettings__item nobackgroundimages'>
+            <label className='visua11ysettings__item-label' htmlFor='nobackgroundimages'>
+              <div className='icon'></div>
+              {config._noBackgroundImages.title}
+            </label>
+            <input type='checkbox' id='noBackgroundImages' name='noBackgroundImages' checked={visua11y.noBackgroundImages} onChange={onChange} />
+          </div>
+          }
+        </div>
+      }
+
+      {(config._fontSize._isEnabled ||
+      config._lineHeight._isEnabled ||
+      config._paragraphSpacing._isEnabled ||
+      config._letterSpacing._isEnabled ||
+      config._wordSpacing._isEnabled) &&
+
+        <div className='visua11ysettings__group visua11ysettings__group-readability' role='listitem' aria-labelledby='readability'>
+          {config._groups.readability &&
+          <div className='visua11ysettings__group-title' id='readability'>
+            {config._groups.readability}
+          </div>
+          }
+
+          {config._fontSize._isEnabled &&
+          <div className='visua11ysettings__item fontsize'>
+            <div className="visua11ysettings__item-title" id='fontsize'>
+              {/* TODO wrap 'title' in separate <div> so title wraps separate to icon */}
+              <div className='icon'></div>{config._fontSize.title}
+            </div>
+
+            <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='fontsize'>
+
+              <div className='visua11ysettings__item-option'>
+                <input type='radio' value={config._fontSize._small} checked={visua11y.fontSize === config._fontSize._small} id='fontSize-small' name='fontSize' onChange={onChange} />
+                <label htmlFor='fontSize-small'>
+                  <div className='item-text'>{config._fontSize.smallLabel}</div>
+                </label>
+              </div>
+
+              <div className='visua11ysettings__item-option'>
+                <input type='radio' value={visua11y.originalFontSize} checked={visua11y.fontSize === visua11y.originalFontSize} id='fontsize-medium' name='fontSize' onChange={onChange} />
+                <label htmlFor='fontsize-medium'>
+                  <div className='item-text'>{config._fontSize.mediumLabel}</div>
+                </label>
+              </div>
+
+              <div className='visua11ysettings__item-option'>
+                <input type='radio' value={config._fontSize._large} checked={visua11y.fontSize === config._fontSize._large} id='fontsize-large' name='fontSize' onChange={onChange} />
+                <label htmlFor='fontsize-large'>
+                  <div className='item-text'>{config._fontSize.largeLabel}</div>
+                </label>
+              </div>
+
+            </div>
+          </div>
+          }
+
+          {config._lineHeight._isEnabled &&
+          <div className='visua11ysettings__item lineheight'>
+            <div className="visua11ysettings__item-title" id='lineheight'>
+              <div className='icon'></div>{config._lineHeight.title}
+            </div>
+
+            <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='lineheight'>
+
+              <div className='visua11ysettings__item-option'>
+                <input type='radio' value={config._lineHeight._small} checked={visua11y.lineHeight === config._lineHeight._small} id='lineheight-small' name='lineHeight' onChange={onChange} />
+                <label htmlFor='lineheight-small'>
+                  <div className='item-text'>{config._lineHeight.smallLabel}</div>
+                </label>
+              </div>
+
+              <div className="visua11ysettings__item-option">
+                <input type='radio' value={config._lineHeight._medium} checked={visua11y.lineHeight === config._lineHeight._medium} id='lineheight-medium' name='lineHeight' onChange={onChange} />
+                <label htmlFor='lineheight-medium'>
+                  <div className="item-text">{config._lineHeight.mediumLabel}</div>
+                </label>
+              </div>
+
+              <div className="visua11ysettings__item-option">
+                <input type='radio' value={config._lineHeight._large} checked={visua11y.lineHeight === config._lineHeight._large} id='lineheight-large' name='lineHeight' onChange={onChange} />
+                <label htmlFor='lineheight-large'>
+                  <div className='item-text'>{config._lineHeight.largeLabel}</div>
+                </label>
+              </div>
+
+            </div>
+          </div>
+          }
+
+          {config._paragraphSpacing._isEnabled &&
+          <div className='visua11ysettings__item paragraphspacing'>
+            <div className="visua11ysettings__item-title" id='paragraphspacing'>
+              <div className='icon'></div>{config._paragraphSpacing.title}
+            </div>
+
+            <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='paragraphspacing'>
+
+              <div className="visua11ysettings__item-option">
+                <input type='radio' value={config._paragraphSpacing._small} checked={visua11y.paragraphSpacing === config._paragraphSpacing._small} id='paragraphSpacing-small' name='paragraphSpacing' onChange={onChange} />
+                <label htmlFor='paragraphSpacing-small'>
+                  <div className='item-text'>{config._paragraphSpacing.smallLabel}</div>
+                </label>
+              </div>
+
+              <div className="visua11ysettings__item-option">
+                <input type='radio' value={config._paragraphSpacing._medium} checked={visua11y.paragraphSpacing === config._paragraphSpacing._medium} id='paragraphSpacing-medium' name='paragraphSpacing' onChange={onChange} />
+                <label htmlFor='paragraphSpacing-medium'>
+                  <div className="item-text">{config._paragraphSpacing.mediumLabel}</div>
+                </label>
+              </div>
+
+              <div className="visua11ysettings__item-option">
+                <input type='radio' value={config._paragraphSpacing._large} checked={visua11y.paragraphSpacing === config._paragraphSpacing._large} id='paragraphSpacing-large' name='paragraphSpacing' onChange={onChange} />
+                <label htmlFor='paragraphSpacing-large'>
+                  <div className="item-text">{config._paragraphSpacing.largeLabel}</div>
+                </label>
+              </div>
+
+            </div>
+          </div>
+          }
+
+          {config._letterSpacing._isEnabled &&
+          <div className='visua11ysettings__item letterspacing'>
+            <div className="visua11ysettings__item-title" id='letterspacing'>
+              <div className='icon'></div>{config._letterSpacing.title}
+            </div>
+
+            <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='letterspacing'>
+
+              <div className="visua11ysettings__item-option">
+                <input type='radio' value={config._letterSpacing._small} checked={visua11y.letterSpacing === config._letterSpacing._small} id='letterSpacing-small' name='letterSpacing' onChange={onChange} />
+                <label htmlFor='letterSpacing-small'>
+                  <div className="item-text">{config._letterSpacing.smallLabel}</div>
+                </label>
+              </div>
+
+              <div className="visua11ysettings__item-option">
+                <input type='radio' value={config._letterSpacing._medium} checked={visua11y.letterSpacing === config._letterSpacing._medium} id='letterSpacing-medium' name='letterSpacing' onChange={onChange} />
+                <label htmlFor='letterSpacing-medium'>
+                  <div className="item-text">{config._letterSpacing.mediumLabel}</div>
+                </label>
+              </div>
+
+              <div className="visua11ysettings__item-option">
+                <input type='radio' value={config._letterSpacing._large} checked={visua11y.letterSpacing === config._letterSpacing._large} id='letterSpacing-large' name='letterSpacing' onChange={onChange} />
+                <label htmlFor='letterSpacing-large'>
+                  <div className="item-text">{config._letterSpacing.largeLabel}</div>
+                </label>
+              </div>
+
+            </div>
+          </div>
+          }
+
+          {config._wordSpacing._isEnabled &&
+          <div className='visua11ysettings__item wordspacing'>
+            <div className="visua11ysettings__item-title" id='wordspacing'>
+              <div className='icon'></div>{config._wordSpacing.title}
+            </div>
+
+            <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='wordspacing'>
+
+              <div className="visua11ysettings__item-option">
+                <input type='radio' value={config._wordSpacing._small} checked={visua11y.wordSpacing === config._wordSpacing._small} id='wordSpacing-small' name='wordSpacing' onChange={onChange} />
+                <label htmlFor='wordSpacing-small'>
+                  <div className="item-text">{config._wordSpacing.smallLabel}</div>
+                </label>
+              </div>
+
+              <div className="visua11ysettings__item-option">
+                <input type='radio' value={config._wordSpacing._medium} checked={visua11y.wordSpacing === config._wordSpacing._medium} id='wordSpacing-medium' name='wordSpacing' onChange={onChange} />
+                <label htmlFor='wordSpacing-medium'>
+                  <div className="item-text">{config._wordSpacing.mediumLabel}</div>
+                </label>
+              </div>
+
+              <div className="visua11ysettings__item-option">
+                <input type='radio' value={config._wordSpacing._large} checked={visua11y.wordSpacing === config._wordSpacing._large} id='wordSpacing-large' name='wordSpacing' onChange={onChange} />
+                <label htmlFor='wordSpacing-large'>
+                  <div className="item-text">{config._wordSpacing.largeLabel}</div>
+                </label>
+              </div>
+
+            </div>
+          </div>
+          }
+
+        </div>
+      }
+
+      <div className='btn__container'>
+        <button className='btn-text btn-reset' onClick={onReset}>{config._button.resetText}</button>
+        <button className='btn-text btn-close' onClick={onClose}>{config._button.closeText}</button>
       </div>
+
     </div>
   );
 }
