@@ -302,6 +302,7 @@ class Visua11y extends Backbone.Controller {
     $.Velocity.mock = this.noAnimations;
     // Turn off css transitions & animations and background images
     $html
+      .toggleClass('a11y-high-contrast', this.highContrast)
       .toggleClass('a11y-no-animations', this.noAnimations)
       .toggleClass('a11y-no-background-images', this.noBackgroundImages);
     this.rules.forEach(rule => rule.modify(this));
@@ -346,6 +347,7 @@ class Visua11y extends Backbone.Controller {
     $.Velocity.mock = false;
     // Turn off css transitions & animations and background images
     $html
+      .removeClass('a11y-high-contrast')
       .removeClass('a11y-no-animations')
       .removeClass('a11y-no-background-images');
     this.rules.forEach(rule => rule.apply());
