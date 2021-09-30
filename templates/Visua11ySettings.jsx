@@ -317,8 +317,19 @@ export default function Visua11ySettings(config) {
       }
 
       <div className='btn__container'>
-        <button className='btn-text btn-reset' onClick={onReset}>{config._button.resetText}</button>
-        <button className='btn-text btn-close' onClick={onClose}>{config._button.closeText}</button>
+        
+        <div className='btn__responsive-container is-reset'>
+          <button className='btn-text btn-reset' onClick={onReset} aria-label={config._button.resetText}>
+            {config._button.resetText}
+          </button>
+        </div>
+
+        <div className='btn__response-container is-close'>
+          <button className='btn-text btn-close' onClick={onClose} aria-label={config._button.closeText}>
+            {config._button.closeText}
+          </button>
+        </div>
+
       </div>
 
     </div>
