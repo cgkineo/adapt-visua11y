@@ -13,6 +13,7 @@ import Visua11yButtonView from './Visua11yButtonView';
  * @returns {Object} Returns original
  */
 export function _deepDefaults(original, ...defaultObjects) {
+  if (!original) return original;
   defaultObjects.reverse();
   defaultObjects.forEach(defaults => {
     const keyValuePairs = Object.entries(defaults);
