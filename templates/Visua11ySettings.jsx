@@ -317,7 +317,7 @@ export default function Visua11ySettings(config) {
       }
 
       <div className='btn__container'>
-        
+
         <div className='btn__responsive-container is-reset'>
           <button className='btn-text btn-reset' onClick={onReset} aria-label={config._button.resetText}>
             {config._button.resetText}

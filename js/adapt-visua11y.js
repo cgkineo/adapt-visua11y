@@ -302,6 +302,7 @@ class Visua11y extends Backbone.Controller {
     // Turn off velocity animations
     $.Velocity.mock = this.noAnimations;
     // Turn off css transitions & animations and background images
+    // Add high contrast html class
     $html
       .toggleClass('a11y-high-contrast', this.highContrast)
       .toggleClass('a11y-no-animations', this.noAnimations)
