@@ -18,7 +18,11 @@ It provides visual accessibility improvements.
 
 ### Note
 * IE11 cannot apply filters. This means that images and videos will not be transformed in IE11.
-* All transformations are applied by mathematical colour shifts. It is therefore important that the course start from AA colour contrast for the algorithms to be applicable.
+* All colour transformations are applied by mathematical shifts. It is therefore important that the course start from AA colour contrast for the algorithms to be applicable.
+* Line height, paragraph spacing, letter spacing and word spacing are all ratio based. 1 is the current value, 1.2 is and uplift by 20%, 0.9 would be a shift downwards by 10%.
+* Font size medium is the default font size (16px usually), large is 18pt, small is 9pt.
+* Invert only inverts brightness, not colour.
+* No background images is contingent on alt text.
 
 ----------------------------
 **Version number:**  1.0.1   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a><br/>
