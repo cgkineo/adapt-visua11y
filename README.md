@@ -17,7 +17,8 @@ It provides visual accessibility improvements.
 * Word spacing (small, medium, large)
 
 ### Note
-IE11 cannot apply filters. This means that images and videos will not be transformed in IE11.
+* IE11 cannot apply filters. This means that images and videos will not be transformed in IE11.
+* All transformations are applied by mathematical colour shifts. It is therefore important that the course start from AA colour contrast for the algorithms to be applicable.
 
 ----------------------------
 **Version number:**  1.0.1   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a><br/>
