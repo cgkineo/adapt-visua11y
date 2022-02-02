@@ -49,7 +49,14 @@ export default class CSSRule {
   }
 
   apply() {
-    this.propertyNames.forEach((name, index) => (this.style[name] = this.output[index]));
+    this.propertyNames.forEach((name, index) => {
+      const isImportant = this.output[index].includes('!important');
+      if (isImportant) {
+        this.style.setProperty(name, this.output[index].replace('!important', ''), 'important');
+        return;
+      }
+      this.style.setProperty(name, this.output[index]);
+    });
   }
 
   isMatch() {
