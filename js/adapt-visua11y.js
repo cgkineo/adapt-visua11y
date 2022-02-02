@@ -252,7 +252,6 @@ class Visua11y extends Backbone.Controller {
       parasp: this._paragraphSpacing,
       anim: this._noAnimations,
       cont: this._highContrast,
-      contthr: this._highContrastLuminanceThreshold,
       trans: this._noTransparency,
       brigh: this._lowBrightness,
       backimg: this._noBackgroundImages
@@ -274,7 +273,7 @@ class Visua11y extends Backbone.Controller {
     this._paragraphSpacing = value?.parasp ?? this.config._paragraphSpacing._default;
     this._noAnimations = value?.anim ?? this.config._noAnimations._default;
     this._highContrast = value?.cont ?? this.config._highContrast._default;
-    this._highContrastLuminanceThreshold = value?.contthr ?? this.config._highContrastLuminanceThreshold._default;
+    this._highContrastLuminanceThreshold = this.config._highContrastLuminanceThreshold._default;
     this._noTransparency = value?.trans ?? this.config._noTransparency._default;
     this._lowBrightness = value?.brigh ?? this.config._lowBrightness._default;
     this._noBackgroundImages = value?.backimg ?? this.config._noBackgroundImages._default;
