@@ -52,9 +52,9 @@ html[data-color-profile=default] {
 
 /**
  * Remove img tags with aria-hidden
- * Remove all background images
+ * Remove theme background images
  */
 .a11y-no-background-images {
   img[aria-hidden=true] { display: none }
-  * { background-image: none !important; }
+  .has-bg-image { background-image: none !important; }
 }
