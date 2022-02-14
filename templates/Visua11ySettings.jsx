@@ -33,7 +33,7 @@ export default function Visua11ySettings(config) {
         config._lowBrightness._isEnabled ||
         config._invert._isEnabled) &&
 
-        <div className='visua11ysettings__group visua11ysettings__group-visualdisplay' role='listitem' aria-labelledby='visualdisplay'>
+        <div className='visua11ysettings__group visua11ysettings__group-visualdisplay' role='group' aria-labelledby='visualdisplay'>
           {/* Should 'visua11ysettings__group-title' read as a title or is the lablled list enough? */}
           {config._groups.visualDisplay &&
           <div className='visua11ysettings__group-title' id='visualdisplay'>
@@ -105,7 +105,7 @@ export default function Visua11ySettings(config) {
       {(config._noAnimations._isEnabled ||
         config._noBackgroundImages._isEnabled) &&
 
-        <div className='visua11ysettings__group visua11ysettings__group-distractions' role='listitem' aria-labelledby='distractions'>
+        <div className='visua11ysettings__group visua11ysettings__group-distractions' role='group' aria-labelledby='distractions'>
           {config._groups.distractions &&
           <div className='visua11ysettings__group-title' id='distractions'>
             {config._groups.distractions}
@@ -140,7 +140,7 @@ export default function Visua11ySettings(config) {
       config._letterSpacing._isEnabled ||
       config._wordSpacing._isEnabled) &&
 
-        <div className='visua11ysettings__group visua11ysettings__group-readability' role='listitem' aria-labelledby='readability'>
+        <div className='visua11ysettings__group visua11ysettings__group-readability' role='group' aria-labelledby='readability'>
           {config._groups.readability &&
           <div className='visua11ysettings__group-title' id='readability'>
             {config._groups.readability}
