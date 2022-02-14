@@ -1,7 +1,7 @@
 import React from 'react';
 export default function Visua11yPreview(config) {
   return (
-    <div className="preview">
+    <div className="preview" aria-hidden="true">
       <div className="preview__nav"></div>
       <div className="preview__header">
         {config._preview.title}
