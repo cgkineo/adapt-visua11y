@@ -60,41 +60,41 @@ export default function Visua11ySettings(config) {
             <div className='otherprofiles'>
               {config._highContrast._isEnabled &&
               <div className='visua11ysettings__item highcontrast'>
-                <label className='visua11ysettings__item-label' htmlFor='highContrast'>
+                <label className='visua11ysettings__item-label' htmlFor='highContrast' aria-hidden='true'>
                   <div className='icon'></div>
                   {config._highContrast.title}
                 </label>
-                <input type='checkbox' id='highContrast' name='highContrast' checked={visua11y.highContrast} onChange={onChange} />
+                <input type='checkbox' id='highContrast' name='highContrast' checked={visua11y.highContrast} onChange={onChange} aria-label={config._highContrast.title}/>
               </div>
               }
 
               {config._noTransparency._isEnabled &&
               <div className='visua11ysettings__item notransparency'>
-                <label className='visua11ysettings__item-label' htmlFor='notransparency'>
+                <label className='visua11ysettings__item-label' htmlFor='notransparency' aria-hidden='true'>
                   <div className='icon'></div>
                   {config._noTransparency.title}
                 </label>
-                <input type='checkbox' id='noTransparency' name='noTransparency' checked={visua11y.noTransparency} onChange={onChange} />
+                <input type='checkbox' id='noTransparency' name='noTransparency' checked={visua11y.noTransparency} onChange={onChange} aria-label={config._noTransparency.title}/>
               </div>
               }
 
               {config._lowBrightness._isEnabled &&
               <div className='visua11ysettings__item lowbrightness'>
-                <label className='visua11ysettings__item-label' htmlFor='lowbrightness'>
+                <label className='visua11ysettings__item-label' htmlFor='lowbrightness' aria-hidden='true'>
                   <div className='icon'></div>
                   {config._lowBrightness.title}
                 </label>
-                <input type='checkbox' id='lowBrightness' name='lowBrightness' checked={visua11y.lowBrightness} onChange={onChange} />
+                <input type='checkbox' id='lowBrightness' name='lowBrightness' checked={visua11y.lowBrightness} onChange={onChange} aria-label={config._lowBrightness.title}/>
               </div>
               }
 
               {config._invert._isEnabled &&
               <div className='visua11ysettings__item invert'>
-                <label className='visua11ysettings__item-label' htmlFor='invert'>
+                <label className='visua11ysettings__item-label' htmlFor='invert' aria-hidden='true'>
                   <div className='icon'></div>
                   {config._invert.title}
                 </label>
-                <input type='checkbox' id='invert' name='invert' checked={visua11y.invert} onChange={onChange} />
+                <input type='checkbox' id='invert' name='invert' checked={visua11y.invert} onChange={onChange} aria-label={config._invert.title}/>
               </div>
               }
             </div>
@@ -114,21 +114,21 @@ export default function Visua11ySettings(config) {
 
           {config._noAnimations._isEnabled &&
           <div className='visua11ysettings__item noanimations'>
-            <label className='visua11ysettings__item-label' htmlFor='noanimations'>
+            <label className='visua11ysettings__item-label' htmlFor='noanimations' aria-hidden='true'>
               <div className='icon'></div>
               {config._noAnimations.title}
             </label>
-            <input type='checkbox' id='noAnimations' name='noAnimations' checked={visua11y.noAnimations} onChange={onChange} />
+            <input type='checkbox' id='noAnimations' name='noAnimations' checked={visua11y.noAnimations} onChange={onChange} aria-label={config._noAnimations.title}/>
           </div>
           }
 
           {config._noBackgroundImages._isEnabled &&
           <div className='visua11ysettings__item nobackgroundimages'>
-            <label className='visua11ysettings__item-label' htmlFor='nobackgroundimages'>
+            <label className='visua11ysettings__item-label' htmlFor='nobackgroundimages' aria-hidden='true'>
               <div className='icon'></div>
               {config._noBackgroundImages.title}
             </label>
-            <input type='checkbox' id='noBackgroundImages' name='noBackgroundImages' checked={visua11y.noBackgroundImages} onChange={onChange} />
+            <input type='checkbox' id='noBackgroundImages' name='noBackgroundImages' checked={visua11y.noBackgroundImages} onChange={onChange} aria-label={config._noBackgroundImages.title}/>
           </div>
           }
         </div>
