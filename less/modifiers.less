@@ -10,7 +10,7 @@ html:not([data-color-profile=default]) {
   body > *:not(.notify),
   .notify > * {
 
-    img, video, canvas, .mejs-poster {
+    img, video, canvas, .mejs-poster, .has-bg-image {
       filter: invert(var(--visua11y-invert)) var(--visua11y-color-profile-url) contrast(var(--visua11y-contrast)) brightness(var(--visua11y-brightness));
       transform: translateZ(0); /*for older browsers*/
       will-change: transform;
@@ -28,7 +28,7 @@ html[data-color-profile=default] {
   body > *:not(.notify),
   .notify > * {
 
-    img, video, canvas, .mejs-poster {
+    img, video, canvas, .mejs-poster, .has-bg-image {
       filter: invert(var(--visua11y-invert)) contrast(var(--visua11y-contrast)) brightness(var(--visua11y-brightness));
       transform: translateZ(0); /*for older browsers*/
       will-change: transform;
@@ -56,9 +56,9 @@ html[data-color-profile=default] {
 
 /**
  * Remove img tags with aria-hidden
- * TODO: might need to be img tags without aria-label or alt as there are
- * content images with aria-hidden that need to be shown (gmcq)
+ * Remove theme background images
  */
 .a11y-no-background-images {
   img[aria-hidden=true] { display: none }
+  .has-bg-image { background-image: none !important; }
 }

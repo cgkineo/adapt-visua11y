@@ -30,6 +30,11 @@ export default {
     "title": "High contrast",
     "_default": false
   },
+  "_highContrastLuminanceThreshold": {
+    "_isEnabled": true,
+    "title": "High contrast luminance threshold",
+    "_default": 70
+  },
   "_noTransparency": {
     "_isEnabled": true,
     "title": "No transparency",

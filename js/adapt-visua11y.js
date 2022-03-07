@@ -181,9 +181,9 @@ class Visua11y extends Backbone.Controller {
   get outputColors() {
     if (!this._outputColors) {
       let outputColors = this.distinctColors;
-      if (this.highContrast) outputColors = highContrast(outputColors);
-      if (this.invert) outputColors = invert(outputColors);
-      if (this.lowBrightness) outputColors = lowBrightness(outputColors);
+      if (this.highContrast) outputColors = highContrast(outputColors, this);
+      if (this.invert) outputColors = invert(outputColors, this);
+      if (this.lowBrightness) outputColors = lowBrightness(outputColors, this);
       this._outputColors = profileFilter(outputColors, this.colorProfileId);
     }
     const output = this._outputColors.slice(0);
@@ -259,12 +259,14 @@ class Visua11y extends Backbone.Controller {
       boolToInt(this._highContrast),
       boolToInt(this._noTransparency),
       boolToInt(this._lowBrightness),
-      boolToInt(this._noBackgroundImages)
+      boolToInt(this._noBackgroundImages),
+      this._highContrastLuminanceThreshold
     ];
     Adapt.offlineStorage.set('v', Adapt.offlineStorage.serialize(data));
   }
 
   restore() {
+    if (this.config._shouldSavePreferences === false) return;
     const intToBool = (config, value) => {
       if (value === undefined) return config._default;
       return Boolean(value);
@@ -292,6 +294,7 @@ class Visua11y extends Backbone.Controller {
     this._noTransparency = intToBool(this.config._noTransparency, data[9]);
     this._lowBrightness = intToBool(this.config._lowBrightness, data[10]);
     this._noBackgroundImages = intToBool(this.config._noBackgroundImages, data[11]);
+    this._highContrastLuminanceThreshold = data[12] ?? this.config._highContrastLuminanceThreshold._default;
   }
 
   setupNavigationButton() {
@@ -351,6 +354,7 @@ class Visua11y extends Backbone.Controller {
     this._paragraphSpacing = this.config._paragraphSpacing._default;
     this._noAnimations = this.config._noAnimations._default;
     this._highContrast = this.config._highContrast._default;
+    this._highContrastLuminanceThreshold = this.config._highContrastLuminanceThreshold._default;
     this._noTransparency = this.config._noTransparency._default;
     this._lowBrightness = this.config._lowBrightness._default;
     this._noBackgroundImages = this.config._noBackgroundImages._default;

@@ -1,6 +1,7 @@
 // course.json
 "_visua11y": {
   "_isEnabled": false,
+  "_shouldSavePreferences": true,
   "description": "Use the controls below to customise your learning experience to your individual needs.",
   "_groups": {
     "visualDisplay": "Enhance visual display",
@@ -28,6 +29,11 @@
     "_isEnabled": true,
     "title": "High contrast",
     "_default": false
+  },
+  "_highContrastLuminanceThreshold": {
+    "_isEnabled": true,
+    "title": "High contrast luminance threshold",
+    "_default": 70
   },
   "_noTransparency": {
     "_isEnabled": true,

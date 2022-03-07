@@ -40,6 +40,13 @@
                   "inputType": "Checkbox",
                   "validators": []
                 },
+                "_shouldSavePreferences": {
+                  "type": "boolean",
+                  "required": false,
+                  "title": "Save user preferences?",
+                  "inputType": "Checkbox",
+                  "validators": []
+                },
                 "description": {
                   "type": "string",
                   "required": false,
@@ -213,6 +220,37 @@
                       "type": "boolean",
                       "required": false,
                       "default": false,
+                      "title": "Default",
+                      "inputType": "Text",
+                      "validators": []
+                    }
+                  }
+                },
+                "_highContrastLuminanceThreshold": {
+                  "type": "object",
+                  "required": false,
+                  "title": "High contrast luminance threshold",
+                  "properties": {
+                    "_isEnabled": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Enable",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    },
+                    "title": {
+                      "type": "string",
+                      "required": false,
+                      "default": "High contrast",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_default": {
+                      "type": "number",
+                      "required": false,
+                      "default": 70,
                       "title": "Default",
                       "inputType": "Text",
                       "validators": []
