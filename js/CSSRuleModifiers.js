@@ -39,7 +39,7 @@ export default [
     'background-image',
     null,
     function () {
-      return this.noBackgroundImages ? 'none' : undefined;
+      return this.noBackgroundImages ? 'none !important' : undefined;
     }
   ],
   [

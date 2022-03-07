@@ -181,9 +181,9 @@ class Visua11y extends Backbone.Controller {
   get outputColors() {
     if (!this._outputColors) {
       let outputColors = this.distinctColors;
-      if (this.highContrast) outputColors = highContrast(outputColors);
-      if (this.invert) outputColors = invert(outputColors);
-      if (this.lowBrightness) outputColors = lowBrightness(outputColors);
+      if (this.highContrast) outputColors = highContrast(outputColors, this);
+      if (this.invert) outputColors = invert(outputColors, this);
+      if (this.lowBrightness) outputColors = lowBrightness(outputColors, this);
       this._outputColors = profileFilter(outputColors, this.colorProfileId);
     }
     const output = this._outputColors.slice(0);
@@ -273,6 +273,7 @@ class Visua11y extends Backbone.Controller {
     this._paragraphSpacing = value?.parasp ?? this.config._paragraphSpacing._default;
     this._noAnimations = value?.anim ?? this.config._noAnimations._default;
     this._highContrast = value?.cont ?? this.config._highContrast._default;
+    this._highContrastLuminanceThreshold = this.config._highContrastLuminanceThreshold._default;
     this._noTransparency = value?.trans ?? this.config._noTransparency._default;
     this._lowBrightness = value?.brigh ?? this.config._lowBrightness._default;
     this._noBackgroundImages = value?.backimg ?? this.config._noBackgroundImages._default;
@@ -328,6 +329,7 @@ class Visua11y extends Backbone.Controller {
     this._paragraphSpacing = this.config._paragraphSpacing._default;
     this._noAnimations = this.config._noAnimations._default;
     this._highContrast = this.config._highContrast._default;
+    this._highContrastLuminanceThreshold = this.config._highContrastLuminanceThreshold._default;
     this._noTransparency = this.config._noTransparency._default;
     this._lowBrightness = this.config._lowBrightness._default;
     this._noBackgroundImages = this.config._noBackgroundImages._default;
