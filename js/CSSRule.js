@@ -48,8 +48,10 @@ export default class CSSRule {
     });
   }
 
-  apply() {
-    this.propertyNames.forEach((name, index) => (this.style[name] = this.output[index]));
+  get styleSheetPart() {
+    return `${this.selectorText} {
+  ${this.propertyNames.map((name, index) => (`${name}: ${this.output[index]};`)).join('\n  ')}
+}`;
   }
 
   isMatch() {
