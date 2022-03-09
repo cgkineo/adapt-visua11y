@@ -55,7 +55,7 @@ export default class CSSRule {
         const isImportant = (this.style.getPropertyPriority(name) === 'important');
         return (`${name}: ${this.output[index]}${isImportant ? ' !important' : ''};`);
       }).join(`\n${longSpace}`)}\n${shortSpace}}`;
-    }
+    };
     if (parentRule) {
       if (parentRule instanceof CSSMediaRule) return `@media ${this.rule.parentRule.conditionText} {\n${leafRule(4)}\n}\n`;
       throw new Error('parentRule type not supported:', parentRule);
