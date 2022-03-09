@@ -48,7 +48,14 @@ export default class CSSRule {
 
   get styleSheetPart() {
     const parentRule = this.rule.parentRule;
-    const leafRule = (spaces = 2) => `${''.padStart(spaces - 2, ' ')}${this.selectorText} {\n${''.padStart(spaces, ' ')}${this.propertyNames.map((name, index) => (`${name}: ${this.output[index]};`)).join(`\n${''.padStart(spaces, ' ')}`)}\n${''.padStart(spaces - 2, ' ')}}`;
+    const leafRule = (spaces = 2) => {
+      const shortSpace = ''.padStart(spaces - 2, ' ');
+      const longSpace = ''.padStart(spaces, ' ');
+      return `${shortSpace}${this.selectorText} {\n${longSpace}${this.propertyNames.map((name, index) => {
+        const isImportant = (this.style.getPropertyPriority(name) === 'important');
+        return (`${name}: ${this.output[index]}${isImportant ? ' !important' : ''};`);
+      }).join(`\n${longSpace}`)}\n${shortSpace}}`;
+    }
     if (parentRule) {
       if (parentRule instanceof CSSMediaRule) return `@media ${this.rule.parentRule.conditionText} {\n${leafRule(4)}\n}\n`;
       throw new Error('parentRule type not supported:', parentRule);
