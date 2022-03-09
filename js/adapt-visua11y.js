@@ -231,7 +231,7 @@ class Visua11y extends Backbone.Controller {
         } catch (err) {
         }
       }
-      tag.remove();
+      $(tag).remove();
       return measures;
     }, {});
   }
