@@ -3,12 +3,10 @@ import Color from './Color';
 
 export default class CSSRule {
 
-  constructor({
-    selectorText = '',
-    style = null
-  } = {}) {
-    this.selectorText = selectorText;
-    this.style = style;
+  constructor(rule) {
+    this.rule = rule;
+    this.selectorText = rule.selectorText;
+    this.style = rule.style;
     this.output = [];
     this.original = [];
     this.propertyNames = null;
@@ -49,9 +47,13 @@ export default class CSSRule {
   }
 
   get styleSheetPart() {
-    return `${this.selectorText} {
-  ${this.propertyNames.map((name, index) => (`${name}: ${this.output[index]};`)).join('\n  ')}
-}`;
+    const parentRule = this.rule.parentRule;
+    const leafRule = (spaces = 2) => `${''.padStart(spaces - 2, ' ')}${this.selectorText} {\n${''.padStart(spaces, ' ')}${this.propertyNames.map((name, index) => (`${name}: ${this.output[index]};`)).join(`\n${''.padStart(spaces, ' ')}`)}\n${''.padStart(spaces - 2, ' ')}}`;
+    if (parentRule) {
+      if (parentRule instanceof CSSMediaRule) return `@media ${this.rule.parentRule.conditionText} {\n${leafRule(4)}\n}\n`;
+      throw new Error('parentRule type not supported:', parentRule);
+    }
+    return leafRule();
   }
 
   isMatch() {
