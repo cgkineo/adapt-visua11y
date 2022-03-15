@@ -40,6 +40,13 @@
                   "inputType": "Checkbox",
                   "validators": []
                 },
+                "_shouldSavePreferences": {
+                  "type": "boolean",
+                  "required": false,
+                  "title": "Save user preferences?",
+                  "inputType": "Checkbox",
+                  "validators": []
+                },
                 "description": {
                   "type": "string",
                   "required": false,

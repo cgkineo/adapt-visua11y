@@ -1,6 +1,7 @@
 // course.json
 "_visua11y": {
   "_isEnabled": false,
+  "_shouldSavePreferences": true,
   "description": "Use the controls below to customise your learning experience to your individual needs.",
   "_groups": {
     "visualDisplay": "Enhance visual display",

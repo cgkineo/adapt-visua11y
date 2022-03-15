@@ -12,6 +12,12 @@ html:not([data-color-profile=default]) {
 
     img, video, canvas, .mejs-poster, .has-bg-image {
       filter: invert(var(--visua11y-invert)) var(--visua11y-color-profile-url) contrast(var(--visua11y-contrast)) brightness(var(--visua11y-brightness));
+      transform: translateZ(0); /*for older browsers*/
+      will-change: transform;
+    }
+
+    .has-bg-image > * {
+      filter: invert(var(--visua11y-invert));
     }
 
   }
@@ -28,6 +34,12 @@ html[data-color-profile=default] {
 
     img, video, canvas, .mejs-poster, .has-bg-image {
       filter: invert(var(--visua11y-invert)) contrast(var(--visua11y-contrast)) brightness(var(--visua11y-brightness));
+      transform: translateZ(0); /*for older browsers*/
+      will-change: transform;
+    }
+
+    .has-bg-image > * {
+      filter: invert(var(--visua11y-invert));
     }
 
   }

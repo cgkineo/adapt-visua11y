@@ -3,12 +3,10 @@ import Color from './Color';
 
 export default class CSSRule {
 
-  constructor({
-    selectorText = '',
-    style = null
-  } = {}) {
-    this.selectorText = selectorText;
-    this.style = style;
+  constructor(rule) {
+    this.rule = rule;
+    this.selectorText = rule.selectorText;
+    this.style = rule.style;
     this.output = [];
     this.original = [];
     this.propertyNames = null;
@@ -48,15 +46,21 @@ export default class CSSRule {
     });
   }
 
-  apply() {
-    this.propertyNames.forEach((name, index) => {
-      const isImportant = this.output[index].includes('!important');
-      if (isImportant) {
-        this.style.setProperty(name, this.output[index].replace('!important', ''), 'important');
-        return;
-      }
-      this.style.setProperty(name, this.output[index]);
-    });
+  get styleSheetPart() {
+    const parentRule = this.rule.parentRule;
+    const leafRule = (spaces = 2) => {
+      const shortSpace = ''.padStart(spaces - 2, ' ');
+      const longSpace = ''.padStart(spaces, ' ');
+      return `${shortSpace}${this.selectorText} {\n${longSpace}${this.propertyNames.map((name, index) => {
+        const isImportant = (this.style.getPropertyPriority(name) === 'important');
+        return (`${name}: ${this.output[index]}${isImportant ? ' !important' : ''};`);
+      }).join(`\n${longSpace}`)}\n${shortSpace}}`;
+    };
+    if (parentRule) {
+      if (parentRule instanceof CSSMediaRule) return `@media ${this.rule.parentRule.conditionText} {\n${leafRule(4)}\n}\n`;
+      throw new Error('parentRule type not supported:', parentRule);
+    }
+    return leafRule();
   }
 
   isMatch() {

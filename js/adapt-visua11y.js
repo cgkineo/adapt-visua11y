@@ -15,7 +15,7 @@ import Visua11yButtonView from './Visua11yButtonView';
 export function _deepDefaults(original, ...defaultObjects) {
   if (!original) return original;
   defaultObjects.reverse();
-  defaultObjects.forEach(defaults => {
+  defaultObjects.filter(Boolean).forEach(defaults => {
     const keyValuePairs = Object.entries(defaults);
     keyValuePairs.forEach(([ key, defaultValue ]) => {
       const isRecursiveObject = (typeof defaultValue === 'object' && !Array.isArray(defaultValue) && defaultValue !== null);
@@ -41,7 +41,7 @@ class Visua11y extends Backbone.Controller {
   }
 
   get config () {
-    return _deepDefaults((this._adaptStarted ? Adapt.course : Adapt.config).get('_visua11y'), DEFAULTS);
+    return _deepDefaults((this._adaptStarted ? Adapt.course : Adapt.config).get('_visua11y') ?? {}, DEFAULTS);
   }
 
   get colorProfiles() {
@@ -193,6 +193,7 @@ class Visua11y extends Backbone.Controller {
   onPreAdaptStart() {
     // Language picker support
     if (!this.config?._isEnabled) return;
+    this.setupStyleTag();
     this.measure();
     this.restore();
     this.setupNavigationButton();
@@ -206,6 +207,7 @@ class Visua11y extends Backbone.Controller {
       this.setupNavigationButton();
       return;
     }
+    this.setupStyleTag();
     this.measure();
     this.restore();
     this.setupNavigationButton();
@@ -229,7 +231,7 @@ class Visua11y extends Backbone.Controller {
         } catch (err) {
         }
       }
-      tag.remove();
+      $(tag).remove();
       return measures;
     }, {});
   }
@@ -239,44 +241,60 @@ class Visua11y extends Backbone.Controller {
   }
 
   save() {
-    const cookies = document.cookie.split(';').map(a => a.trim());
-    const index = cookies.findIndex(cookie => cookie.includes('visua11y='));
-    if (index !== -1) cookies.splice(index, 1);
-    const cookieValue = encodeURIComponent(JSON.stringify({
-      id: this._colorProfileId,
-      inv: this._invert,
-      size: this._fontSize,
-      lineh: this._lineHeight,
-      letsp: this._letterSpacing,
-      wordsp: this._wordSpacing,
-      parasp: this._paragraphSpacing,
-      anim: this._noAnimations,
-      cont: this._highContrast,
-      trans: this._noTransparency,
-      brigh: this._lowBrightness,
-      backimg: this._noBackgroundImages
-    }));
-    document.cookie = `visua11y=${cookieValue}; ${cookies.join('; ')};`;
+    const boolToInt = bool => bool ? 1 : 0;
+    const largeMediumSmallToInt = (config, value) => {
+      const values = [ config._large, config._medium, config._small ];
+      const index = values.findIndex(v => String(v) === String(value));
+      return (index >= 0) ? index : values.findIndex(v => String(v) === String(config._default));
+    };
+    const data = [
+      Object.keys(DEFAULTS._colorProfiles).findIndex(k => k === this._colorProfileId) ?? 0,
+      boolToInt(this._invert),
+      largeMediumSmallToInt(this.config._fontSize, this._fontSize),
+      largeMediumSmallToInt(this.config._lineHeight, this._lineHeight),
+      largeMediumSmallToInt(this.config._letterSpacing, this._letterSpacing),
+      largeMediumSmallToInt(this.config._wordSpacing, this._wordSpacing),
+      largeMediumSmallToInt(this.config._paragraphSpacing, this._paragraphSpacing),
+      boolToInt(this._noAnimations),
+      boolToInt(this._highContrast),
+      boolToInt(this._noTransparency),
+      boolToInt(this._lowBrightness),
+      boolToInt(this._noBackgroundImages),
+      this._highContrastLuminanceThreshold
+    ];
+    Adapt.offlineStorage.set('v', Adapt.offlineStorage.serialize(data));
   }
 
   restore() {
-    const cookies = document.cookie.split(';');
-    const index = cookies.findIndex(cookie => cookie.includes('visua11y='));
-    const cookie = cookies[index];
-    const value = cookie && JSON.parse(decodeURIComponent(cookie.replace('visua11y=', '')));
-    this._colorProfileId = value?.id ?? this.config._colorProfile._default;
-    this._invert = value?.inv ?? this.config._invert._default;
-    this._fontSize = value?.size ?? this.config._fontSize._default;
-    this._lineHeight = value?.lineh ?? this.config._lineHeight._default;
-    this._letterSpacing = value?.letsp ?? this.config._letterSpacing._default;
-    this._wordSpacing = value?.wordsp ?? this.config._wordSpacing._default;
-    this._paragraphSpacing = value?.parasp ?? this.config._paragraphSpacing._default;
-    this._noAnimations = value?.anim ?? this.config._noAnimations._default;
-    this._highContrast = value?.cont ?? this.config._highContrast._default;
-    this._highContrastLuminanceThreshold = this.config._highContrastLuminanceThreshold._default;
-    this._noTransparency = value?.trans ?? this.config._noTransparency._default;
-    this._lowBrightness = value?.brigh ?? this.config._lowBrightness._default;
-    this._noBackgroundImages = value?.backimg ?? this.config._noBackgroundImages._default;
+    if (this.config._shouldSavePreferences === false) return;
+    const intToBool = (config, value) => {
+      if (value === undefined) return config._default;
+      return Boolean(value);
+    };
+    const intToLargeMediumSmall = (config, value) => {
+      if (value === undefined) return config._default;
+      value = (value ?? 1);
+      return (value === 0)
+        ? config._large
+        : (value === 2)
+          ? config._small
+          : config._medium;
+    };
+    const serialized = Adapt.offlineStorage.get('v');
+    const data = serialized ? Adapt.offlineStorage.deserialize(serialized) : [];
+    this._colorProfileId = Object.keys(DEFAULTS._colorProfiles)[data[0] ?? Object.keys(DEFAULTS._colorProfiles).findIndex(k => k === this.config._colorProfile._default)];
+    this._invert = intToBool(this.config._invert, data[1]);
+    this._fontSize = intToLargeMediumSmall(this.config._fontSize, data[2]);
+    this._lineHeight = intToLargeMediumSmall(this.config._lineHeight, data[3]);
+    this._letterSpacing = intToLargeMediumSmall(this.config._letterSpacing, data[4]);
+    this._wordSpacing = intToLargeMediumSmall(this.config._wordSpacing, data[5]);
+    this._paragraphSpacing = intToLargeMediumSmall(this.config._paragraphSpacing, data[6]);
+    this._noAnimations = intToBool(this.config._noAnimations, data[7]);
+    this._highContrast = intToBool(this.config._highContrast, data[8]);
+    this._noTransparency = intToBool(this.config._noTransparency, data[9]);
+    this._lowBrightness = intToBool(this.config._lowBrightness, data[10]);
+    this._noBackgroundImages = intToBool(this.config._noBackgroundImages, data[11]);
+    this._highContrastLuminanceThreshold = data[12] ?? this.config._highContrastLuminanceThreshold._default;
   }
 
   setupNavigationButton() {
@@ -309,9 +327,16 @@ class Visua11y extends Backbone.Controller {
       .toggleClass('a11y-no-animations', this.noAnimations)
       .toggleClass('a11y-no-background-images', this.noBackgroundImages);
     this.rules.forEach(rule => rule.modify(this));
-    this.rules.forEach(rule => rule.apply());
+    const stylesheet = this.rules.map(rule => rule.styleSheetPart).filter(Boolean).join('\n');
+    this._tag.html(stylesheet);
     $(window).resize();
     this.triggerChanged();
+  }
+
+  setupStyleTag () {
+    const tag = $('<style id="visua11y"><style>');
+    tag.appendTo('body');
+    this._tag = tag;
   }
 
   triggerChanged() {
@@ -354,7 +379,8 @@ class Visua11y extends Backbone.Controller {
       .removeClass('a11y-high-contrast')
       .removeClass('a11y-no-animations')
       .removeClass('a11y-no-background-images');
-    this.rules.forEach(rule => rule.apply());
+    const stylesheet = this.rules.map(rule => rule.styleSheetPart).filter(Boolean).join('\n');
+    this._tag.html(stylesheet);
     $(window).resize();
     this.triggerChanged();
   }
