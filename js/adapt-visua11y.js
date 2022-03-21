@@ -267,7 +267,6 @@ class Visua11y extends Backbone.Controller {
   }
 
   restore() {
-    if (this.config._shouldSavePreferences === false) return;
     const intToBool = (config, value) => {
       if (value === undefined) return config._default;
       return Boolean(value);
@@ -281,7 +280,9 @@ class Visua11y extends Backbone.Controller {
           ? config._small
           : config._medium;
     };
-    const serialized = Adapt.offlineStorage.get('v');
+    const serialized = (this.config._shouldSavePreferences === false)
+      ? null
+      : Adapt.offlineStorage.get('v');
     const data = serialized ? Adapt.offlineStorage.deserialize(serialized) : [];
     this._colorProfileId = Object.keys(DEFAULTS._colorProfiles)[data[0] ?? Object.keys(DEFAULTS._colorProfiles).findIndex(k => k === this.config._colorProfile._default)];
     this._invert = intToBool(this.config._invert, data[1]);
