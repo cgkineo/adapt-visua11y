@@ -47,7 +47,7 @@ export default function Visua11ySettings(config) {
               <div className='colorprofileid'>
                 <templates.Visua11yPreview {...config}/>
                 <label className='visua11ysettings__item-label' htmlFor='colorProfileId'>
-                  <div className='icon'></div>
+                  <div className='icon' aria-hidden='true'></div>
                   {config._colorProfile.title}
                 </label>
                 <select id='colorProfileId' name='colorProfileId' onChange={onChange} value={visua11y.colorProfileId}>
@@ -61,7 +61,7 @@ export default function Visua11ySettings(config) {
               {config._highContrast._isEnabled &&
               <div className='visua11ysettings__item highcontrast'>
                 <label className='visua11ysettings__item-label' htmlFor='highContrast' aria-hidden='true'>
-                  <div className='icon'></div>
+                  <div className='icon' aria-hidden='true'></div>
                   {config._highContrast.title}
                 </label>
                 <input type='checkbox' id='highContrast' name='highContrast' checked={visua11y.highContrast} onChange={onChange} aria-label={config._highContrast.title}/>
@@ -71,7 +71,7 @@ export default function Visua11ySettings(config) {
               {config._noTransparency._isEnabled &&
               <div className='visua11ysettings__item notransparency'>
                 <label className='visua11ysettings__item-label' htmlFor='notransparency' aria-hidden='true'>
-                  <div className='icon'></div>
+                  <div className='icon' aria-hidden='true'></div>
                   {config._noTransparency.title}
                 </label>
                 <input type='checkbox' id='noTransparency' name='noTransparency' checked={visua11y.noTransparency} onChange={onChange} aria-label={config._noTransparency.title}/>
@@ -81,7 +81,7 @@ export default function Visua11ySettings(config) {
               {config._lowBrightness._isEnabled &&
               <div className='visua11ysettings__item lowbrightness'>
                 <label className='visua11ysettings__item-label' htmlFor='lowbrightness' aria-hidden='true'>
-                  <div className='icon'></div>
+                  <div className='icon' aria-hidden='true'></div>
                   {config._lowBrightness.title}
                 </label>
                 <input type='checkbox' id='lowBrightness' name='lowBrightness' checked={visua11y.lowBrightness} onChange={onChange} aria-label={config._lowBrightness.title}/>
@@ -91,7 +91,7 @@ export default function Visua11ySettings(config) {
               {config._invert._isEnabled &&
               <div className='visua11ysettings__item invert'>
                 <label className='visua11ysettings__item-label' htmlFor='invert' aria-hidden='true'>
-                  <div className='icon'></div>
+                  <div className='icon' aria-hidden='true'></div>
                   {config._invert.title}
                 </label>
                 <input type='checkbox' id='invert' name='invert' checked={visua11y.invert} onChange={onChange} aria-label={config._invert.title}/>
@@ -115,7 +115,7 @@ export default function Visua11ySettings(config) {
           {config._noAnimations._isEnabled &&
           <div className='visua11ysettings__item noanimations'>
             <label className='visua11ysettings__item-label' htmlFor='noanimations' aria-hidden='true'>
-              <div className='icon'></div>
+              <div className='icon' aria-hidden='true'></div>
               {config._noAnimations.title}
             </label>
             <input type='checkbox' id='noAnimations' name='noAnimations' checked={visua11y.noAnimations} onChange={onChange} aria-label={config._noAnimations.title}/>
@@ -125,7 +125,7 @@ export default function Visua11ySettings(config) {
           {config._noBackgroundImages._isEnabled &&
           <div className='visua11ysettings__item nobackgroundimages'>
             <label className='visua11ysettings__item-label' htmlFor='nobackgroundimages' aria-hidden='true'>
-              <div className='icon'></div>
+              <div className='icon' aria-hidden='true'></div>
               {config._noBackgroundImages.title}
             </label>
             <input type='checkbox' id='noBackgroundImages' name='noBackgroundImages' checked={visua11y.noBackgroundImages} onChange={onChange} aria-label={config._noBackgroundImages.title}/>
@@ -151,7 +151,7 @@ export default function Visua11ySettings(config) {
           <div className='visua11ysettings__item fontsize'>
             <div className="visua11ysettings__item-title" id='fontsize'>
               {/* TODO wrap 'title' in separate <div> so title wraps separate to icon */}
-              <div className='icon'></div>{config._fontSize.title}
+              <div className='icon' aria-hidden='true'></div>{config._fontSize.title}
             </div>
 
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='fontsize'>
@@ -184,7 +184,7 @@ export default function Visua11ySettings(config) {
           {config._lineHeight._isEnabled &&
           <div className='visua11ysettings__item lineheight'>
             <div className="visua11ysettings__item-title" id='lineheight'>
-              <div className='icon'></div>{config._lineHeight.title}
+              <div className='icon' aria-hidden='true'></div>{config._lineHeight.title}
             </div>
 
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='lineheight'>
@@ -217,7 +217,7 @@ export default function Visua11ySettings(config) {
           {config._paragraphSpacing._isEnabled &&
           <div className='visua11ysettings__item paragraphspacing'>
             <div className="visua11ysettings__item-title" id='paragraphspacing'>
-              <div className='icon'></div>{config._paragraphSpacing.title}
+              <div className='icon' aria-hidden='true'></div>{config._paragraphSpacing.title}
             </div>
 
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='paragraphspacing'>
@@ -250,7 +250,7 @@ export default function Visua11ySettings(config) {
           {config._letterSpacing._isEnabled &&
           <div className='visua11ysettings__item letterspacing'>
             <div className="visua11ysettings__item-title" id='letterspacing'>
-              <div className='icon'></div>{config._letterSpacing.title}
+              <div className='icon' aria-hidden='true'></div>{config._letterSpacing.title}
             </div>
 
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='letterspacing'>
@@ -283,7 +283,7 @@ export default function Visua11ySettings(config) {
           {config._wordSpacing._isEnabled &&
           <div className='visua11ysettings__item wordspacing'>
             <div className="visua11ysettings__item-title" id='wordspacing'>
-              <div className='icon'></div>{config._wordSpacing.title}
+              <div className='icon' aria-hidden='true'></div>{config._wordSpacing.title}
             </div>
 
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='wordspacing'>

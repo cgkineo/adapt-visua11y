@@ -34,10 +34,17 @@ export function _deepDefaults(original, ...defaultObjects) {
 class Visua11y extends Backbone.Controller {
 
   initialize() {
+    this.injectSVG();
     this.apply = _.debounce(this.apply.bind(this), 50);
     this.listenTo(Adapt, 'configModel:dataLoaded', this.onPreAdaptStart);
     this.listenTo(Adapt, 'adapt:start', this.onAdaptStart);
     this._adaptStarted = false;
+  }
+
+  async injectSVG() {
+    const response = await fetch('assets/visua11y-filters.svg');
+    const text = await response.text();
+    $('body').append($(text));
   }
 
   get config () {
@@ -203,6 +210,7 @@ class Visua11y extends Backbone.Controller {
 
   onAdaptStart() {
     this._adaptStarted = true;
+    if (!this.config?._isEnabled) return;
     if (this.rules) {
       this.setupNavigationButton();
       return;
@@ -266,7 +274,6 @@ class Visua11y extends Backbone.Controller {
   }
 
   restore() {
-    if (this.config._shouldSavePreferences === false) return;
     const intToBool = (config, value) => {
       if (value === undefined) return config._default;
       return Boolean(value);
@@ -280,7 +287,9 @@ class Visua11y extends Backbone.Controller {
           ? config._small
           : config._medium;
     };
-    const serialized = Adapt.offlineStorage.get('v');
+    const serialized = (this.config._shouldSavePreferences === false)
+      ? null
+      : Adapt.offlineStorage.get('v');
     const data = serialized ? Adapt.offlineStorage.deserialize(serialized) : [];
     this._colorProfileId = Object.keys(DEFAULTS._colorProfiles)[data[0] ?? Object.keys(DEFAULTS._colorProfiles).findIndex(k => k === this.config._colorProfile._default)];
     this._invert = intToBool(this.config._invert, data[1]);
@@ -311,7 +320,7 @@ class Visua11y extends Backbone.Controller {
       $html.attr('data-color-profile', this.colorProfileId)
       : $html.removeAttr('data-color-profile');
     const documentStyle = document.documentElement.style;
-    documentStyle.setProperty('--visua11y-color-profile-url', `url(assets/visua11y-filters.svg#${this.colorProfileId})`);
+    documentStyle.setProperty('--visua11y-color-profile-url', `url(#${this.colorProfileId})`);
     documentStyle.setProperty('--visua11y-invert', this.invert ? '100%' : '0%');
     documentStyle.setProperty('--visua11y-contrast', this.highContrast ? '108%' : '100%');
     documentStyle.setProperty('--visua11y-brightness', this.lowBrightness ? '80%' : '100%');
@@ -362,7 +371,7 @@ class Visua11y extends Backbone.Controller {
     this.rules.forEach(rule => rule.reset());
     const $html = $('html');
     const documentStyle = document.documentElement.style;
-    documentStyle.setProperty('--visua11y-color-profile-url', 'url(assets/visua11y-filters.svg#default)');
+    documentStyle.setProperty('--visua11y-color-profile-url', 'url(#default)');
     documentStyle.setProperty('--visua11y-invert', '0%');
     documentStyle.setProperty('--visua11y-contrast', '100%');
     documentStyle.setProperty('--visua11y-brightness', '100%');

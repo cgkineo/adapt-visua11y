@@ -11,9 +11,7 @@ html:not([data-color-profile=default]) {
   .notify > * {
 
     img, video, canvas, .mejs-poster, .has-bg-image {
-      filter: invert(var(--visua11y-invert)) var(--visua11y-color-profile-url) contrast(var(--visua11y-contrast)) brightness(var(--visua11y-brightness));
-      transform: translateZ(0); /*for older browsers*/
-      will-change: transform;
+      .visua11y-filters;
     }
 
     .has-bg-image > * {
@@ -33,9 +31,7 @@ html[data-color-profile=default] {
   .notify > * {
 
     img, video, canvas, .mejs-poster, .has-bg-image {
-      filter: invert(var(--visua11y-invert)) contrast(var(--visua11y-contrast)) brightness(var(--visua11y-brightness));
-      transform: translateZ(0); /*for older browsers*/
-      will-change: transform;
+      .visua11y-filters-no-profile;
     }
 
     .has-bg-image > * {
@@ -69,4 +65,16 @@ html[data-color-profile=default] {
 .a11y-no-background-images {
   img[aria-hidden=true] { display: none }
   .has-bg-image { background-image: none !important; }
+}
+
+.visua11y-filters {
+  filter: invert(var(--visua11y-invert)) var(--visua11y-color-profile-url) contrast(var(--visua11y-contrast)) brightness(var(--visua11y-brightness));
+  transform: translateZ(0); /*for older browsers*/
+  will-change: transform;
+}
+
+.visua11y-filters-no-profile {
+  filter: invert(var(--visua11y-invert)) contrast(var(--visua11y-contrast)) brightness(var(--visua11y-brightness));
+  transform: translateZ(0); /*for older browsers*/
+  will-change: transform;
 }
