@@ -203,6 +203,7 @@ class Visua11y extends Backbone.Controller {
 
   onAdaptStart() {
     this._adaptStarted = true;
+    if (!this.config?._isEnabled) return;
     if (this.rules) {
       this.setupNavigationButton();
       return;
