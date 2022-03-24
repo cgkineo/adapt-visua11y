@@ -351,6 +351,13 @@ class Visua11y extends Backbone.Controller {
   triggerChanged() {
     this.trigger('changed');
     Adapt.trigger('visua11y:changed');
+    this.forceRerender();
+  }
+  
+  forceRerender() {
+    const $body = $('body');
+    $body.css('transform', 'translateZ(0)');
+    _.delay(() => $body.css('transform', ''), 250);
   }
 
   reset() {
