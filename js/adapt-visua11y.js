@@ -355,9 +355,8 @@ class Visua11y extends Backbone.Controller {
   }
   
   forceRerender() {
-    const $body = $('body');
-    $body.css('transform', 'translateZ(0)');
-    _.delay(() => $body.css('transform', ''), 250);
+    document.body.style.webkitTransform = 'scale(1)';
+    _.delay(() => document.body.style.webkitTransform = '', 250);
   }
 
   reset() {
