@@ -1,5 +1,6 @@
 import Backbone from 'backbone';
 import Adapt from 'core/js/adapt';
+import device from 'core/js/device';
 import CSSRule from './CSSRule';
 import Color from './Color';
 import DEFAULTS from './DEFAULTS';
@@ -351,6 +352,12 @@ class Visua11y extends Backbone.Controller {
   triggerChanged() {
     this.trigger('changed');
     Adapt.trigger('visua11y:changed');
+    this.forceRerender();
+  }
+  
+  forceRerender() {
+    if (device.browser !== 'safari') return;
+    $('body').hide().show(0);
   }
 
   reset() {
