@@ -19,7 +19,7 @@ export default function Visua11ySettings(config) {
   }
 
   return (
-    <div className='visua11ysettings__inner' role='list'>
+    <div className='visua11ysettings__inner'>
 
       {config.description &&
       <div className='visua11ysettings__description'>
