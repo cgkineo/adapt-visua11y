@@ -21,12 +21,6 @@ export default function Visua11ySettings(config) {
   return (
     <div className='visua11ysettings__inner'>
 
-      {config.description &&
-      <div className='visua11ysettings__description'>
-        {config.description}
-      </div>
-      }
-
       {(config._colorProfile._isEnabled ||
         config._highContrast._isEnabled ||
         config._noTransparency._isEnabled ||
