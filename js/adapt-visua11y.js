@@ -321,7 +321,7 @@ class Visua11y extends Backbone.Controller {
       $html.attr('data-color-profile', this.colorProfileId)
       : $html.removeAttr('data-color-profile');
     const documentStyle = document.documentElement.style;
-    documentStyle.setProperty('--visua11y-color-profile-url', `url(#${this.colorProfileId})`);
+    documentStyle.setProperty('--visua11y-color-profile-url', `url(#adapt-visua11y-${this.colorProfileId})`);
     documentStyle.setProperty('--visua11y-invert', this.invert ? '100%' : '0%');
     documentStyle.setProperty('--visua11y-contrast', this.highContrast ? '108%' : '100%');
     documentStyle.setProperty('--visua11y-brightness', this.lowBrightness ? '80%' : '100%');
@@ -378,7 +378,7 @@ class Visua11y extends Backbone.Controller {
     this.rules.forEach(rule => rule.reset());
     const $html = $('html');
     const documentStyle = document.documentElement.style;
-    documentStyle.setProperty('--visua11y-color-profile-url', 'url(#default)');
+    documentStyle.setProperty('--visua11y-color-profile-url', 'url(#adapt-visua11y-default)');
     documentStyle.setProperty('--visua11y-invert', '0%');
     documentStyle.setProperty('--visua11y-contrast', '100%');
     documentStyle.setProperty('--visua11y-brightness', '100%');
