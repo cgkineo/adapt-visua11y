@@ -269,7 +269,7 @@ class Visua11y extends Backbone.Controller {
       boolToInt(this._noTransparency),
       boolToInt(this._lowBrightness),
       boolToInt(this._noBackgroundImages),
-      this._highContrastLuminanceThreshold
+      parseInt(this._highContrastLuminanceThreshold)
     ];
     Adapt.offlineStorage.set('v', Adapt.offlineStorage.serialize(data));
   }
