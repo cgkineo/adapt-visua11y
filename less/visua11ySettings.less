@@ -7,7 +7,6 @@
 // UI settings
 // --------------------------------------------------
 .visua11ysettings {
-  // TODO RTL styling
   max-width: @device-width-small;
   margin: auto;
 
@@ -41,6 +40,11 @@
     padding-right: @icon-size + @item-padding;
     position: relative;
     border-top: 1px solid fade(@notify-inverted, 30%);
+    
+    .dir-rtl & {
+      padding-left: @icon-size + @item-padding;
+      padding-right: inherit;
+    }
   }
 
   .visua11ysettings__item > input {
@@ -52,6 +56,11 @@
     //TODO for consistency across browsers
     width: @icon-size;
     height: @icon-size;
+    
+    .dir-rtl & {
+      left: @item-padding / 2;
+      right: inherit;
+    }
   }
 
   // Visual display group
@@ -96,6 +105,11 @@
       @media (min-width: @device-width-medium) {
         margin-right: @item-margin;
         margin-bottom: inherit;
+        
+        .dir-rtl & {
+          margin-left: @item-margin;
+          margin-right: inherit;
+        }
       }
     }
 
@@ -144,6 +158,11 @@
     display: inline-block;
     vertical-align: middle;
     margin-right: .5rem;
+    
+    .dir-rtl & {
+      margin-left: .5rem;
+      margin-right: inherit;
+    }
   }
 
   .colorprofileid .icon {
