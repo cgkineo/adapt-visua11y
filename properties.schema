@@ -47,7 +47,15 @@
                   "inputType": "Checkbox",
                   "validators": []
                 },
-                "description": {
+                "title": {
+                  "type": "string",
+                  "required": false,
+                  "default": "Accessibility Controls",
+                  "title": "Popup title text",
+                  "inputType": "Text",
+                  "validators": []
+                },
+                "body": {
                   "type": "string",
                   "required": false,
                   "default": "Use the controls below to customise your learning experience to your individual needs.",
