@@ -400,10 +400,12 @@ class Visua11y extends Backbone.Controller {
     this._tag.html(stylesheet);
     $(window).resize();
     this.triggerChanged();
-    notify.create({
-      _type: 'a11y-push',
-      body: 'Settings reset'
-    });
+    if (Adapt.visua11y.config.resetAriaMessage) {
+      notify.create({
+        _type: 'a11y-push',
+        body: Adapt.visua11y.config.resetAriaMessage
+      });
+    }
   }
 }
 
