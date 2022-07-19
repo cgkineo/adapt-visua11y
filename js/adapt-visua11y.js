@@ -6,6 +6,7 @@ import Color from './Color';
 import DEFAULTS from './DEFAULTS';
 import { highContrast, invert, lowBrightness, profileFilter } from './ColorTransformations';
 import Visua11yButtonView from './Visua11yButtonView';
+import notify from 'core/js/notify';
 
 /**
  * Utility function for applying deep defaults
@@ -354,7 +355,7 @@ class Visua11y extends Backbone.Controller {
     Adapt.trigger('visua11y:changed');
     this.forceRerender();
   }
-  
+
   forceRerender() {
     if (device.browser !== 'safari') return;
     $('body').hide().show(0);
@@ -399,6 +400,10 @@ class Visua11y extends Backbone.Controller {
     this._tag.html(stylesheet);
     $(window).resize();
     this.triggerChanged();
+    notify.create({
+      _type: 'a11y-push',
+      body: 'Settings reset'
+    });
   }
 }
 
