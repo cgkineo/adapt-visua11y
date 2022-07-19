@@ -40,7 +40,10 @@ class AnimationsButtonView extends Backbone.View {
 
   onClick(event) {
     if (event && event.preventDefault) event.preventDefault();
+    const config = Adapt.course.get('_visua11y');
     Adapt.visua11y.settingsPrompt = notify.popup({
+      title: config.title,
+      body: config.body,
       _view: new Visua11ySettingsView(),
       _classes: 'is-visua11ysettings',
       _showCloseButton: false

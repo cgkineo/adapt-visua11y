@@ -21,12 +21,6 @@ export default function Visua11ySettings(config) {
   return (
     <div className='visua11ysettings__inner'>
 
-      {config.description &&
-      <div className='visua11ysettings__description'>
-        {config.description}
-      </div>
-      }
-
       {(config._colorProfile._isEnabled ||
         config._highContrast._isEnabled ||
         config._noTransparency._isEnabled ||
@@ -36,7 +30,7 @@ export default function Visua11ySettings(config) {
         <div className='visua11ysettings__group visua11ysettings__group-visualdisplay' role='group' aria-labelledby='visualdisplay'>
           {/* Should 'visua11ysettings__group-title' read as a title or is the lablled list enough? */}
           {config._groups.visualDisplay &&
-          <div className='visua11ysettings__group-title' id='visualdisplay' role="heading" aria-level="1">
+          <div className='visua11ysettings__group-title' id='visualdisplay' role="heading" aria-level="2">
             {config._groups.visualDisplay}
           </div>
           }
@@ -107,7 +101,7 @@ export default function Visua11ySettings(config) {
 
         <div className='visua11ysettings__group visua11ysettings__group-distractions' role='group' aria-labelledby='distractions'>
           {config._groups.distractions &&
-          <div className='visua11ysettings__group-title' id='distractions' role="heading" aria-level="1">
+          <div className='visua11ysettings__group-title' id='distractions' role="heading" aria-level="2">
             {config._groups.distractions}
           </div>
           }
@@ -142,7 +136,7 @@ export default function Visua11ySettings(config) {
 
         <div className='visua11ysettings__group visua11ysettings__group-readability' role='group' aria-labelledby='readability'>
           {config._groups.readability &&
-          <div className='visua11ysettings__group-title' id='readability' role="heading" aria-level="1">
+          <div className='visua11ysettings__group-title' id='readability' role="heading" aria-level="2">
             {config._groups.readability}
           </div>
           }
