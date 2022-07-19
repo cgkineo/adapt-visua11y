@@ -119,5 +119,6 @@ export default {
     "navigationAriaLabel": "Visual accessibility settings",
     "resetText": "Reset",
     "closeText": "Close"
-  }
+  },
+  "resetAriaMessage": "Accessibility controls reset"
 };
