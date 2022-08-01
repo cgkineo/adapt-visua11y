@@ -228,8 +228,8 @@
                       "type": "boolean",
                       "required": false,
                       "default": false,
-                      "title": "Default",
-                      "inputType": "Text",
+                      "title": "Enabled on course load",
+                      "inputType": "Checkbox",
                       "validators": []
                     }
                   }
@@ -259,7 +259,7 @@
                       "type": "number",
                       "required": false,
                       "default": 70,
-                      "title": "Default",
+                      "title": "Default value",
                       "inputType": "Text",
                       "validators": []
                     }
@@ -290,8 +290,8 @@
                       "type": "boolean",
                       "required": false,
                       "default": false,
-                      "title": "Default",
-                      "inputType": "Text",
+                      "title": "Enabled on course load",
+                      "inputType": "Checkbox",
                       "validators": []
                     }
                   }
@@ -321,8 +321,8 @@
                       "type": "boolean",
                       "required": false,
                       "default": false,
-                      "title": "Default",
-                      "inputType": "Text",
+                      "title": "Enabled on course load",
+                      "inputType": "Checkbox",
                       "validators": []
                     }
                   }
@@ -352,8 +352,8 @@
                       "type": "boolean",
                       "required": false,
                       "default": false,
-                      "title": "Default",
-                      "inputType": "Text",
+                      "title": "Enabled on course load",
+                      "inputType": "Checkbox",
                       "validators": []
                     }
                   }
@@ -383,8 +383,8 @@
                       "type": "boolean",
                       "required": false,
                       "default": false,
-                      "title": "Default",
-                      "inputType": "Text",
+                      "title": "Enabled on course load",
+                      "inputType": "Checkbox",
                       "validators": []
                     }
                   }
@@ -414,8 +414,8 @@
                       "type": "boolean",
                       "required": false,
                       "default": false,
-                      "title": "Default",
-                      "inputType": "Text",
+                      "title": "Enabled on course load",
+                      "inputType": "Checkbox",
                       "validators": []
                     }
                   }
@@ -493,7 +493,7 @@
                       "type": "string",
                       "required": false,
                       "default": "",
-                      "title": "Default",
+                      "title": "default",
                       "inputType": "Text",
                       "validators": []
                     }
@@ -572,7 +572,7 @@
                       "type": "number",
                       "required": false,
                       "default": 1,
-                      "title": "Default",
+                      "title": "Default value",
                       "inputType": "Text",
                       "validators": []
                     }
@@ -651,7 +651,7 @@
                       "type": "number",
                       "required": false,
                       "default": 1,
-                      "title": "Default",
+                      "title": "Default value",
                       "inputType": "Text",
                       "validators": []
                     }
@@ -730,7 +730,7 @@
                       "type": "number",
                       "required": false,
                       "default": 1,
-                      "title": "Default",
+                      "title": "Default value",
                       "inputType": "Text",
                       "validators": []
                     }
@@ -809,7 +809,7 @@
                       "type": "number",
                       "required": false,
                       "default": 1,
-                      "title": "Default",
+                      "title": "Default value",
                       "inputType": "Text",
                       "validators": []
                     }
