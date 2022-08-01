@@ -4,6 +4,7 @@
   "_shouldSavePreferences": true,
   "title": "Accessibility Controls",
   "body": "Use the controls below to customise your learning experience to your individual needs.",
+  "_showCloseButton": false,
   "_groups": {
     "visualDisplay": "Enhance visual display",
     "distractions": "Reduce distractions",

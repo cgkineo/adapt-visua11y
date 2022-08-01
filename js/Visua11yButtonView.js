@@ -46,7 +46,7 @@ class AnimationsButtonView extends Backbone.View {
       body: config.body,
       _view: new Visua11ySettingsView(),
       _classes: 'is-visua11ysettings',
-      _showCloseButton: false
+      _showCloseButton: config._showCloseButton || false
     });
     this.render();
     Adapt.visua11y.settingsPrompt.$el.on('click', this.onNotifyClicked);
