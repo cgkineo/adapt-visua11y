@@ -55,9 +55,8 @@ class AnimationsButtonView extends Backbone.View {
 
   onNotifyClicked(event) {
     const $target = $(event.target);
-    const isChild = ($target.parents('.visua11ysettings__inner').length !== 0);
-    const isContainer = $target.is('.visua11ysettings__inner');
-    if (isChild || isContainer) return;
+    const isChild = ($target.parents('.notify__popup-inner').length !== 0);
+    if (isChild) return;
     Adapt.visua11y.settingsPrompt.closeNotify();
   }
 
