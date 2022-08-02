@@ -46,7 +46,7 @@ class AnimationsButtonView extends Backbone.View {
       body: config.body,
       _view: new Visua11ySettingsView(),
       _classes: 'is-visua11ysettings',
-      _showCloseButton: false
+      _showCloseButton: config._showCloseButton || false
     });
     this.render();
     Adapt.visua11y.settingsPrompt.$el.on('click', this.onNotifyClicked);
@@ -55,9 +55,8 @@ class AnimationsButtonView extends Backbone.View {
 
   onNotifyClicked(event) {
     const $target = $(event.target);
-    const isChild = ($target.parents('.visua11ysettings__inner').length !== 0);
-    const isContainer = $target.is('.visua11ysettings__inner');
-    if (isChild || isContainer) return;
+    const isChild = ($target.parents('.notify__popup-inner').length !== 0);
+    if (isChild) return;
     Adapt.visua11y.settingsPrompt.closeNotify();
   }
 
