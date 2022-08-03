@@ -845,6 +845,14 @@
                       "validators": []
                     }
                   }
+                },
+                "resetAriaMessage": {
+                  "type": "string",
+                  "required": false,
+                  "default": "Small",
+                  "title": "Accessibility controls reset",
+                  "inputType": "Text",
+                  "validators": []
                 }
               }
             }
