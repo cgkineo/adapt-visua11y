@@ -127,7 +127,7 @@ export default [
     function (output, original, style, selector, propertyName) {
       if (output === '') {
         const camelPropertyName = propertyName.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-        output = this.tagMeasurements[selector.trim()][camelPropertyName];
+        output = this.tagMeasurements.p[camelPropertyName];
         output = (parseFloat(output) / parseFloat(this.originalFontSize)) + 'em';
       }
       output = String(output);
