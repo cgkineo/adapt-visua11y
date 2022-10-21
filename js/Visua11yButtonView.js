@@ -1,12 +1,14 @@
 import Adapt from 'core/js/adapt';
 import Visua11ySettingsView from './Visua11ySettingsView';
 import notify from 'core/js/notify';
+import tooltips from 'core/js/tooltips';
 
 class AnimationsButtonView extends Backbone.View {
 
   attributes() {
     return {
-      'aria-label': Adapt.visua11y.config._button.navigationAriaLabel
+      'aria-label': Adapt.visua11y.config._button.navigationAriaLabel,
+      'data-tooltip-id': 'visua11y'
     };
   }
 
@@ -28,6 +30,11 @@ class AnimationsButtonView extends Backbone.View {
     this.onNotifyClosed = this.onNotifyClosed.bind(this);
     this.onNotifyClicked = this.onNotifyClicked.bind(this);
     this.render();
+    
+    tooltips.register({
+      _id: 'visua11y',
+      ...Adapt.course.get('_globals')?._extensions?._visua11y?._navTooltip || {}
+    });
   }
 
   render() {
