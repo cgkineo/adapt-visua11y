@@ -485,8 +485,8 @@
                     "largeLabel": {
                       "type": "string",
                       "required": false,
-                      "default": "Large label",
-                      "title": "Title",
+                      "default": "Large",
+                      "title": "Large label",
                       "inputType": "Text",
                       "validators": []
                     },
@@ -502,7 +502,7 @@
                       "type": "string",
                       "required": false,
                       "default": "",
-                      "title": "default",
+                      "title": "Default value",
                       "inputType": "Text",
                       "validators": []
                     }
@@ -564,8 +564,8 @@
                     "largeLabel": {
                       "type": "string",
                       "required": false,
-                      "default": "Large label",
-                      "title": "Title",
+                      "default": "Large",
+                      "title": "Large label",
                       "inputType": "Text",
                       "validators": []
                     },
@@ -643,8 +643,8 @@
                     "largeLabel": {
                       "type": "string",
                       "required": false,
-                      "default": "Large label",
-                      "title": "Title",
+                      "default": "Large",
+                      "title": "Large label",
                       "inputType": "Text",
                       "validators": []
                     },
@@ -722,8 +722,8 @@
                     "largeLabel": {
                       "type": "string",
                       "required": false,
-                      "default": "Large label",
-                      "title": "Title",
+                      "default": "Large",
+                      "title": "Large label",
                       "inputType": "Text",
                       "validators": []
                     },
@@ -801,8 +801,8 @@
                     "largeLabel": {
                       "type": "string",
                       "required": false,
-                      "default": "Large label",
-                      "title": "Title",
+                      "default": "Large",
+                      "title": "Large label",
                       "inputType": "Text",
                       "validators": []
                     },
