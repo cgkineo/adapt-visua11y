@@ -65,7 +65,7 @@ html[data-color-profile=default] {
  * Remove canvas player with aria-hidden (adapt-graphicLottie)
  */
 .a11y-no-background-images {
-  img[aria-hidden=true] { display: none }
+  img[aria-hidden=true] { visibility: hidden; }
   .has-bg-image { background-image: none !important; }
   .svg__player[aria-hidden=true] { display: none; }
   .graphiclottie__player[aria-hidden=true] { display: none; }
