@@ -14,7 +14,7 @@ html:not([data-color-profile=default]) {
       .visua11y-filters;
     }
 
-    .has-bg-image > * {
+    .has-bg-image > .background {
       filter: invert(var(--visua11y-invert));
     }
 
@@ -34,7 +34,7 @@ html[data-color-profile=default] {
       .visua11y-filters-no-profile;
     }
 
-    .has-bg-image > * {
+    .has-bg-image > .background {
       filter: invert(var(--visua11y-invert));
     }
 
@@ -66,7 +66,7 @@ html[data-color-profile=default] {
  */
 .a11y-no-background-images {
   img[aria-hidden=true] { visibility: hidden; }
-  .has-bg-image { background-image: none !important; }
+  .has-bg-image > .background { background-image: none !important; }
   .svg__player[aria-hidden=true] { display: none; }
   .graphiclottie__player[aria-hidden=true] { display: none; }
 }
