@@ -1,0 +1,615 @@
+{
+  "$anchor": "visua11y-course",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "$patch": {
+    "source": {
+      "$ref": "course"
+    },
+    "with": {
+      "properties": {
+        "_globals": {
+          "type": "object",
+          "default": {},
+          "properties": {
+            "_visua11y": {
+              "type": "object",
+              "default": {},
+              "properties": {
+                "_navOrder": {
+                  "type": "number",
+                  "title": "Nav order",
+                  "default": 0,
+                  "_backboneForms": "Text"
+                }
+              }
+            }
+          }
+        },
+        "_visua11y": {
+          "type": "object",
+          "title": "Visua11y",
+          "default": {},
+          "properties": {
+            "_isEnabled": {
+              "type": "boolean",
+              "title": "Enable Visua11y",
+              "default": false
+            },
+            "_shouldSavePreferences": {
+              "type": "boolean",
+              "title": "Save user preferences?",
+              "default": false
+            },
+            "title": {
+              "type": "string",
+              "title": "Popup title text",
+              "default": "Accessibility Controls"
+            },
+            "body": {
+              "type": "string",
+              "title": "Popup body text",
+              "default": "Use the controls below to customise your learning experience to your individual needs."
+            },
+            "_groups": {
+              "type": "object",
+              "title": "Grouping title text",
+              "default": {},
+              "properties": {
+                "visualDisplay": {
+                  "type": "string",
+                  "title": "Visual display",
+                  "default": "Enhance visual display"
+                },
+                "distractions": {
+                  "type": "string",
+                  "title": "Distractions",
+                  "default": "Reduce distractions"
+                },
+                "readability": {
+                  "type": "string",
+                  "title": "Readability",
+                  "default": "Readability"
+                }
+              }
+            },
+            "_preview": {
+              "type": "object",
+              "title": "Preview text",
+              "default": {},
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "title": "Title",
+                  "default": "Title"
+                },
+                "character": {
+                  "type": "string",
+                  "title": "Character",
+                  "default": "A"
+                }
+              }
+            },
+            "_colorProfiles": {
+              "type": "object",
+              "title": "Color profiles",
+              "default": {},
+              "properties": {
+                "default": {
+                  "type": "string",
+                  "title": "Default profile name",
+                  "default": "Default"
+                },
+                "achromatopsia": {
+                  "type": "string",
+                  "title": "Achromatopsia profile name",
+                  "default": "Greyscale (Achromatopsia)"
+                },
+                "protanopia": {
+                  "type": "string",
+                  "title": "Protanopia profile name",
+                  "default": "Red/green (Protanopia)"
+                },
+                "deuteranopia": {
+                  "type": "string",
+                  "title": "Deuteranopia profile name",
+                  "default": "Green/red (Deuteranopia)"
+                },
+                "tritanopia": {
+                  "type": "string",
+                  "title": "Tritanopia profile name",
+                  "default": "Blue/yellow (Tritanopia)"
+                },
+                "dyslexia": {
+                  "type": "string",
+                  "title": "Dyslexia profile name",
+                  "default": "Yellow tint (Dyslexia)"
+                }
+              }
+            },
+            "_colorProfile": {
+              "type": "object",
+              "title": "Color profile",
+              "default": {},
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "title": "Enable",
+                  "default": true
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title",
+                  "default": "Colour profile"
+                },
+                "_default": {
+                  "type": "string",
+                  "title": "Default color profile",
+                  "default": "default"
+                }
+              }
+            },
+            "_highContrast": {
+              "type": "object",
+              "title": "High contrast",
+              "default": {},
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "title": "Enable",
+                  "default": true
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title",
+                  "default": "High contrast"
+                },
+                "_default": {
+                  "type": "boolean",
+                  "title": "Enabled on course load",
+                  "default": false
+                }
+              }
+            },
+            "_highContrastLuminanceThreshold": {
+              "type": "object",
+              "title": "High contrast luminance threshold",
+              "default": {},
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "title": "Enable",
+                  "default": true
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title",
+                  "default": "High contrast"
+                },
+                "_default": {
+                  "type": "number",
+                  "title": "Default value",
+                  "default": 70,
+                  "_backboneForms": "Text"
+                }
+              }
+            },
+            "_noTransparency": {
+              "type": "object",
+              "title": "No transparency",
+              "default": {},
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "title": "Enable",
+                  "default": true
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title",
+                  "default": "No transparency"
+                },
+                "_default": {
+                  "type": "boolean",
+                  "title": "Enabled on course load",
+                  "default": false
+                }
+              }
+            },
+            "_lowBrightness": {
+              "type": "object",
+              "title": "Low brightness",
+              "default": {},
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "title": "Enable",
+                  "default": true
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title",
+                  "default": "Low brightness"
+                },
+                "_default": {
+                  "type": "boolean",
+                  "title": "Enabled on course load",
+                  "default": false
+                }
+              }
+            },
+            "_invert": {
+              "type": "object",
+              "title": "Invert",
+              "default": {},
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "title": "Enable",
+                  "default": true
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title",
+                  "default": "Invert"
+                },
+                "_default": {
+                  "type": "boolean",
+                  "title": "Enabled on course load",
+                  "default": false
+                }
+              }
+            },
+            "_noAnimations": {
+              "type": "object",
+              "title": "No animations",
+              "default": {},
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "title": "Enable",
+                  "default": true
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title",
+                  "default": "No animations"
+                },
+                "_default": {
+                  "type": "boolean",
+                  "title": "Enabled on course load",
+                  "default": false
+                }
+              }
+            },
+            "_noBackgroundImages": {
+              "type": "object",
+              "title": "No background images",
+              "default": {},
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "title": "Enable",
+                  "default": true
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title",
+                  "default": "No background images"
+                },
+                "_default": {
+                  "type": "boolean",
+                  "title": "Enabled on course load",
+                  "default": false
+                }
+              }
+            },
+            "_fontSize": {
+              "type": "object",
+              "title": "Font size",
+              "default": {},
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "title": "Enable",
+                  "default": true
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title",
+                  "default": "Font size"
+                },
+                "smallLabel": {
+                  "type": "string",
+                  "title": "Small label",
+                  "default": "Small"
+                },
+                "_small": {
+                  "type": "string",
+                  "title": "Small default",
+                  "default": "9pt"
+                },
+                "mediumLabel": {
+                  "type": "string",
+                  "title": "Medium label",
+                  "default": "Medium"
+                },
+                "_medium": {
+                  "type": "string",
+                  "title": "Medium default",
+                  "default": ""
+                },
+                "largeLabel": {
+                  "type": "string",
+                  "title": "Large label",
+                  "default": "Large"
+                },
+                "_large": {
+                  "type": "string",
+                  "title": "Large default",
+                  "default": "18pt"
+                },
+                "_default": {
+                  "type": "string",
+                  "title": "Default value",
+                  "default": ""
+                }
+              }
+            },
+            "_lineHeight": {
+              "type": "object",
+              "title": "Line height",
+              "default": {},
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "title": "Enable",
+                  "default": true
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title",
+                  "default": "Line height"
+                },
+                "smallLabel": {
+                  "type": "string",
+                  "title": "Small label",
+                  "default": "Small"
+                },
+                "_small": {
+                  "type": "number",
+                  "title": "Small default",
+                  "default": 0.9,
+                  "_backboneForms": "Text"
+                },
+                "mediumLabel": {
+                  "type": "string",
+                  "title": "Medium label",
+                  "default": "Medium"
+                },
+                "_medium": {
+                  "type": "number",
+                  "title": "Medium default",
+                  "default": 1,
+                  "_backboneForms": "Text"
+                },
+                "largeLabel": {
+                  "type": "string",
+                  "title": "Large label",
+                  "default": "Large"
+                },
+                "_large": {
+                  "type": "number",
+                  "title": "Large default",
+                  "default": 1.2,
+                  "_backboneForms": "Text"
+                },
+                "_default": {
+                  "type": "number",
+                  "title": "Default value",
+                  "default": 1,
+                  "_backboneForms": "Text"
+                }
+              }
+            },
+            "_paragraphSpacing": {
+              "type": "object",
+              "title": "Paragraph spacing",
+              "default": {},
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "title": "Enable",
+                  "default": true
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title",
+                  "default": "Paragraph spacing"
+                },
+                "smallLabel": {
+                  "type": "string",
+                  "title": "Small label",
+                  "default": "Small"
+                },
+                "_small": {
+                  "type": "number",
+                  "title": "Small default",
+                  "default": 0.5,
+                  "_backboneForms": "Text"
+                },
+                "mediumLabel": {
+                  "type": "string",
+                  "title": "Medium label",
+                  "default": "Medium"
+                },
+                "_medium": {
+                  "type": "number",
+                  "title": "Medium default",
+                  "default": 1,
+                  "_backboneForms": "Text"
+                },
+                "largeLabel": {
+                  "type": "string",
+                  "title": "Large label",
+                  "default": "Large"
+                },
+                "_large": {
+                  "type": "number",
+                  "title": "Large default",
+                  "default": 2,
+                  "_backboneForms": "Text"
+                },
+                "_default": {
+                  "type": "number",
+                  "title": "Default value",
+                  "default": 1,
+                  "_backboneForms": "Text"
+                }
+              }
+            },
+            "_letterSpacing": {
+              "type": "object",
+              "title": "Letter spacing",
+              "default": {},
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "title": "Enable",
+                  "default": true
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title",
+                  "default": "Letter spacing"
+                },
+                "smallLabel": {
+                  "type": "string",
+                  "title": "Small label",
+                  "default": "Small"
+                },
+                "_small": {
+                  "type": "number",
+                  "title": "Small default",
+                  "default": 0.97,
+                  "_backboneForms": "Text"
+                },
+                "mediumLabel": {
+                  "type": "string",
+                  "title": "Medium label",
+                  "default": "Medium"
+                },
+                "_medium": {
+                  "type": "number",
+                  "title": "Medium default",
+                  "default": 1,
+                  "_backboneForms": "Text"
+                },
+                "largeLabel": {
+                  "type": "string",
+                  "title": "Large label",
+                  "default": "Large"
+                },
+                "_large": {
+                  "type": "number",
+                  "title": "Large default",
+                  "default": 1.2,
+                  "_backboneForms": "Text"
+                },
+                "_default": {
+                  "type": "number",
+                  "title": "Default value",
+                  "default": 1,
+                  "_backboneForms": "Text"
+                }
+              }
+            },
+            "_wordSpacing": {
+              "type": "object",
+              "title": "Word spacing",
+              "default": {},
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "title": "Enable",
+                  "default": true
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title",
+                  "default": "Word spacing"
+                },
+                "smallLabel": {
+                  "type": "string",
+                  "title": "Small label",
+                  "default": "Small"
+                },
+                "_small": {
+                  "type": "number",
+                  "title": "Small default",
+                  "default": 0.97,
+                  "_backboneForms": "Text"
+                },
+                "mediumLabel": {
+                  "type": "string",
+                  "title": "Medium label",
+                  "default": "Medium"
+                },
+                "_medium": {
+                  "type": "number",
+                  "title": "Medium default",
+                  "default": 1,
+                  "_backboneForms": "Text"
+                },
+                "largeLabel": {
+                  "type": "string",
+                  "title": "Large label",
+                  "default": "Large"
+                },
+                "_large": {
+                  "type": "number",
+                  "title": "Large default",
+                  "default": 1.2,
+                  "_backboneForms": "Text"
+                },
+                "_default": {
+                  "type": "number",
+                  "title": "Default value",
+                  "default": 1,
+                  "_backboneForms": "Text"
+                }
+              }
+            },
+            "_button": {
+              "type": "object",
+              "title": "Buttons",
+              "default": {},
+              "properties": {
+                "navigationAriaLabel": {
+                  "type": "string",
+                  "title": "Navigation button alt text",
+                  "default": "Visual accessibility settings"
+                },
+                "resetText": {
+                  "type": "string",
+                  "title": "Reset text",
+                  "default": "Reset"
+                },
+                "closeText": {
+                  "type": "string",
+                  "title": "Close text",
+                  "default": "Close"
+                }
+              }
+            },
+            "resetAriaMessage": {
+              "type": "string",
+              "title": "Accessibility controls reset",
+              "default": "Small"
+            }
+          }
+        }
+      }
+    }
+  }
+}
