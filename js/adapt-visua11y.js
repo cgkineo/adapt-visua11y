@@ -335,6 +335,7 @@ class Visua11y extends Backbone.Controller {
     // Add high contrast html class
     $html
       .toggleClass('a11y-high-contrast', this.highContrast)
+      .toggleClass('a11y-invert', this.invert)
       .toggleClass('a11y-no-animations', this.noAnimations)
       .toggleClass('a11y-no-background-images', this.noBackgroundImages);
     this.rules.forEach(rule => rule.modify(this));
