@@ -1,6 +1,6 @@
 {
   "name": "adapt-visua11y",
-  "version": "1.0.0",
+  "version": "4.4.4",
   "framework": ">=5.15",
   "homepage": "https://github.com/cgkineo/adapt-visua11y",
   "issues": "https://github.com/cgkineo/adapt-visua11y/issues/new",
@@ -8,10 +8,7 @@
   "displayName": "Visua11y",
   "description": "An extension which provides visual accessibility improvements",
   "main": "/js/adapt-visua11y.js",
-  "keywords": [
-    "adapt-plugin",
-    "adapt-extension"
-  ],
+  "keywords": ["adapt-plugin", "adapt-extension"],
   "license": "GPL-3.0",
   "targetAttribute": "_visua11y",
   "private": true,
@@ -46,10 +43,7 @@
       [
         "@semantic-release/git",
         {
-          "assets": [
-            "package.json",
-            "bower.json"
-          ],
+          "assets": ["package.json", "bower.json"],
           "message": "Chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
         }
       ]
