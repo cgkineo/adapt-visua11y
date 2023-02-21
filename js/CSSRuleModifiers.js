@@ -45,7 +45,7 @@ export default [
   [
     // Filter psuedo element background images
     (name, selector) => {
-      return (name === 'background-image') && (
+      return (selector && name === 'background-image') && (
         String(selector).endsWith(':before') ||
         String(selector).endsWith(':after')
       );
@@ -117,7 +117,7 @@ export default [
     // Change paragraph spacing
     // https://developer.mozilla.org/en-US/docs/Web/CSS/word-spacing
     (name, selector) => {
-      if (!['margin-top', 'margin-bottom', 'margin-block-start', 'margin-block-end'].some(p => p === name)) return;
+      if (!selector || !['margin-top', 'margin-bottom', 'margin-block-start', 'margin-block-end'].some(p => p === name)) return;
       const elements = selector.split(/[*, >~+|]/).filter(Boolean).map(e => e.toLowerCase());
       if (elements.length === 0) return;
       const isPTagSelector = [elements[0], elements[elements.length - 1]].some(e => (/^p[^\w]+/.test(e) || e === 'p') && !e.includes(':'));

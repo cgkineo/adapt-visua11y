@@ -10,12 +10,8 @@ html:not([data-color-profile=default]) {
   body > *:not(.notify),
   .notify > * {
 
-    img, video, canvas, .mejs-poster, .has-bg-image {
+    img, video, canvas, .mejs-poster, .has-bg-image > .background {
       .visua11y-filters;
-    }
-
-    .has-bg-image > .background {
-      filter: invert(var(--visua11y-invert));
     }
 
   }
@@ -30,12 +26,8 @@ html[data-color-profile=default] {
   body > *:not(.notify),
   .notify > * {
 
-    img, video, canvas, .mejs-poster, .has-bg-image {
+    img, video, canvas, .mejs-poster, .has-bg-image > .background {
       .visua11y-filters-no-profile;
-    }
-
-    .has-bg-image > .background {
-      filter: invert(var(--visua11y-invert));
     }
 
   }
