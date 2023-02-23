@@ -51,6 +51,7 @@ class AnimationsButtonView extends Backbone.View {
     });
     this.render();
     Adapt.visua11y.settingsPrompt.$el.on('click', this.onNotifyClicked);
+    Adapt.trigger('visua11y:opened');
     this.listenTo(Adapt, 'notify:closed', this.onNotifyClosed);
   }
 
