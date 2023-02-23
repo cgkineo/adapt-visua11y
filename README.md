@@ -25,7 +25,6 @@ It provides visual accessibility improvements.
 * No background images is contingent on alt text.
 
 ----------------------------
-**Version number:**  1.0.1   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a><br/>
 **Framework versions:**  5.15+<br/>
 **Author / maintainer:** Adapt Core Team with [contributors](https://github.com/cgkineo/adapt-visua11y/graphs/contributors)<br/>
 **Accessibility support:** WAI AA<br/>
