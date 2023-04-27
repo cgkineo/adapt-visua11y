@@ -16,6 +16,9 @@ export default function Visua11ySettings(config) {
   function onChange(event) {
     const { name, checked, value, type } = event.target;
     visua11y[name] = type === 'checkbox' ? checked : value;
+    if (type === 'checkbox') { state = checked; }
+    if (type === 'radio' || type === 'select-one') { state = value; }
+    Adapt.trigger('visua11y:toggle', name, state);
   }
 
   return (
