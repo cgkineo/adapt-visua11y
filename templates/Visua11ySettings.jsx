@@ -14,6 +14,7 @@ export default function Visua11ySettings(config) {
   }
 
   function onChange(event) {
+    let state;
     const { name, checked, value, type } = event.target;
     visua11y[name] = type === 'checkbox' ? checked : value;
     if (type === 'checkbox') { state = checked; }
