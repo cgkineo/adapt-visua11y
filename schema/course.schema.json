@@ -304,6 +304,28 @@
                 }
               }
             },
+            "_bionicRead": {
+              "type": "object",
+              "title": "Bionic read",
+              "default": {},
+              "properties": {
+                "_isEnabled": {
+                  "type": "boolean",
+                  "title": "Enable",
+                  "default": true
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title",
+                  "default": "Bionic read"
+                },
+                "_default": {
+                  "type": "boolean",
+                  "title": "Enabled on course load",
+                  "default": false
+                }
+              }
+            },
             "_fontSize": {
               "type": "object",
               "title": "Font size",

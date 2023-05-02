@@ -88,7 +88,7 @@
   // Readability group
   // --------------------------------------------------
   &__group-readability {
-    .visua11ysettings__item {
+    .visua11ysettings__item:not(.bionicread) {
       display: flex;
       flex-direction: column;
       padding-right: @item-padding / 2;
@@ -98,62 +98,62 @@
         align-items: center;
         justify-content: space-between;
       }
-    }
 
-    .visua11ysettings__item-title {
-      margin-bottom: @item-margin;
+      .visua11ysettings__item-title {
+        margin-bottom: @item-margin;
 
-      @media (min-width: @device-width-medium) {
-        margin-right: @item-margin;
-        margin-bottom: inherit;
+        @media (min-width: @device-width-medium) {
+          margin-right: @item-margin;
+          margin-bottom: inherit;
 
-        .dir-rtl & {
-          margin-left: @item-margin;
-          margin-right: inherit;
+          .dir-rtl & {
+            margin-left: @item-margin;
+            margin-right: inherit;
+          }
         }
       }
-    }
 
-    .visua11ysettings__item-option-container {
-      display: inline-flex;
-      flex-wrap: wrap;
-    }
+      .visua11ysettings__item-option-container {
+        display: inline-flex;
+        flex-wrap: wrap;
+      }
 
-    .visua11ysettings__item-option {
-      display: inline-block;
-      position: relative;
-      margin: @item-margin / 2;
-    }
+      .visua11ysettings__item-option {
+        display: inline-block;
+        position: relative;
+        margin: @item-margin / 2;
+      }
 
-    .visua11ysettings__item-option:focus-within {
-      outline: auto;
-    }
+      .visua11ysettings__item-option:focus-within {
+        outline: auto;
+      }
 
-    input {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      cursor: pointer;
-    }
+      input {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+      }
 
-    input + label .item-text {
-      padding: (@item-padding / 2) @item-padding;
-      border-radius: 50px;
-      background-color: @notify-icon;
-      color: @notify-icon-inverted;
-      border: 0.0625rem solid @notify-icon;
-    }
+      input + label .item-text {
+        padding: (@item-padding / 2) @item-padding;
+        border-radius: 50px;
+        background-color: @notify-icon;
+        color: @notify-icon-inverted;
+        border: 0.0625rem solid @notify-icon;
+      }
 
-    input:checked + label .item-text {
-      background-color: @notify-icon-hover;
-      color: @notify-icon-inverted-hover;
-      border-color: @notify-icon-inverted-hover;
-      //box-shadow: 0 2px 5px fade(@black, 30%);
+      input:checked + label .item-text {
+        background-color: @notify-icon-hover;
+        color: @notify-icon-inverted-hover;
+        border-color: @notify-icon-inverted-hover;
+        //box-shadow: 0 2px 5px fade(@black, 30%);
+      }
     }
   }
 

@@ -7,6 +7,7 @@ import DEFAULTS from './DEFAULTS';
 import { highContrast, invert, lowBrightness, profileFilter } from './ColorTransformations';
 import Visua11yButtonView from './Visua11yButtonView';
 import notify from 'core/js/notify';
+import './bionicRead';
 
 /**
  * Utility function for applying deep defaults
@@ -164,6 +165,15 @@ class Visua11y extends Backbone.Controller {
     this.apply();
   }
 
+  get bionicRead() {
+    return this._bionicRead;
+  }
+
+  set bionicRead(value) {
+    this._bionicRead = value;
+    this.apply();
+  }
+
   get noBackgroundImages() {
     return this._noBackgroundImages;
   }
@@ -270,7 +280,8 @@ class Visua11y extends Backbone.Controller {
       boolToInt(this._noTransparency),
       boolToInt(this._lowBrightness),
       boolToInt(this._noBackgroundImages),
-      parseInt(this._highContrastLuminanceThreshold)
+      parseInt(this._highContrastLuminanceThreshold),
+      boolToInt(this._bionicRead)
     ];
     Adapt.offlineStorage.set('v', Adapt.offlineStorage.serialize(data));
   }
@@ -305,6 +316,7 @@ class Visua11y extends Backbone.Controller {
     this._noTransparency = intToBool(this.config._noTransparency, data[9]);
     this._lowBrightness = intToBool(this.config._lowBrightness, data[10]);
     this._noBackgroundImages = intToBool(this.config._noBackgroundImages, data[11]);
+    this._bionicRead = intToBool(this.config._bionicRead, data[12]);
     this._highContrastLuminanceThreshold = data[12] ?? this.config._highContrastLuminanceThreshold._default;
   }
 
@@ -375,6 +387,7 @@ class Visua11y extends Backbone.Controller {
     this._highContrastLuminanceThreshold = this.config._highContrastLuminanceThreshold._default;
     this._noTransparency = this.config._noTransparency._default;
     this._lowBrightness = this.config._lowBrightness._default;
+    this._bionicRead = this.config._bionicRead._default;
     this._noBackgroundImages = this.config._noBackgroundImages._default;
     this.save();
     this.rules.forEach(rule => rule.reset());

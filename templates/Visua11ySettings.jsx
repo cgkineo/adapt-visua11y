@@ -132,7 +132,8 @@ export default function Visua11ySettings(config) {
         </div>
       }
 
-      {(config._fontSize._isEnabled ||
+      {(config._bionicRead._isEnabled ||
+      config._fontSize._isEnabled ||
       config._lineHeight._isEnabled ||
       config._paragraphSpacing._isEnabled ||
       config._letterSpacing._isEnabled ||
@@ -142,6 +143,16 @@ export default function Visua11ySettings(config) {
           {config._groups.readability &&
           <div className='visua11ysettings__group-title' id='readability' role="heading" aria-level="2">
             {config._groups.readability}
+          </div>
+          }
+
+          {config._bionicRead._isEnabled &&
+          <div className='visua11ysettings__item bionicread'>
+            <label className='visua11ysettings__item-label' htmlFor='bionicRead' aria-hidden='true'>
+              <div className='icon' aria-hidden='true'></div>
+              {config._bionicRead.title}
+            </label>
+            <input type='checkbox' id='bionicRead' name='bionicRead' checked={visua11y.bionicRead} onChange={onChange} aria-label={config._bionicRead.title}/>
           </div>
           }
 

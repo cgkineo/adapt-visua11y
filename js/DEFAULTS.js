@@ -60,6 +60,11 @@ export default {
     "title": "No background images",
     "_default": false
   },
+  "_bionicRead": {
+    "_isEnabled": true,
+    "title": "Bionic read",
+    "_default": false
+  },
   "_fontSize": {
     "_isEnabled": true,
     "title": "Font size",

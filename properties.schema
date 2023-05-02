@@ -429,6 +429,37 @@
                     }
                   }
                 },
+                "_bionicRead": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Bionic read",
+                  "properties": {
+                    "_isEnabled": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": true,
+                      "title": "Enable",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    },
+                    "title": {
+                      "type": "string",
+                      "required": false,
+                      "default": "Bionic read",
+                      "title": "Title",
+                      "inputType": "Text",
+                      "validators": []
+                    },
+                    "_default": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": false,
+                      "title": "Enabled on course load",
+                      "inputType": "Checkbox",
+                      "validators": []
+                    }
+                  }
+                },
                 "_fontSize": {
                   "type": "object",
                   "required": false,
