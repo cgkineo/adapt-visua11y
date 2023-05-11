@@ -18,23 +18,6 @@ export default function Visua11ySettings(props) {
   return (
     <div className='visua11ysettings__inner'>
 
-      <div className='visua11ysettings__group visua11ysettings__group-scrollsnap' aria-labelledby='scrollsnap'>
-        {config._groups.scrollSnap &&
-          <div className='visua11ysettings__group-title' id='scrollsnap' role="heading" aria-level="2">
-            {config._groups.scrollSnap}
-          </div>
-        }
-        {config._noScrollSnap._isEnabled &&
-          <div className='visua11ysettings__item noscrollsnap'>
-            <label className='visua11ysettings__item-label' htmlFor='noscrollsnap'>
-              <div className='icon'></div>
-              {config._noScrollSnap.title}
-            </label>
-            <input type='checkbox' id='noscrollsnap' name='noScrollSnap' checked={visua11y.noScrollSnap} onChange={onChange} />
-          </div>
-        }
-      </div>
-
       {(config._colorProfile._isEnabled ||
         config._highContrast._isEnabled ||
         config._noTransparency._isEnabled ||
