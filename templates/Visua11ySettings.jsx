@@ -148,24 +148,24 @@ export default function Visua11ySettings(props) {
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='fontsize'>
 
               <div className='visua11ysettings__item-option'>
-                <input type='radio' value={config._fontSize._small} checked={visua11y.fontSize === config._fontSize._small} id='fontSize-small' name='fontSize' role='radio' aria-label='Font Size - Small' aria-checked='false' tabIndex='-1' onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur} />
-                <span htmlFor='fontSize-small'>
+                <input type='radio' value={config._fontSize._small} checked={visua11y.fontSize === config._fontSize._small} id='fontSize-small' name='fontSize' role='radio' aria-label='Font Size - Small' aria-checked='false' tabIndex='-1' onKeyPress={onKeyPress} onChange={onChange} />
+                <label htmlFor='fontSize-small'>
                   <div className='item-text'>{config._fontSize.smallLabel}</div>
-                </span>
+                </label>
               </div>
 
               <div className='visua11ysettings__item-option'>
                 <input type='radio' value={visua11y.originalFontSize} checked={visua11y.fontSize === visua11y.originalFontSize} id='fontsize-medium' name='fontSize' role='radio' aria-label='Font Size - Medium' aria-checked='false' tabIndex='-1' onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur} />
-                <span htmlFor='fontsize-medium'>
+                <label htmlFor='fontsize-medium'>
                   <div className='item-text'>{config._fontSize.mediumLabel}</div>
-                </span>
+                </label>
               </div>
 
               <div className='visua11ysettings__item-option'>
                 <input type='radio' value={config._fontSize._large} checked={visua11y.fontSize === config._fontSize._large} id='fontsize-large' name='fontSize' role='radio' aria-label='Font Size - Large' aria-checked='false' tabIndex='-1' onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur} />
-                <span htmlFor='fontsize-large'>
+                <label htmlFor='fontsize-large'>
                   <div className='item-text'>{config._fontSize.largeLabel}</div>
-                </span>
+                </label>
               </div>
 
             </div>
@@ -182,23 +182,23 @@ export default function Visua11ySettings(props) {
 
               <div className='visua11ysettings__item-option'>
                 <input type='radio' value={config._lineHeight._small} checked={visua11y.lineHeight === config._lineHeight._small} id='lineheight-small' name='lineHeight' role='radio' aria-label='Line Height - Small' aria-checked='false' tabIndex='-1' onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur} />
-                <span htmlFor='lineheight-small'>
+                <label htmlFor='lineheight-small'>
                   <div className='item-text'>{config._lineHeight.smallLabel}</div>
-                </span>
+                </label>
               </div>
 
               <div className="visua11ysettings__item-option">
                 <input type='radio' value={config._lineHeight._medium} checked={visua11y.lineHeight === config._lineHeight._medium} id='lineheight-medium' name='lineHeight' role='radio' aria-label='Line Height - Medium' aria-checked='false' tabIndex='-1' onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur} />
-                <span htmlFor='lineheight-medium'>
+                <label htmlFor='lineheight-medium'>
                   <div className="item-text">{config._lineHeight.mediumLabel}</div>
-                </span>
+                </label>
               </div>
 
               <div className="visua11ysettings__item-option">
                 <input type='radio' value={config._lineHeight._large} checked={visua11y.lineHeight === config._lineHeight._large} id='lineheight-large' name='lineHeight' role='radio' aria-label='Line Height - Large' aria-checked='false' tabIndex='-1' onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur} />
-                <span htmlFor='lineheight-large'>
+                <label htmlFor='lineheight-large'>
                   <div className='item-text'>{config._lineHeight.largeLabel}</div>
-                </span>
+                </label>
               </div>
 
             </div>
@@ -215,23 +215,23 @@ export default function Visua11ySettings(props) {
 
               <div className="visua11ysettings__item-option">
                 <input type='radio' value={config._paragraphSpacing._small} checked={visua11y.paragraphSpacing === config._paragraphSpacing._small} id='paragraphSpacing-small' name='paragraphSpacing' role='radio' aria-label='Paragraph Spacing - Small' aria-checked='false' tabIndex='-1' onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur} />
-                <span htmlFor='paragraphSpacing-small'>
+                <label htmlFor='paragraphSpacing-small'>
                   <div className='item-text'>{config._paragraphSpacing.smallLabel}</div>
-                </span>
+                </label>
               </div>
 
               <div className="visua11ysettings__item-option">
                 <input type='radio' value={config._paragraphSpacing._medium} checked={visua11y.paragraphSpacing === config._paragraphSpacing._medium} id='paragraphSpacing-medium' name='paragraphSpacing' role='radio' aria-label='Paragraph Spacing - Medium' aria-checked='false' tabIndex='-1' onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur} />
-                <span htmlFor='paragraphSpacing-medium'>
+                <label htmlFor='paragraphSpacing-medium'>
                   <div className="item-text">{config._paragraphSpacing.mediumLabel}</div>
-                </span>
+                </label>
               </div>
 
               <div className="visua11ysettings__item-option">
                 <input type='radio' value={config._paragraphSpacing._large} checked={visua11y.paragraphSpacing === config._paragraphSpacing._large} id='paragraphSpacing-large' name='paragraphSpacing' role='radio' aria-label='Paragraph Spacing - Large' aria-checked='false' tabIndex='-1' onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur} />
-                <span htmlFor='paragraphSpacing-large'>
+                <label htmlFor='paragraphSpacing-large'>
                   <div className="item-text">{config._paragraphSpacing.largeLabel}</div>
-                </span>
+                </label>
               </div>
 
             </div>
@@ -248,23 +248,23 @@ export default function Visua11ySettings(props) {
 
               <div className="visua11ysettings__item-option">
                 <input type='radio' value={config._letterSpacing._small} checked={visua11y.letterSpacing === config._letterSpacing._small} id='letterSpacing-small' name='letterSpacing' role='radio' aria-label='Letter Spacing - Small' aria-checked='false' tabIndex='-1' onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur} />
-                <span htmlFor='letterSpacing-small'>
+                <label htmlFor='letterSpacing-small'>
                   <div className="item-text">{config._letterSpacing.smallLabel}</div>
-                </span>
+                </label>
               </div>
 
               <div className="visua11ysettings__item-option">
                 <input type='radio' value={config._letterSpacing._medium} checked={visua11y.letterSpacing === config._letterSpacing._medium} id='letterSpacing-medium' name='letterSpacing' role='radio' aria-label='Letter Spacing - Medium' aria-checked='false' tabIndex='-1' onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur} />
-                <span htmlFor='letterSpacing-medium'>
+                <label htmlFor='letterSpacing-medium'>
                   <div className="item-text">{config._letterSpacing.mediumLabel}</div>
-                </span>
+                </label>
               </div>
 
               <div className="visua11ysettings__item-option">
                 <input type='radio' value={config._letterSpacing._large} checked={visua11y.letterSpacing === config._letterSpacing._large} id='letterSpacing-large' name='letterSpacing' role='radio' aria-label='Letter Spacing - Large' aria-checked='false' tabIndex='-1' onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur} />
-                <span htmlFor='letterSpacing-large'>
+                <label htmlFor='letterSpacing-large'>
                   <div className="item-text">{config._letterSpacing.largeLabel}</div>
-                </span>
+                </label>
               </div>
 
             </div>
@@ -281,23 +281,23 @@ export default function Visua11ySettings(props) {
 
               <div className="visua11ysettings__item-option">
                 <input type='radio' value={config._wordSpacing._small} checked={visua11y.wordSpacing === config._wordSpacing._small} id='wordSpacing-small' name='wordSpacing' role='radio' aria-label='Word Spacing - Small' aria-checked='false' tabIndex='-1' onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur}/>
-                <span htmlFor='wordSpacing-small'>
+                <label htmlFor='wordSpacing-small'>
                   <div className="item-text">{config._wordSpacing.smallLabel}</div>
-                </span>
+                </label>
               </div>
 
               <div className="visua11ysettings__item-option">
                 <input type='radio' value={config._wordSpacing._medium} checked={visua11y.wordSpacing === config._wordSpacing._medium} id='wordSpacing-medium' name='wordSpacing' role='radio' aria-label='Word Spacing - Medium' aria-checked='false' tabIndex='-1' onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur} />
-                <span htmlFor='wordSpacing-medium'>
+                <label htmlFor='wordSpacing-medium'>
                   <div className="item-text">{config._wordSpacing.mediumLabel}</div>
-                </span>
+                </label>
               </div>
 
               <div className="visua11ysettings__item-option">
                 <input type='radio' value={config._wordSpacing._large} checked={visua11y.wordSpacing === config._wordSpacing._large} id='wordSpacing-large' name='wordSpacing' role='radio' aria-label='Word Spacing - Large' aria-checked='false' tabIndex='-1' onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur} />
-                <span htmlFor='wordSpacing-large'>
+                <label htmlFor='wordSpacing-large'>
                   <div className="item-text">{config._wordSpacing.largeLabel}</div>
-                </span>
+                </label>
               </div>
 
             </div>
