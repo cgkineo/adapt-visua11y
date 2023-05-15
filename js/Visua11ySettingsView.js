@@ -21,7 +21,6 @@ export default class Visua11ySettingsView extends Backbone.View {
 
     this.render();
     this.listenTo(Adapt.visua11y, 'changed', this.render);
-    this.listenTo(Adapt, 'visua11y:opened', this.setRadioAttributes);
   }
 
   render() {
@@ -31,31 +30,10 @@ export default class Visua11ySettingsView extends Backbone.View {
     ReactDOM.render(<templates.Visua11ySettings {...data} />, this.el);
   }
 
-  setRadioAttributes() {
-    const checkedRadioButtons = document.querySelectorAll('[type="radio"][checked=""]');
-    checkedRadioButtons.forEach(el => {
-      el.setAttribute('aria-checked', true);
-      el.setAttribute('tabindex', 0);
-    });
-  }
-
   onChange(event) {
     const { name, checked, value, type } = event.target;
     this._visua11y[name] = type === 'checkbox' ? checked : value;
     this.sendTrigger(name, checked, value, type);
-
-    if (type !== 'radio') return;
-
-    const targetName = event.currentTarget.getAttribute('name');
-    const radioGroupSibilings = document.querySelectorAll('[name="' + targetName + '"]');
-    radioGroupSibilings.forEach(el => {
-      el.setAttribute('aria-checked', false);
-      el.setAttribute('tabindex', -1);
-    });
-
-    event.currentTarget.setAttribute('aria-checked', true);
-    event.currentTarget.setAttribute('tabindex', 0);
-    event.currentTarget.focus();
   }
 
   onKeyPress(event) {
