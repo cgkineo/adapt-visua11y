@@ -43,11 +43,11 @@ export default class Visua11ySettingsView extends Backbone.View {
   }
 
   onItemFocus(event) {
-    event.currentTarget.classList.add('focus');
+    this.onItemSelect(event);
   }
 
   onItemBlur(event) {
-    event.currentTarget.classList.remove('focus');
+    // Nothing happens
   }
 
   onReset() {
