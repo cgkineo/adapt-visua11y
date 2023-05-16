@@ -36,6 +36,16 @@
               "title": "Enable Visua11y",
               "default": false
             },
+            "_location": {
+              "type": "string",
+              "title": "Open in notify or drawer",
+              "default": "notify",
+              "enum": [
+                "notify",
+                "drawer"
+              ],
+              "_backboneForms": "Select"
+            },
             "_shouldSavePreferences": {
               "type": "boolean",
               "title": "Save user preferences?",

@@ -10,7 +10,7 @@ export default function Visua11ySettings(config) {
   }
 
   function onClose() {
-    visua11y.settingsPrompt.closeNotify();
+    visua11y.close();
   }
 
   function onChange(event) {

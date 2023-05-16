@@ -4,7 +4,7 @@
   background-color: transparent;
 
   .notify__popup-inner {
-    max-width: @device-width-small;
+    max-width: @device-width-medium;
     margin: auto;
     background-color: @notify;
     padding: @item-padding (@item-padding / 2);
@@ -16,6 +16,8 @@
 // --------------------------------------------------
 .visua11ysettings {
 
+  color: white;
+
   &__description {
     padding-left: @item-padding / 2;
     padding-right: @item-padding / 2;
@@ -25,8 +27,11 @@
   &__group {
     padding: @item-padding / 2;
     margin-bottom: @item-padding;
-    background-color: darken(@notify, 5%);
     border-radius: 3px;
+
+    .visua11ysettings-notify & {
+      background-color: darken(@notify, 5%);
+    }
   }
 
   &__group-title {
@@ -73,6 +78,10 @@
     @media (min-width: @device-width-medium) {
       flex-direction: row;
     }
+
+    .visua11ysettings-drawer & {
+      flex-direction: column;
+    }
   }
 
   .colorprofileid {
@@ -97,6 +106,11 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+      }
+
+      .visua11ysettings-drawer & {
+        flex-direction: column;
+        align-items: start;
       }
     }
 

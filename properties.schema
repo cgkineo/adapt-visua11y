@@ -49,6 +49,20 @@
                   "inputType": "Checkbox",
                   "validators": []
                 },
+                "_location": {
+                  "type": "string",
+                  "required": true,
+                  "default": "notify",
+                  "title": "Open in notify or drawer",
+                  "validators": ["required"],
+                  "inputType": {
+                    "type": "Select",
+                    "options": [
+                    "notify",
+                    "drawer"
+                    ]
+                  }
+                },
                 "_shouldSavePreferences": {
                   "type": "boolean",
                   "required": false,
