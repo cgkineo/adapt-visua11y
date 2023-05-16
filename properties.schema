@@ -58,8 +58,8 @@
                   "inputType": {
                     "type": "Select",
                     "options": [
-                    "notify",
-                    "drawer"
+                      "notify",
+                      "drawer"
                     ]
                   }
                 },
