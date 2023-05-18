@@ -147,6 +147,7 @@ export default [
     function (output) {
       if (!this.highContrast) return;
       const color = Color.parse(output);
+      if (color.isKeyword) return color.source;
       if (color.isTransparent) return;
       // Text: black or white
       if (color.luminance <= 80) {
@@ -164,6 +165,7 @@ export default [
     function (output) {
       if (!this.noTransparency) return;
       const color = Color.parse(output);
+      if (color.isKeyword) return color.source;
       const isTransparent = (color.a <= 0.4);
       if (isTransparent) {
         // No color opacity less than 0.4
@@ -180,6 +182,7 @@ export default [
     Color.parse,
     function (output) {
       let color = Color.parse(output);
+      if (color.isKeyword) return color.source;
       if (color.isTransparent) return color.toRGBAString();
       const colorIndex = this.distinctColors.findIndex(primaryColor => {
         return (color.r === primaryColor.r && color.g === primaryColor.g && color.b === primaryColor.b && color.a === primaryColor.a);
