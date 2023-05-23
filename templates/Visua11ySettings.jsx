@@ -280,14 +280,14 @@ export default function Visua11ySettings(props) {
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='wordspacing'>
 
               <div className="visua11ysettings__item-option">
-                <input type='radio' value={config._wordSpacing._small} checked={visua11y.wordSpacing === config._wordSpacing._small} id='wordSpacing-small' name='wordSpacing' aria-label={config._wordSpacing.largeLabel} onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur}/>
+                <input type='radio' value={config._wordSpacing._small} checked={visua11y.wordSpacing === config._wordSpacing._small} id='wordSpacing-small' name='wordSpacing' aria-label={config._wordSpacing.smallLabel} onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur}/>
                 <label htmlFor='wordSpacing-small' aria-hidden={true}>
                   <div className="item-text">{config._wordSpacing.smallLabel}</div>
                 </label>
               </div>
 
               <div className="visua11ysettings__item-option">
-                <input type='radio' value={config._wordSpacing._medium} checked={visua11y.wordSpacing === config._wordSpacing._medium} id='wordSpacing-medium' name='wordSpacing' aria-label={config._wordSpacing.largeLabel} onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur} />
+                <input type='radio' value={config._wordSpacing._medium} checked={visua11y.wordSpacing === config._wordSpacing._medium} id='wordSpacing-medium' name='wordSpacing' aria-label={config._wordSpacing.mediumLabel} onKeyPress={onKeyPress} onChange={onChange} onFocus={onItemFocus} onBlur={onItemBlur} />
                 <label htmlFor='wordSpacing-medium' aria-hidden={true}>
                   <div className="item-text">{config._wordSpacing.mediumLabel}</div>
                 </label>
