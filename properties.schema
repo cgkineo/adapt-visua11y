@@ -401,7 +401,7 @@
                 "_noBackgroundImages": {
                   "type": "object",
                   "required": false,
-                  "title": "No background images",
+                  "title": "Hide decorative images",
                   "properties": {
                     "_isEnabled": {
                       "type": "boolean",
@@ -414,7 +414,7 @@
                     "title": {
                       "type": "string",
                       "required": false,
-                      "default": "No background images",
+                      "default": "Hide decorative images",
                       "title": "Title",
                       "inputType": "Text",
                       "validators": []

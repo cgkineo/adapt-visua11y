@@ -284,7 +284,7 @@
             },
             "_noBackgroundImages": {
               "type": "object",
-              "title": "No background images",
+              "title": "Hide decorative images",
               "default": {},
               "properties": {
                 "_isEnabled": {
@@ -295,7 +295,7 @@
                 "title": {
                   "type": "string",
                   "title": "Title",
-                  "default": "No background images"
+                  "default": "Hide decorative images"
                 },
                 "_default": {
                   "type": "boolean",
