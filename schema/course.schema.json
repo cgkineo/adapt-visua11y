@@ -12,15 +12,42 @@
           "type": "object",
           "default": {},
           "properties": {
-            "_visua11y": {
+            "_accessibility": {
               "type": "object",
               "default": {},
               "properties": {
-                "_navOrder": {
-                  "type": "number",
-                  "title": "Nav order",
-                  "default": 0,
-                  "_backboneForms": "Text"
+                "_ariaLabels": {
+                  "type": "object",
+                  "default": {},
+                  "properties": {
+                    "visua11y": {
+                      "type": "string",
+                      "title": "Visual accessibility settings",
+                      "default": "Visual accessibility settings",
+                      "_adapt": {
+                        "translatable": true
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "_extensions": {
+              "type": "object",
+              "default": {},
+              "properties": {
+                "_visua11y": {
+                  "type": "object",
+                  "title": "Visua11y",
+                  "default": {},
+                  "properties": {
+                    "_navOrder": {
+                      "type": "number",
+                      "title": "Nav order",
+                      "default": 0,
+                      "_backboneForms": "Number"
+                    }
+                  }
                 }
               }
             }
@@ -190,7 +217,7 @@
                   "type": "number",
                   "title": "Default value",
                   "default": 70,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 }
               }
             },
@@ -380,7 +407,7 @@
                   "type": "number",
                   "title": "Small default",
                   "default": 0.9,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 },
                 "mediumLabel": {
                   "type": "string",
@@ -391,7 +418,7 @@
                   "type": "number",
                   "title": "Medium default",
                   "default": 1,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 },
                 "largeLabel": {
                   "type": "string",
@@ -402,13 +429,13 @@
                   "type": "number",
                   "title": "Large default",
                   "default": 1.2,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 },
                 "_default": {
                   "type": "number",
                   "title": "Default value",
                   "default": 1,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 }
               }
             },
@@ -436,7 +463,7 @@
                   "type": "number",
                   "title": "Small default",
                   "default": 0.5,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 },
                 "mediumLabel": {
                   "type": "string",
@@ -447,7 +474,7 @@
                   "type": "number",
                   "title": "Medium default",
                   "default": 1,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 },
                 "largeLabel": {
                   "type": "string",
@@ -458,13 +485,13 @@
                   "type": "number",
                   "title": "Large default",
                   "default": 2,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 },
                 "_default": {
                   "type": "number",
                   "title": "Default value",
                   "default": 1,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 }
               }
             },
@@ -492,7 +519,7 @@
                   "type": "number",
                   "title": "Small default",
                   "default": 0.97,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 },
                 "mediumLabel": {
                   "type": "string",
@@ -503,7 +530,7 @@
                   "type": "number",
                   "title": "Medium default",
                   "default": 1,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 },
                 "largeLabel": {
                   "type": "string",
@@ -514,13 +541,13 @@
                   "type": "number",
                   "title": "Large default",
                   "default": 1.2,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 },
                 "_default": {
                   "type": "number",
                   "title": "Default value",
                   "default": 1,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 }
               }
             },
@@ -548,7 +575,7 @@
                   "type": "number",
                   "title": "Small default",
                   "default": 0.97,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 },
                 "mediumLabel": {
                   "type": "string",
@@ -559,7 +586,7 @@
                   "type": "number",
                   "title": "Medium default",
                   "default": 1,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 },
                 "largeLabel": {
                   "type": "string",
@@ -570,13 +597,13 @@
                   "type": "number",
                   "title": "Large default",
                   "default": 1.2,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 },
                 "_default": {
                   "type": "number",
                   "title": "Default value",
                   "default": 1,
-                  "_backboneForms": "Text"
+                  "_backboneForms": "Number"
                 }
               }
             },
