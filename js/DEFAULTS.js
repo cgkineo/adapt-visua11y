@@ -57,7 +57,7 @@ export default {
   },
   "_noBackgroundImages": {
     "_isEnabled": true,
-    "title": "No background images",
+    "title": "Hide decorative images",
     "_default": false
   },
   "_fontSize": {
