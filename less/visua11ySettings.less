@@ -1,6 +1,6 @@
-// Notify override
+// Notify overrides
 // --------------------------------------------------
-.notify__popup.is-visua11ysettings {
+.visua11ysettings-notify {
   background-color: transparent;
 
   .notify__popup-inner {
@@ -12,10 +12,103 @@
   }
 }
 
-// UI settings
+// Notify view
+// --------------------------------------------------
+.visua11ysettings-notify {
+  .visua11ysettings {
+    &__group {
+      background-color: darken(@notify, 5%);
+    }
+    
+    &__group-profiles {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+  
+      @media (min-width: @device-width-medium) {
+        flex-direction: row;
+      }
+    }
+
+    &__group-readability {
+      .visua11ysettings__item {
+        display: flex;
+        flex-direction: column;
+  
+        @media (min-width: @device-width-medium) {
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+        }
+      }
+
+      input + label .item-text {
+        background-color: @notify-icon;
+        color: @notify-icon-inverted;
+        border: 0.0625rem solid @notify-icon;
+      }
+  
+      input:checked + label .item-text {
+        background-color: @notify-icon-hover;
+        color: @notify-icon-inverted-hover;
+        border-color: @notify-icon-inverted-hover;
+      }
+    }
+
+    &__item {
+      border-top: 1px solid fade(@notify-inverted, 30%);
+    }
+  }
+}
+
+// Drawer view
+// --------------------------------------------------
+.visua11ysettings-drawer {
+  .visua11ysettings {
+    &__inner {
+      padding: .5rem;
+    }
+
+    &__group {
+      background-color: darken(@drawer, 5%);
+    }
+
+    &__group-profiles {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+    }
+
+    &__group-readability {
+      .visua11ysettings__item {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        padding: @item-padding 0;
+      }
+
+      input + label .item-text {
+        background-color: @drawer-item;
+        color: @drawer-item-inverted;
+        border: 0.0625rem solid @drawer-item;
+      }
+  
+      input:checked + label .item-text {
+        background-color: @drawer-item-selected;
+        color: @drawer-item-inverted-selected;
+        border-color: @drawer-item-inverted-selected;
+      }
+    }
+
+    &__item {
+      border-top: 1px solid fade(@drawer-inverted, 30%);
+    } 
+  }  
+}
+
+// Global UI settings
 // --------------------------------------------------
 .visua11ysettings {
-
   &__description {
     padding-left: @item-padding / 2;
     padding-right: @item-padding / 2;
@@ -25,7 +118,6 @@
   &__group {
     padding: @item-padding / 2;
     margin-bottom: @item-padding;
-    background-color: darken(@notify, 5%);
     border-radius: 3px;
   }
 
@@ -39,7 +131,6 @@
     padding: @item-padding (@item-padding / 2);
     padding-right: @icon-size + @item-padding;
     position: relative;
-    border-top: 1px solid fade(@notify-inverted, 30%);
 
     .dir-rtl & {
       padding-left: @icon-size + @item-padding;
@@ -65,16 +156,6 @@
 
   // Visual display group
   // --------------------------------------------------
-  &__group-profiles {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-
-    @media (min-width: @device-width-medium) {
-      flex-direction: row;
-    }
-  }
-
   .colorprofileid {
     display: flex;
     flex-direction: column;
@@ -89,15 +170,7 @@
   // --------------------------------------------------
   &__group-readability {
     .visua11ysettings__item {
-      display: flex;
-      flex-direction: column;
       padding-right: @item-padding / 2;
-
-      @media (min-width: @device-width-medium) {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
     }
 
     .visua11ysettings__item-title {
@@ -144,16 +217,6 @@
     input + label .item-text {
       padding: (@item-padding / 2) @item-padding;
       border-radius: 50px;
-      background-color: @notify-icon;
-      color: @notify-icon-inverted;
-      border: 0.0625rem solid @notify-icon;
-    }
-
-    input:checked + label .item-text {
-      background-color: @notify-icon-hover;
-      color: @notify-icon-inverted-hover;
-      border-color: @notify-icon-inverted-hover;
-      //box-shadow: 0 2px 5px fade(@black, 30%);
     }
   }
 
@@ -217,23 +280,23 @@
   }
 
   .btn-reset {
-    background-color: @notify-btn;
-    color: @notify-btn-inverted;
+    background-color: @btn-color;
+    color: @btn-color-inverted;
 
     .no-touch &:hover {
-      background-color: @notify-btn-hover;
-      color: @notify-btn-inverted-hover;
+      background-color: @btn-color-hover;
+      color: @btn-color-inverted-hover;
     }
   }
 
   .btn-close {
     margin-left: @btn-padding;
-    background-color: @notify-btn-inverted;
-    color: @notify-btn;
+    background-color: @btn-color-inverted;
+    color: @btn-color;
 
     .no-touch &:hover {
-      background-color: @notify-btn-inverted-hover;
-      color: @notify-btn-hover;
+      background-color: @btn-color-inverted-hover;
+      color: @btn-color-hover;
     }
-  }
+  }  
 }

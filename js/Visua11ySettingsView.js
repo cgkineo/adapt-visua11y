@@ -7,7 +7,12 @@ import { templates } from 'core/js/reactHelpers';
 export default class Visua11ySettingsView extends Backbone.View {
 
   className() {
-    return 'visua11ysettings';
+    return [
+      'visua11ysettings',
+      Adapt.visua11y.config._location === 'drawer'
+        ? 'visua11ysettings-drawer'
+        : 'visua11ysettings-notify'
+    ].filter(Boolean).join(' ');
   }
 
   initialize() {

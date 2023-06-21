@@ -7,6 +7,7 @@ import DEFAULTS from './DEFAULTS';
 import { highContrast, invert, lowBrightness, profileFilter } from './ColorTransformations';
 import Visua11yButtonView from './Visua11yButtonView';
 import notify from 'core/js/notify';
+import drawer from 'core/js/drawer';
 
 /**
  * Utility function for applying deep defaults
@@ -360,6 +361,14 @@ class Visua11y extends Backbone.Controller {
   forceRerender() {
     if (device.browser !== 'safari') return;
     $('body').hide().show(0);
+  }
+
+  close() {
+    if (this.config._location === 'drawer') {
+      drawer.close();
+      return;
+    }
+    this.settingsPrompt?.closeNotify();
   }
 
   reset() {

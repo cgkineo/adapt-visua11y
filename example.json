@@ -1,6 +1,7 @@
 // course.json
 "_visua11y": {
   "_isEnabled": false,
+  "_location": "notify",
   "_shouldSavePreferences": true,
   "title": "Accessibility Controls",
   "body": "Use the controls below to customise your learning experience to your individual needs.",
