@@ -9,7 +9,7 @@ It provides visual accessibility improvements.
 * Low brightness
 * Invert
 * No animations
-* No background images
+* Hide decorative images
 * Font size (small, medium, large)
 * Line height (small, medium, large)
 * Paragraph spacing (small, medium, large)
@@ -22,10 +22,9 @@ It provides visual accessibility improvements.
 * Line height, paragraph spacing, letter spacing and word spacing are all ratio based. 1 is the current value, 1.2 is and uplift by 20%, 0.9 would be a shift downwards by 10%.
 * Font size medium is the default font size (16px usually), large is 18pt, small is 9pt.
 * Invert only inverts brightness, not colour.
-* No background images is contingent on alt text.
+* Hide decorative images is contingent on alt text.
 
 ----------------------------
-**Version number:**  1.0.1   <a href="https://community.adaptlearning.org/" target="_blank"><img src="https://github.com/adaptlearning/documentation/blob/master/04_wiki_assets/plug-ins/images/adapt-logo-mrgn-lft.jpg" alt="adapt learning logo" align="right"></a><br/>
 **Framework versions:**  5.15+<br/>
 **Author / maintainer:** Adapt Core Team with [contributors](https://github.com/cgkineo/adapt-visua11y/graphs/contributors)<br/>
 **Accessibility support:** WAI AA<br/>

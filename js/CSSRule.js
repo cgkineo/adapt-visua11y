@@ -5,7 +5,8 @@ export default class CSSRule {
 
   constructor(rule) {
     this.rule = rule;
-    this.selectorText = rule.selectorText;
+    this.selectorText = rule.selectorText ?? null;
+    this.keyText = rule.keyText;
     this.style = rule.style;
     this.output = [];
     this.original = [];
@@ -51,13 +52,16 @@ export default class CSSRule {
     const leafRule = (spaces = 2) => {
       const shortSpace = ''.padStart(spaces - 2, ' ');
       const longSpace = ''.padStart(spaces, ' ');
-      return `${shortSpace}${this.selectorText} {\n${longSpace}${this.propertyNames.map((name, index) => {
+      return `${shortSpace}${this.selectorText || this.keyText} {\n${longSpace}${this.propertyNames.map((name, index) => {
         const isImportant = (this.style.getPropertyPriority(name) === 'important');
         return (`${name}: ${this.output[index]}${isImportant ? ' !important' : ''};`);
       }).join(`\n${longSpace}`)}\n${shortSpace}}`;
     };
     if (parentRule) {
       if (parentRule instanceof CSSMediaRule) return `@media ${this.rule.parentRule.conditionText} {\n${leafRule(4)}\n}\n`;
+      if (parentRule instanceof CSSKeyframesRule) {
+        return `@keyframes ${this.rule.parentRule.name} {\n${leafRule(4)}\n}\n`;
+      }
       throw new Error('parentRule type not supported:', parentRule);
     }
     return leafRule();
@@ -91,8 +95,13 @@ export default class CSSRule {
         const rules = Array.prototype.slice.call(rule.cssRules, 0);
         return rules.map(rule => new CSSRule(rule));
       })));
+      allCSSRules.push(..._.flatten(rules.map(rule => {
+        if (!(rule instanceof CSSKeyframesRule)) return false;
+        const rules = Array.prototype.slice.call(rule.cssRules, 0);
+        return rules.map(rule => new CSSRule(rule));
+      })));
       return allCSSRules.filter(Boolean);
-    }, []).filter(rule => rule.selectorText);
+    }, []).filter(rule => rule.selectorText || rule.keyText);
     // Filter rules with valid modifier matches
     const rules = allCSSRules.map(rule => rule.initialize(context)).filter(rule => rule.isMatch());
     return rules;

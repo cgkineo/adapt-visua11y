@@ -3,6 +3,13 @@
   "$schema": "http://json-schema.org/draft-04/schema",
   "id": "http://jsonschema.net",
   "globals": {
+    "_navOrder": {
+      "type": "number",
+      "required": true,
+      "default": 0,
+      "inputType": "Text",
+      "validators": []
+    },
     "_navTooltip": {
       "type": "object",
       "title": "Visua11y navigation tooltip",
@@ -416,7 +423,7 @@
                 "_noBackgroundImages": {
                   "type": "object",
                   "required": false,
-                  "title": "No background images",
+                  "title": "Hide decorative images",
                   "properties": {
                     "_isEnabled": {
                       "type": "boolean",
@@ -429,7 +436,7 @@
                     "title": {
                       "type": "string",
                       "required": false,
-                      "default": "No background images",
+                      "default": "Hide decorative images",
                       "title": "Title",
                       "inputType": "Text",
                       "validators": []
@@ -500,8 +507,8 @@
                     "largeLabel": {
                       "type": "string",
                       "required": false,
-                      "default": "Large label",
-                      "title": "Title",
+                      "default": "Large",
+                      "title": "Large label",
                       "inputType": "Text",
                       "validators": []
                     },
@@ -517,7 +524,7 @@
                       "type": "string",
                       "required": false,
                       "default": "",
-                      "title": "default",
+                      "title": "Default value",
                       "inputType": "Text",
                       "validators": []
                     }
@@ -579,8 +586,8 @@
                     "largeLabel": {
                       "type": "string",
                       "required": false,
-                      "default": "Large label",
-                      "title": "Title",
+                      "default": "Large",
+                      "title": "Large label",
                       "inputType": "Text",
                       "validators": []
                     },
@@ -658,8 +665,8 @@
                     "largeLabel": {
                       "type": "string",
                       "required": false,
-                      "default": "Large label",
-                      "title": "Title",
+                      "default": "Large",
+                      "title": "Large label",
                       "inputType": "Text",
                       "validators": []
                     },
@@ -737,8 +744,8 @@
                     "largeLabel": {
                       "type": "string",
                       "required": false,
-                      "default": "Large label",
-                      "title": "Title",
+                      "default": "Large",
+                      "title": "Large label",
                       "inputType": "Text",
                       "validators": []
                     },
@@ -816,8 +823,8 @@
                     "largeLabel": {
                       "type": "string",
                       "required": false,
-                      "default": "Large label",
-                      "title": "Title",
+                      "default": "Large",
+                      "title": "Large label",
                       "inputType": "Text",
                       "validators": []
                     },

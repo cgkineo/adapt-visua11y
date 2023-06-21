@@ -10,12 +10,8 @@ html:not([data-color-profile=default]) {
   body > *:not(.notify),
   .notify > * {
 
-    img, video, canvas, .mejs-poster, .has-bg-image {
+    img, video, canvas, .mejs-poster, .has-bg-image > .background {
       .visua11y-filters;
-    }
-
-    .has-bg-image > * {
-      filter: invert(var(--visua11y-invert));
     }
 
   }
@@ -30,12 +26,8 @@ html[data-color-profile=default] {
   body > *:not(.notify),
   .notify > * {
 
-    img, video, canvas, .mejs-poster, .has-bg-image {
+    img, video, canvas, .mejs-poster, .has-bg-image > .background {
       .visua11y-filters-no-profile;
-    }
-
-    .has-bg-image > * {
-      filter: invert(var(--visua11y-invert));
     }
 
   }
@@ -65,8 +57,8 @@ html[data-color-profile=default] {
  * Remove canvas player with aria-hidden (adapt-graphicLottie)
  */
 .a11y-no-background-images {
-  img[aria-hidden=true] { display: none }
-  .has-bg-image { background-image: none !important; }
+  img[aria-hidden=true] { visibility: hidden; }
+  .has-bg-image > .background { background-image: none !important; }
   .svg__player[aria-hidden=true] { display: none; }
   .graphiclottie__player[aria-hidden=true] { display: none; }
 }

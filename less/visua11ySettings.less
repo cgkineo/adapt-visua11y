@@ -4,7 +4,7 @@
   background-color: transparent;
 
   .notify__popup-inner {
-    max-width: @device-width-small;
+    max-width: @device-width-medium;
     margin: auto;
     background-color: @notify;
     padding: @item-padding (@item-padding / 2);
@@ -91,6 +91,7 @@
     .visua11ysettings__item {
       display: flex;
       flex-direction: column;
+      padding-right: @item-padding / 2;
 
       @media (min-width: @device-width-medium) {
         flex-direction: row;

@@ -1,0 +1,26 @@
+{
+  "$anchor": "visua11y-config",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "$patch": {
+    "source": {
+      "$ref": "config"
+    },
+    "with": {
+      "properties": {
+        "_visua11y": {
+          "type": "object",
+          "title": "Visua11y",
+          "default": {},
+          "properties": {
+            "_isEnabled": {
+              "type": "boolean",
+              "title": "Enable Visua11y for Language Picker",
+              "default": false
+            }
+          }
+        }
+      }
+    }
+  }
+}
