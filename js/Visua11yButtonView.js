@@ -8,6 +8,7 @@ class AnimationsButtonView extends Backbone.View {
   attributes() {
     return {
       'aria-label': Adapt.visua11y.config._button.navigationAriaLabel,
+      'data-order': (Adapt.course.get('_globals')?._extensions?._visua11y?._navOrder || 0),
       'data-tooltip-id': 'visua11y'
     };
   }
