@@ -5,22 +5,22 @@
   "globals": {
     "_navTooltip": {
       "type": "object",
-      "title": "Navigation tooltip",
-      "default": {},
+      "title": "Visua11y navigation tooltip",
       "properties": {
         "_isEnabled": {
           "type": "boolean",
           "default": true,
+          "title": "Enable tooltip for navigation button",
           "inputType": "Checkbox",
-          "validators": [],
-          "title": "Enabled?"
+          "validators": []
         },
         "text": {
           "type": "string",
           "title": "",
-          "default": "Settings",
+          "default": "Visual accessibility settings",
+          "help": "The tooltip text to display on hover over this item",
           "inputType": "Text",
-          "required": true,
+          "validators": []
           "translatable": true
         }
       }
