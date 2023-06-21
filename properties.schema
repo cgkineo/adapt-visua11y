@@ -27,7 +27,7 @@
           "default": "Visual accessibility settings",
           "help": "The tooltip text to display on hover over this item",
           "inputType": "Text",
-          "validators": []
+          "validators": [],
           "translatable": true
         }
       }
