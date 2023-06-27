@@ -5,9 +5,11 @@ import CSSRule from './CSSRule';
 import Color from './Color';
 import DEFAULTS from './DEFAULTS';
 import { highContrast, invert, lowBrightness, profileFilter } from './ColorTransformations';
-import Visua11yButtonView from './Visua11yButtonView';
 import notify from 'core/js/notify';
 import drawer from 'core/js/drawer';
+import Visua11yNavigationView from './Visua11yNavigationView';
+import navigation from 'core/js/navigation';
+import NavigationButtonModel from 'core/js/models/NavigationButtonModel';
 
 /**
  * Utility function for applying deep defaults
@@ -52,6 +54,10 @@ class Visua11y extends Backbone.Controller {
 
   get config () {
     return _deepDefaults((this._adaptStarted ? Adapt.course : Adapt.config).get('_visua11y') ?? {}, DEFAULTS);
+  }
+
+  static get globalsConfig() {
+    return Adapt.course.get('_globals')?._extensions?._visua11y;
   }
 
   get colorProfiles() {
@@ -311,7 +317,32 @@ class Visua11y extends Backbone.Controller {
 
   setupNavigationButton() {
     if (!this.config?._isEnabled) return;
-    $('.nav__drawer-btn').after(new Visua11yButtonView().$el);
+
+    const {
+      _navOrder = 0,
+      _showLabel = true,
+      navLabel = '',
+      pageLevelProgressIndicatorBar = '',
+      _drawerPosition = 'auto'
+    } = Visua11y.globalsConfig ?? {};
+
+    const model = new NavigationButtonModel({
+      _id: 'visua11y',
+      _order: _navOrder,
+      _showLabel,
+      _classes: 'nav__visua11y-btn',
+      _iconClasses: '',
+      _role: 'button',
+      ariaLabel: pageLevelProgressIndicatorBar,
+      text: navLabel,
+      _drawerPosition
+    });
+
+    navigation.addButton(new Visua11yNavigationView({
+      model,
+      pageModel,
+      collection
+    }));
   }
 
   apply() {

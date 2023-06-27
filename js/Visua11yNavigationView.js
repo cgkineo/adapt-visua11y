@@ -1,10 +1,11 @@
 import Adapt from 'core/js/adapt';
 import Visua11ySettingsView from './Visua11ySettingsView';
+import NavigationButtonView from 'core/js/views/NavigationButtonView';
 import notify from 'core/js/notify';
 import drawer from 'core/js/drawer';
 import tooltips from 'core/js/tooltips';
 
-class AnimationsButtonView extends Backbone.View {
+class Visua11yButtonView extends NavigationButtonView {
 
   attributes() {
     return {
@@ -12,10 +13,6 @@ class AnimationsButtonView extends Backbone.View {
       'data-order': (Adapt.course.get('_globals')?._extensions?._visua11y?._navOrder || 0),
       'data-tooltip-id': 'visua11y'
     };
-  }
-
-  tagName() {
-    return 'button';
   }
 
   className() {
@@ -32,11 +29,15 @@ class AnimationsButtonView extends Backbone.View {
     this.onNotifyClosed = this.onNotifyClosed.bind(this);
     this.onNotifyClicked = this.onNotifyClicked.bind(this);
     this.render();
-    
+
     tooltips.register({
       _id: 'visua11y',
       ...Adapt.course.get('_globals')?._extensions?._visua11y?._navTooltip || {}
     });
+  }
+
+  static get template() {
+    return 'Visua11yNavigationButton.jsx';
   }
 
   render() {
@@ -83,4 +84,4 @@ class AnimationsButtonView extends Backbone.View {
 
 }
 
-export default AnimationsButtonView;
+export default Visua11yButtonView;
