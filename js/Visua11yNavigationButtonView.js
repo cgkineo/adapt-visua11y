@@ -45,8 +45,8 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
     return 'Visua11yNavigationButton.jsx';
   }
 
-  onClick(event) {
-    if (event && event.preventDefault) event.preventDefault();
+  onClick(e) {
+    if (e && e.preventDefault) e.preventDefault();
 
     const config = Adapt.course.get('_visua11y');
     if (config._location === 'drawer') {
@@ -66,8 +66,8 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
     Adapt.trigger('visua11y:opened');
   }
 
-  onNotifyClicked(event) {
-    const $target = $(event.target);
+  onNotifyClicked(e) {
+    const $target = $(e.target);
     const isChild = ($target.parents('.notify__popup-inner').length !== 0);
     if (isChild) return;
 
