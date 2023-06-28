@@ -60,7 +60,7 @@ export default class Visua11ySettingsView extends Backbone.View {
   }
 
   onClose() {
-    this._visua11y.settingsPrompt.closeNotify();
+    this._visua11y.close();
   }
 
   sendTrigger(name, checked, value, type) {
