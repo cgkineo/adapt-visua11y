@@ -180,6 +180,7 @@ class Color {
   parseCOLORNAME(name) {
     name = name.toLowerCase();
     if (!NAMED_COLOR[name]) throw new Error(`Invalid color: ${name}`);
+    if (this.isKeyword) return this;
     this.parseHEXAString(NAMED_COLOR[name]);
     return this;
   }
@@ -205,6 +206,16 @@ class Color {
 
   get isTransparent() {
     return (this.a === 0);
+  }
+
+  get isKeyword() {
+    return [
+      'inherit',
+      'initial',
+      'revert',
+      'revert-layer',
+      'unset'
+    ].includes(this.source);
   }
 
   /** @returns {Color} */

@@ -147,5 +147,10 @@ export default {
   wheat: '#f5deb3',
   whitesmoke: '#f5f5f5',
   yellowgreen: '#9acd32',
-  rebeccapurple: '#663399'
+  rebeccapurple: '#663399',
+  inherit: 'inherit',
+  initial: 'initial',
+  revert: 'revert',
+  'revert-layer': 'revert-layer',
+  unset: 'unset'
 };

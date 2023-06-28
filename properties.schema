@@ -9,6 +9,28 @@
       "default": 0,
       "inputType": "Text",
       "validators": []
+    },
+    "_navTooltip": {
+      "type": "object",
+      "title": "Visua11y navigation tooltip",
+      "properties": {
+        "_isEnabled": {
+          "type": "boolean",
+          "default": true,
+          "title": "Enable tooltip for navigation button",
+          "inputType": "Checkbox",
+          "validators": []
+        },
+        "text": {
+          "type": "string",
+          "title": "",
+          "default": "Visual accessibility settings",
+          "help": "The tooltip text to display on hover over this item",
+          "inputType": "Text",
+          "validators": [],
+          "translatable": true
+        }
+      }
     }
   },
   "properties": {
@@ -48,6 +70,20 @@
                   "title": "Enable Visua11y",
                   "inputType": "Checkbox",
                   "validators": []
+                },
+                "_location": {
+                  "type": "string",
+                  "required": true,
+                  "default": "notify",
+                  "title": "Open in notify or drawer",
+                  "validators": ["required"],
+                  "inputType": {
+                    "type": "Select",
+                    "options": [
+                      "notify",
+                      "drawer"
+                    ]
+                  }
                 },
                 "_shouldSavePreferences": {
                   "type": "boolean",
@@ -401,7 +437,7 @@
                 "_noBackgroundImages": {
                   "type": "object",
                   "required": false,
-                  "title": "No background images",
+                  "title": "Hide decorative images",
                   "properties": {
                     "_isEnabled": {
                       "type": "boolean",
@@ -414,7 +450,7 @@
                     "title": {
                       "type": "string",
                       "required": false,
-                      "default": "No background images",
+                      "default": "Hide decorative images",
                       "title": "Title",
                       "inputType": "Text",
                       "validators": []

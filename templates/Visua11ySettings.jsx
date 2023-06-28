@@ -14,6 +14,23 @@ export default function Visua11ySettings(props) {
     onReset,
     onClose
   } = props;
+  
+  function onReset() {
+    visua11y.reset();
+  }
+
+  function onClose() {
+    visua11y.close();
+  }
+
+  function onChange(event) {
+    let state;
+    const { name, checked, value, type } = event.target;
+    visua11y[name] = type === 'checkbox' ? checked : value;
+    if (type === 'checkbox') { state = checked; }
+    if (type === 'radio' || type === 'select-one') { state = value; }
+    Adapt.trigger('visua11y:toggle', name, state);
+  }
 
   return (
     <div className='visua11ysettings__inner'>
