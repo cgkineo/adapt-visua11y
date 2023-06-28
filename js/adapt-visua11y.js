@@ -7,7 +7,8 @@ import DEFAULTS from './DEFAULTS';
 import { highContrast, invert, lowBrightness, profileFilter } from './ColorTransformations';
 import notify from 'core/js/notify';
 import drawer from 'core/js/drawer';
-import Visua11yNavigationView from './Visua11yNavigationView';
+import offlineStorage from 'core/js/offlineStorage';
+import Visua11yNavigationButtonView from './Visua11yNavigationButtonView';
 import navigation from 'core/js/navigation';
 import NavigationButtonModel from 'core/js/models/NavigationButtonModel';
 
@@ -279,7 +280,7 @@ class Visua11y extends Backbone.Controller {
       boolToInt(this._noBackgroundImages),
       parseInt(this._highContrastLuminanceThreshold)
     ];
-    Adapt.offlineStorage.set('v', Adapt.offlineStorage.serialize(data));
+    offlineStorage.set('v', offlineStorage.serialize(data));
   }
 
   restore() {
@@ -298,8 +299,8 @@ class Visua11y extends Backbone.Controller {
     };
     const serialized = (this.config._shouldSavePreferences === false)
       ? null
-      : Adapt.offlineStorage.get('v');
-    const data = serialized ? Adapt.offlineStorage.deserialize(serialized) : [];
+      : offlineStorage.get('v');
+    const data = serialized ? offlineStorage.deserialize(serialized) : [];
     this._colorProfileId = Object.keys(DEFAULTS._colorProfiles)[data[0] ?? Object.keys(DEFAULTS._colorProfiles).findIndex(k => k === this.config._colorProfile._default)];
     this._invert = intToBool(this.config._invert, data[1]);
     this._fontSize = intToLargeMediumSmall(this.config._fontSize, data[2]);
@@ -338,11 +339,7 @@ class Visua11y extends Backbone.Controller {
       _drawerPosition
     });
 
-    navigation.addButton(new Visua11yNavigationView({
-      model,
-      pageModel,
-      collection
-    }));
+    navigation.addButton(new Visua11yNavigationButtonView({ model }));
   }
 
   apply() {

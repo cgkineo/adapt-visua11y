@@ -5,18 +5,22 @@ import notify from 'core/js/notify';
 import drawer from 'core/js/drawer';
 import tooltips from 'core/js/tooltips';
 
-class Visua11yButtonView extends NavigationButtonView {
+class Visua11yNavigationButtonView extends NavigationButtonView {
 
   attributes() {
+    const attributes = this.model.toJSON();
+
     return {
+      name: attributes._id,
+      role: attributes._role === 'button' ? undefined : attributes._role,
+      'data-order': attributes._order,
       'aria-label': Adapt.visua11y.config._button.navigationAriaLabel,
-      'data-order': (Adapt.course.get('_globals')?._extensions?._visua11y?._navOrder || 0),
       'data-tooltip-id': 'visua11y'
     };
   }
 
   className() {
-    return 'btn-icon nav__btn visua11y-btn';
+    return 'btn-icon nav__btn nav__visua11y-btn';
   }
 
   events() {
@@ -25,7 +29,8 @@ class Visua11yButtonView extends NavigationButtonView {
     };
   }
 
-  initialize() {
+  initialize(options) {
+    super.initialize(options);
     this.onNotifyClosed = this.onNotifyClosed.bind(this);
     this.onNotifyClicked = this.onNotifyClicked.bind(this);
     this.render();
@@ -40,16 +45,9 @@ class Visua11yButtonView extends NavigationButtonView {
     return 'Visua11yNavigationButton.jsx';
   }
 
-  render() {
-    const template = Handlebars.templates.visua11yButton;
-    const data = {
-      _globals: Adapt.course?.get('_globals')
-    };
-    this.$el.html(template(data));
-  }
-
   onClick(event) {
     if (event && event.preventDefault) event.preventDefault();
+
     const config = Adapt.course.get('_visua11y');
     if (config._location === 'drawer') {
       drawer.triggerCustomView(new Visua11ySettingsView().$el, false, 'auto');
@@ -72,11 +70,13 @@ class Visua11yButtonView extends NavigationButtonView {
     const $target = $(event.target);
     const isChild = ($target.parents('.notify__popup-inner').length !== 0);
     if (isChild) return;
+
     Adapt.visua11y.settingsPrompt.closeNotify();
   }
 
   onNotifyClosed(notify) {
     if (notify !== Adapt.visua11y.settingsPrompt) return;
+
     Adapt.visua11y.settingsPrompt.$el.off('click', this.onNotifyClicked);
     Adapt.visua11y.settingsPrompt = null;
     this.stopListening(Adapt, 'notify:closed', this.onNotifyClosed);
@@ -84,4 +84,4 @@ class Visua11yButtonView extends NavigationButtonView {
 
 }
 
-export default Visua11yButtonView;
+export default Visua11yNavigationButtonView;
