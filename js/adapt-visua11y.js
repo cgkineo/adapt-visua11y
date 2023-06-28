@@ -322,9 +322,7 @@ class Visua11y extends Backbone.Controller {
     const {
       _navOrder = 0,
       _showLabel = true,
-      navLabel = '',
-      pageLevelProgressIndicatorBar = '',
-      _drawerPosition = 'auto'
+      navLabel = ''
     } = Visua11y.globalsConfig ?? {};
 
     const model = new NavigationButtonModel({
@@ -334,9 +332,7 @@ class Visua11y extends Backbone.Controller {
       _classes: 'nav__visua11y-btn',
       _iconClasses: '',
       _role: 'button',
-      ariaLabel: pageLevelProgressIndicatorBar,
-      text: navLabel,
-      _drawerPosition
+      text: navLabel
     });
 
     navigation.addButton(new Visua11yNavigationButtonView({ model }));
