@@ -1,25 +1,26 @@
 import Adapt from 'core/js/adapt';
 import Visua11ySettingsView from './Visua11ySettingsView';
+import NavigationButtonView from 'core/js/views/NavigationButtonView';
 import notify from 'core/js/notify';
 import drawer from 'core/js/drawer';
 import tooltips from 'core/js/tooltips';
 
-class AnimationsButtonView extends Backbone.View {
+class Visua11yNavigationButtonView extends NavigationButtonView {
 
   attributes() {
+    const attributes = this.model.toJSON();
+
     return {
+      name: attributes._id,
+      role: attributes._role === 'button' ? undefined : attributes._role,
+      'data-order': attributes._order,
       'aria-label': Adapt.visua11y.config._button.navigationAriaLabel,
-      'data-order': (Adapt.course.get('_globals')?._extensions?._visua11y?._navOrder || 0),
       'data-tooltip-id': 'visua11y'
     };
   }
 
-  tagName() {
-    return 'button';
-  }
-
   className() {
-    return 'btn-icon nav__btn visua11y-btn';
+    return 'btn-icon nav__btn nav__visua11y-btn';
   }
 
   events() {
@@ -28,27 +29,25 @@ class AnimationsButtonView extends Backbone.View {
     };
   }
 
-  initialize() {
+  initialize(options) {
+    super.initialize(options);
     this.onNotifyClosed = this.onNotifyClosed.bind(this);
     this.onNotifyClicked = this.onNotifyClicked.bind(this);
     this.render();
-    
+
     tooltips.register({
       _id: 'visua11y',
       ...Adapt.course.get('_globals')?._extensions?._visua11y?._navTooltip || {}
     });
   }
 
-  render() {
-    const template = Handlebars.templates.visua11yButton;
-    const data = {
-      _globals: Adapt.course?.get('_globals')
-    };
-    this.$el.html(template(data));
+  static get template() {
+    return 'Visua11yNavigationButton.jsx';
   }
 
   onClick(event) {
     if (event && event.preventDefault) event.preventDefault();
+
     const config = Adapt.course.get('_visua11y');
     if (config._location === 'drawer') {
       drawer.triggerCustomView(new Visua11ySettingsView().$el, false, 'auto');
@@ -71,11 +70,13 @@ class AnimationsButtonView extends Backbone.View {
     const $target = $(event.target);
     const isChild = ($target.parents('.notify__popup-inner').length !== 0);
     if (isChild) return;
+
     Adapt.visua11y.settingsPrompt.closeNotify();
   }
 
   onNotifyClosed(notify) {
     if (notify !== Adapt.visua11y.settingsPrompt) return;
+
     Adapt.visua11y.settingsPrompt.$el.off('click', this.onNotifyClicked);
     Adapt.visua11y.settingsPrompt = null;
     this.stopListening(Adapt, 'notify:closed', this.onNotifyClosed);
@@ -83,4 +84,4 @@ class AnimationsButtonView extends Backbone.View {
 
 }
 
-export default AnimationsButtonView;
+export default Visua11yNavigationButtonView;

@@ -5,9 +5,12 @@ import CSSRule from './CSSRule';
 import Color from './Color';
 import DEFAULTS from './DEFAULTS';
 import { highContrast, invert, lowBrightness, profileFilter } from './ColorTransformations';
-import Visua11yButtonView from './Visua11yButtonView';
 import notify from 'core/js/notify';
 import drawer from 'core/js/drawer';
+import offlineStorage from 'core/js/offlineStorage';
+import Visua11yNavigationButtonView from './Visua11yNavigationButtonView';
+import navigation from 'core/js/navigation';
+import NavigationButtonModel from 'core/js/models/NavigationButtonModel';
 
 /**
  * Utility function for applying deep defaults
@@ -52,6 +55,10 @@ class Visua11y extends Backbone.Controller {
 
   get config () {
     return _deepDefaults((this._adaptStarted ? Adapt.course : Adapt.config).get('_visua11y') ?? {}, DEFAULTS);
+  }
+
+  static get globalsConfig() {
+    return Adapt.course.get('_globals')?._extensions?._visua11y;
   }
 
   get colorProfiles() {
@@ -273,7 +280,7 @@ class Visua11y extends Backbone.Controller {
       boolToInt(this._noBackgroundImages),
       parseInt(this._highContrastLuminanceThreshold)
     ];
-    Adapt.offlineStorage.set('v', Adapt.offlineStorage.serialize(data));
+    offlineStorage.set('v', offlineStorage.serialize(data));
   }
 
   restore() {
@@ -292,8 +299,8 @@ class Visua11y extends Backbone.Controller {
     };
     const serialized = (this.config._shouldSavePreferences === false)
       ? null
-      : Adapt.offlineStorage.get('v');
-    const data = serialized ? Adapt.offlineStorage.deserialize(serialized) : [];
+      : offlineStorage.get('v');
+    const data = serialized ? offlineStorage.deserialize(serialized) : [];
     this._colorProfileId = Object.keys(DEFAULTS._colorProfiles)[data[0] ?? Object.keys(DEFAULTS._colorProfiles).findIndex(k => k === this.config._colorProfile._default)];
     this._invert = intToBool(this.config._invert, data[1]);
     this._fontSize = intToLargeMediumSmall(this.config._fontSize, data[2]);
@@ -311,7 +318,24 @@ class Visua11y extends Backbone.Controller {
 
   setupNavigationButton() {
     if (!this.config?._isEnabled) return;
-    $('.nav__drawer-btn').after(new Visua11yButtonView().$el);
+
+    const {
+      _navOrder = 0,
+      _showLabel = true,
+      navLabel = ''
+    } = Visua11y.globalsConfig ?? {};
+
+    const model = new NavigationButtonModel({
+      _id: 'visua11y',
+      _order: _navOrder,
+      _showLabel,
+      _classes: 'nav__visua11y-btn',
+      _iconClasses: '',
+      _role: 'button',
+      text: navLabel
+    });
+
+    navigation.addButton(new Visua11yNavigationButtonView({ model }));
   }
 
   apply() {

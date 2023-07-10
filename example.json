@@ -1,4 +1,16 @@
 // course.json
+"_extensions": {
+  "_visua11y": {
+    "_navOrder": 100,
+    "navLabel": "Accessibility",
+    "_navTooltip": {
+      "_isEnabled": true,
+      "text": "Visual accessibility settings"
+    }
+  }
+}
+
+// course.json
 "_visua11y": {
   "_isEnabled": false,
   "_location": "notify",
