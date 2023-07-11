@@ -46,6 +46,25 @@
                       "title": "Nav order",
                       "default": 0,
                       "_backboneForms": "Number"
+                    },
+                    "_navTooltip": {
+                      "type": "object",
+                      "title": "Visua11y navigation tooltip",
+                      "properties": {
+                        "_isEnabled": {
+                          "type": "boolean",
+                          "title": "Enable tooltip for navigation button",
+                          "default": true
+                        },
+                        "text": {
+                          "type": "string",
+                          "title": "",
+                          "default": "Visual accessibility settings",
+                          "_adapt": {
+                            "translatable": true
+                          }
+                        }
+                      }
                     }
                   }
                 }
