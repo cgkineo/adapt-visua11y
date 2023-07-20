@@ -50,7 +50,7 @@
                     },
                     "_navTooltip": {
                       "type": "object",
-                      "title": "Visua11y navigation tooltip",
+                      "title": "Navigation tooltip",
                       "properties": {
                         "_isEnabled": {
                           "type": "boolean",
@@ -59,7 +59,7 @@
                         },
                         "text": {
                           "type": "string",
-                          "title": "",
+                          "title": "Tooltip text",
                           "default": "Visual accessibility settings",
                           "_adapt": {
                             "translatable": true
