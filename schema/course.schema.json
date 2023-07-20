@@ -35,6 +35,19 @@
                       "default": 0,
                       "_backboneForms": "Number"
                     },
+                    "_showLabel": {
+                      "type": "boolean",
+                      "title": "Enable navigation bar button label",
+                      "default": true
+                    },
+                    "navLabel": {
+                      "type": "string",
+                      "title": "Navigation bar button label",
+                      "default": "Accessibility",
+                      "_adapt": {
+                        "translatable": true
+                      }
+                    },
                     "_navTooltip": {
                       "type": "object",
                       "title": "Visua11y navigation tooltip",
