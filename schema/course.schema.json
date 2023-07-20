@@ -12,26 +12,6 @@
           "type": "object",
           "default": {},
           "properties": {
-            "_accessibility": {
-              "type": "object",
-              "default": {},
-              "properties": {
-                "_ariaLabels": {
-                  "type": "object",
-                  "default": {},
-                  "properties": {
-                    "visua11y": {
-                      "type": "string",
-                      "title": "Visual accessibility settings",
-                      "default": "Visual accessibility settings",
-                      "_adapt": {
-                        "translatable": true
-                      }
-                    }
-                  }
-                }
-              }
-            },
             "_extensions": {
               "type": "object",
               "default": {},
@@ -41,6 +21,14 @@
                   "title": "Visua11y",
                   "default": {},
                   "properties": {
+                    "_ariaLabels": {
+                      "type": "string",
+                      "title": "Visual accessibility settings",
+                      "default": "Visual accessibility settings",
+                      "_adapt": {
+                        "translatable": true
+                      }
+                    },
                     "_navOrder": {
                       "type": "number",
                       "title": "Nav order",
