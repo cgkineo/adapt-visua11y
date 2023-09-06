@@ -15,7 +15,8 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
       role: attributes._role === 'button' ? undefined : attributes._role,
       'data-order': attributes._order,
       'aria-label': Adapt.visua11y.config._button.navigationAriaLabel,
-      'data-tooltip-id': 'visua11y'
+      'data-tooltip-id': 'visua11y',
+      'aria-expanded': false
     };
   }
 
@@ -47,7 +48,6 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
 
   onClick(event) {
     if (event && event.preventDefault) event.preventDefault();
-
     const config = Adapt.course.get('_visua11y');
     if (config._location === 'drawer') {
       drawer.triggerCustomView(new Visua11ySettingsView().$el, false, 'auto');
@@ -64,6 +64,7 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
     }
     this.render();
     Adapt.trigger('visua11y:opened');
+    this.$el.attr('aria-expanded', true);
   }
 
   onNotifyClicked(event) {
@@ -76,7 +77,7 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
 
   onNotifyClosed(notify) {
     if (notify !== Adapt.visua11y.settingsPrompt) return;
-
+    this.$el.attr('aria-expanded', false);
     Adapt.visua11y.settingsPrompt.$el.off('click', this.onNotifyClicked);
     Adapt.visua11y.settingsPrompt = null;
     this.stopListening(Adapt, 'notify:closed', this.onNotifyClosed);
