@@ -32,8 +32,7 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
 
   initialize(options) {
     super.initialize(options);
-    this.onNotifyClosed = this.onNotifyClosed.bind(this);
-    this.onNotifyClicked = this.onNotifyClicked.bind(this);
+    this.setupEventListeners();
     this.render();
 
     tooltips.register({
@@ -44,6 +43,12 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
 
   static get template() {
     return 'Visua11yNavigationButton.jsx';
+  }
+
+  setupEventListeners() {
+    this.onNotifyClosed = this.onNotifyClosed.bind(this);
+    this.onNotifyClicked = this.onNotifyClicked.bind(this);
+    this.listenTo(Adapt, 'drawer:closed', this.onDrawerClosed);
   }
 
   onClick(event) {
@@ -73,6 +78,10 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
     if (isChild) return;
 
     Adapt.visua11y.settingsPrompt.closeNotify();
+  }
+
+  onDrawerClosed() {
+    this.$el.attr('aria-expanded', false);
   }
 
   onNotifyClosed(notify) {
