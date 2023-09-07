@@ -46,12 +46,15 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
   }
 
   setupEventListeners() {
+    const config = Adapt.course.get('_visua11y');
+
+    if (config._location === 'drawer') {
+      this.listenTo(Adapt, 'drawer:closed', this.onDrawerClosed);
+      return;
+    };
+
     this.onNotifyClosed = this.onNotifyClosed.bind(this);
     this.onNotifyClicked = this.onNotifyClicked.bind(this);
-
-    const config = Adapt.course.get('_visua11y');
-    if (config._location !== 'drawer') return;
-    this.listenTo(Adapt, 'drawer:closed', this.onDrawerClosed);
   }
 
   onClick(event) {
