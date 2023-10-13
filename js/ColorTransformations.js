@@ -2,6 +2,7 @@ import Color from './Color';
 import FILTERS from './COLOR_FILTERS';
 
 const HIGH_CONTRAST = ({ _highContrastLuminanceThreshold }) => {
+  _highContrastLuminanceThreshold = parseFloat(_highContrastLuminanceThreshold);
   return [
     [0, 10, 0], // Move 0-10 to 0
     [10, _highContrastLuminanceThreshold + 1, 10, 30, false], // For 10-71 (not inclusive) move towards 10 not more than 30
