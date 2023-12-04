@@ -26,7 +26,6 @@ It provides visual accessibility improvements.
 * Hide decorative images is contingent on alt text.
 
 ----------------------------
-**Framework versions:**  5.15+<br/>
 **Author / maintainer:** Adapt Core Team with [contributors](https://github.com/cgkineo/adapt-visua11y/graphs/contributors)<br/>
 **Accessibility support:** WAI AA<br/>
 **Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, IE11, Safari 12+13 for macOS/iOS/iPadOS, Opera<br/>
