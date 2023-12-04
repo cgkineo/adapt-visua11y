@@ -472,6 +472,7 @@
             "_paragraphSpacing": {
               "type": "object",
               "title": "Paragraph spacing",
+              "description": "Note, in order to support paragraph spacing, all body text needs to be wrapped in paragraph '<p>' tags",
               "default": {},
               "properties": {
                 "_isEnabled": {

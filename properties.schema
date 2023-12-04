@@ -634,7 +634,8 @@
                       "default": true,
                       "title": "Enable",
                       "inputType": "Checkbox",
-                      "validators": []
+                      "validators": [],
+                      "help": "Note, in order to support paragraph spacing, all body text needs to be wrapped in paragraph '<p>' tags"
                     },
                     "title": {
                       "type": "string",
