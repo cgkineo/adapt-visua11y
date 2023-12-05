@@ -4,7 +4,7 @@
     "type": "git",
     "url": "https://github.com/cgkineo/adapt-visua11y.git"
   },
-  "version": "2.6.0",
+  "version": "2.7.0",
   "framework": ">=5.31.4",
   "homepage": "https://github.com/cgkineo/adapt-visua11y",
   "issues": "https://github.com/cgkineo/adapt-visua11y/issues/new",
