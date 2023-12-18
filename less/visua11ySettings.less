@@ -19,12 +19,12 @@
     &__group {
       background-color: darken(@notify, 5%);
     }
-    
+
     &__group-profiles {
       display: flex;
       justify-content: space-between;
       flex-direction: column;
-  
+
       @media (min-width: @device-width-medium) {
         flex-direction: row;
       }
@@ -34,7 +34,7 @@
       .visua11ysettings__item {
         display: flex;
         flex-direction: column;
-  
+
         @media (min-width: @device-width-medium) {
           flex-direction: row;
           align-items: center;
@@ -47,7 +47,7 @@
         color: @notify-icon-inverted;
         border: 0.0625rem solid @notify-icon;
       }
-  
+
       input:checked + label .item-text {
         background-color: @notify-icon-hover;
         color: @notify-icon-inverted-hover;
@@ -92,7 +92,7 @@
         color: @drawer-item-inverted;
         border: 0.0625rem solid @drawer-item;
       }
-  
+
       input:checked + label .item-text {
         background-color: @drawer-item-selected;
         color: @drawer-item-inverted-selected;
@@ -102,8 +102,8 @@
 
     &__item {
       border-top: 1px solid fade(@drawer-inverted, 30%);
-    } 
-  }  
+    }
+  }
 }
 
 // Global UI settings
@@ -128,14 +128,10 @@
   }
 
   &__item {
-    padding: @item-padding (@item-padding / 2);
-    padding-right: @icon-size + @item-padding;
+    padding-top: @item-padding;
+    padding-bottom: @item-padding;
+    padding-inline: (@item-padding / 2) (@icon-size + @item-padding);
     position: relative;
-
-    .dir-rtl & {
-      padding-left: @icon-size + @item-padding;
-      padding-right: inherit;
-    }
   }
 
   .visua11ysettings__item > input {
@@ -170,20 +166,15 @@
   // --------------------------------------------------
   &__group-readability {
     .visua11ysettings__item {
-      padding-right: @item-padding / 2;
+      padding-inline-end: @item-padding / 2;
     }
 
     .visua11ysettings__item-title {
       margin-bottom: @item-margin;
 
       @media (min-width: @device-width-medium) {
-        margin-right: @item-margin;
+        margin-inline-end: @item-margin;
         margin-bottom: inherit;
-
-        .dir-rtl & {
-          margin-left: @item-margin;
-          margin-right: inherit;
-        }
       }
     }
 
@@ -225,12 +216,7 @@
   .icon {
     display: inline-block;
     vertical-align: middle;
-    margin-right: .5rem;
-
-    .dir-rtl & {
-      margin-left: .5rem;
-      margin-right: inherit;
-    }
+    margin-inline-end: .5rem;
   }
 
   .colorprofileid .icon {
@@ -290,7 +276,7 @@
   }
 
   .btn-close {
-    margin-left: @btn-padding;
+    margin-inline-start: @btn-padding;
     background-color: @btn-color-inverted;
     color: @btn-color;
 
@@ -298,5 +284,5 @@
       background-color: @btn-color-inverted-hover;
       color: @btn-color-hover;
     }
-  }  
+  }
 }
