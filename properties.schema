@@ -94,7 +94,7 @@
                 },
                 "title": {
                   "type": "string",
-                  "required": false,
+                  "required": true,
                   "default": "Accessibility Controls",
                   "title": "Popup title text",
                   "inputType": "Text",
