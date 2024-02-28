@@ -23,6 +23,7 @@ It provides visual accessibility improvements.
 * In order to support paragraph spacing, all body text needs to be wrapped in [paragraph tags](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/p).
 * Font size medium is the default font size (16px usually), large is 18pt, small is 9pt.
 * Hide decorative images is contingent on alt text.
+* No transparency removes `box-shadow`, `text-shadow` and `opacity` styles.
 
 ### Theme considerations
 * All colour transformations are applied by mathematical shifts. It is therefore important that the course start from AA colour contrast for the algorithms to be applicable.
