@@ -17,6 +17,15 @@ import Color from './Color';
  */
 export default [
   [
+    // Remove text shadows
+    'text-shadow',
+    null,
+    function () {
+      if (!this.noTransparency) return;
+      return 'none';
+    }
+  ],
+  [
     // Remove box shadows
     'box-shadow',
     null,
