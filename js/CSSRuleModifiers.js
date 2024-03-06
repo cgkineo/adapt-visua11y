@@ -26,11 +26,13 @@ export default [
     }
   ],
   [
-    // Remove box shadows
+    // Remove box shadows with transparency
     'box-shadow',
     null,
-    function () {
+    function (output) {
       if (!this.noTransparency) return;
+      const zeroOffsetAndBlur = '0px 0px 0px';
+      if (output.includes(zeroOffsetAndBlur)) return;
       return 'none';
     }
   ],
