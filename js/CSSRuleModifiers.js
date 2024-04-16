@@ -17,11 +17,22 @@ import Color from './Color';
  */
 export default [
   [
-    // Remove box shadows
-    'box-shadow',
+    // Remove text shadows
+    'text-shadow',
     null,
     function () {
       if (!this.noTransparency) return;
+      return 'none';
+    }
+  ],
+  [
+    // Remove box shadows with transparency
+    'box-shadow',
+    null,
+    function (output) {
+      if (!this.noTransparency) return;
+      const zeroOffsetAndBlur = '0px 0px 0px';
+      if (output.includes(zeroOffsetAndBlur)) return;
       return 'none';
     }
   ],
