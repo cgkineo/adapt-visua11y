@@ -61,7 +61,7 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
     if (event && event.preventDefault) event.preventDefault();
     const config = Adapt.course.get('_visua11y');
     if (config._location === 'drawer') {
-      drawer.triggerCustomView(new Visua11ySettingsView().$el, false, 'auto');
+      drawer.openCustomView(new Visua11ySettingsView().$el, false, 'auto');
     } else {
       Adapt.visua11y.settingsPrompt = notify.popup({
         title: config.title,
