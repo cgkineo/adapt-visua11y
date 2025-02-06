@@ -37,11 +37,21 @@ export default function Visua11ySettings(props) {
               {config._colorProfile._isEnabled &&
               <div className='colorprofileid'>
                 <templates.Visua11yPreview {...config}/>
-                <label className='visua11ysettings__item-label' htmlFor='colorProfileId'>
+                <label
+                  className='visua11ysettings__item-label'
+                  htmlFor='colorProfileId'
+                  aria-hidden={true}
+                >
                   <div className='icon' aria-hidden='true'></div>
                   {config._colorProfile.title}
                 </label>
-                <select id='colorProfileId' name='colorProfileId' onChange={onChange} value={visua11y.colorProfileId}>
+                <select
+                  id='colorProfileId'
+                  name='colorProfileId'
+                  onChange={onChange}
+                  value={visua11y.colorProfileId}
+                  aria-label={a11y.normalize(config._colorProfile.title)}
+                >
                   {visua11y.colorProfiles.map(({ name, _id }) => <option key={_id} value={_id}>{name}</option>)}
                 </select>
               </div>
