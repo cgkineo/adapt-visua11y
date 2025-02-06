@@ -1,6 +1,7 @@
 import Adapt from 'core/js/adapt';
 import { templates } from 'core/js/reactHelpers';
 import React from 'react';
+import a11y from 'core/js/a11y';
 
 export default function Visua11ySettings(props) {
   const visua11y = Adapt.visua11y;
