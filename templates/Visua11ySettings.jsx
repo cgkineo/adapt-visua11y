@@ -151,9 +151,9 @@ export default function Visua11ySettings(props) {
 
           {config._fontSize._isEnabled &&
           <div className='visua11ysettings__item fontsize'>
-            <div className="visua11ysettings__item-title" id='fontsize'>
+            <div className="visua11ysettings__item-title" id='fontsize' aria-hidden='true'>
               {/* TODO wrap 'title' in separate <div> so title wraps separate to icon */}
-              <div className='icon' aria-hidden='true'></div>{config._fontSize.title}
+              <div className='icon'></div>{config._fontSize.title}
             </div>
 
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='fontsize'>
@@ -185,8 +185,8 @@ export default function Visua11ySettings(props) {
 
           {config._lineHeight._isEnabled &&
           <div className='visua11ysettings__item lineheight'>
-            <div className="visua11ysettings__item-title" id='lineheight'>
-              <div className='icon' aria-hidden='true'></div>{config._lineHeight.title}
+            <div className="visua11ysettings__item-title" id='lineheight' aria-hidden='true'>
+              <div className='icon'></div>{config._lineHeight.title}
             </div>
 
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='lineheight'>
@@ -218,8 +218,8 @@ export default function Visua11ySettings(props) {
 
           {config._paragraphSpacing._isEnabled &&
           <div className='visua11ysettings__item paragraphspacing'>
-            <div className="visua11ysettings__item-title" id='paragraphspacing'>
-              <div className='icon' aria-hidden='true'></div>{config._paragraphSpacing.title}
+            <div className="visua11ysettings__item-title" id='paragraphspacing' aria-hidden='true'>
+              <div className='icon'></div>{config._paragraphSpacing.title}
             </div>
 
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='paragraphspacing'>
@@ -251,8 +251,8 @@ export default function Visua11ySettings(props) {
 
           {config._letterSpacing._isEnabled &&
           <div className='visua11ysettings__item letterspacing'>
-            <div className="visua11ysettings__item-title" id='letterspacing'>
-              <div className='icon' aria-hidden='true'></div>{config._letterSpacing.title}
+            <div className="visua11ysettings__item-title" id='letterspacing' aria-hidden='true'>
+              <div className='icon'></div>{config._letterSpacing.title}
             </div>
 
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='letterspacing'>
@@ -284,8 +284,8 @@ export default function Visua11ySettings(props) {
 
           {config._wordSpacing._isEnabled &&
           <div className='visua11ysettings__item wordspacing'>
-            <div className="visua11ysettings__item-title" id='wordspacing'>
-              <div className='icon' aria-hidden='true'></div>{config._wordSpacing.title}
+            <div className="visua11ysettings__item-title" id='wordspacing' aria-hidden='true'>
+              <div className='icon'></div>{config._wordSpacing.title}
             </div>
 
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='wordspacing'>
