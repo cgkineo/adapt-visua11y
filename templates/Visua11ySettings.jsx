@@ -1,6 +1,7 @@
 import Adapt from 'core/js/adapt';
 import { templates } from 'core/js/reactHelpers';
 import React from 'react';
+import a11y from 'core/js/a11y';
 
 export default function Visua11ySettings(props) {
   const visua11y = Adapt.visua11y;
@@ -37,11 +38,21 @@ export default function Visua11ySettings(props) {
               {config._colorProfile._isEnabled &&
               <div className='colorprofileid'>
                 <templates.Visua11yPreview {...config}/>
-                <label className='visua11ysettings__item-label' htmlFor='colorProfileId'>
+                <label
+                  className='visua11ysettings__item-label'
+                  htmlFor='colorProfileId'
+                  aria-hidden={true}
+                >
                   <div className='icon' aria-hidden='true'></div>
                   {config._colorProfile.title}
                 </label>
-                <select id='colorProfileId' name='colorProfileId' onChange={onChange} value={visua11y.colorProfileId}>
+                <select
+                  id='colorProfileId'
+                  name='colorProfileId'
+                  onChange={onChange}
+                  value={visua11y.colorProfileId}
+                  aria-label={a11y.normalize(config._colorProfile.title)}
+                >
                   {visua11y.colorProfiles.map(({ name, _id }) => <option key={_id} value={_id}>{name}</option>)}
                 </select>
               </div>
@@ -140,9 +151,9 @@ export default function Visua11ySettings(props) {
 
           {config._fontSize._isEnabled &&
           <div className='visua11ysettings__item fontsize'>
-            <div className="visua11ysettings__item-title" id='fontsize'>
+            <div className="visua11ysettings__item-title" id='fontsize' aria-hidden='true'>
               {/* TODO wrap 'title' in separate <div> so title wraps separate to icon */}
-              <div className='icon' aria-hidden='true'></div>{config._fontSize.title}
+              <div className='icon'></div>{config._fontSize.title}
             </div>
 
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='fontsize'>
@@ -174,8 +185,8 @@ export default function Visua11ySettings(props) {
 
           {config._lineHeight._isEnabled &&
           <div className='visua11ysettings__item lineheight'>
-            <div className="visua11ysettings__item-title" id='lineheight'>
-              <div className='icon' aria-hidden='true'></div>{config._lineHeight.title}
+            <div className="visua11ysettings__item-title" id='lineheight' aria-hidden='true'>
+              <div className='icon'></div>{config._lineHeight.title}
             </div>
 
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='lineheight'>
@@ -207,8 +218,8 @@ export default function Visua11ySettings(props) {
 
           {config._paragraphSpacing._isEnabled &&
           <div className='visua11ysettings__item paragraphspacing'>
-            <div className="visua11ysettings__item-title" id='paragraphspacing'>
-              <div className='icon' aria-hidden='true'></div>{config._paragraphSpacing.title}
+            <div className="visua11ysettings__item-title" id='paragraphspacing' aria-hidden='true'>
+              <div className='icon'></div>{config._paragraphSpacing.title}
             </div>
 
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='paragraphspacing'>
@@ -240,8 +251,8 @@ export default function Visua11ySettings(props) {
 
           {config._letterSpacing._isEnabled &&
           <div className='visua11ysettings__item letterspacing'>
-            <div className="visua11ysettings__item-title" id='letterspacing'>
-              <div className='icon' aria-hidden='true'></div>{config._letterSpacing.title}
+            <div className="visua11ysettings__item-title" id='letterspacing' aria-hidden='true'>
+              <div className='icon'></div>{config._letterSpacing.title}
             </div>
 
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='letterspacing'>
@@ -273,8 +284,8 @@ export default function Visua11ySettings(props) {
 
           {config._wordSpacing._isEnabled &&
           <div className='visua11ysettings__item wordspacing'>
-            <div className="visua11ysettings__item-title" id='wordspacing'>
-              <div className='icon' aria-hidden='true'></div>{config._wordSpacing.title}
+            <div className="visua11ysettings__item-title" id='wordspacing' aria-hidden='true'>
+              <div className='icon'></div>{config._wordSpacing.title}
             </div>
 
             <div className="visua11ysettings__item-option-container" role='radiogroup' aria-labelledby='wordspacing'>
