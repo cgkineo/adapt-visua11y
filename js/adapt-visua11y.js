@@ -214,6 +214,8 @@ class Visua11y extends Backbone.Controller {
     this.measure();
     this.restore();
     this.setupNavigationButton();
+    this.cssPropertyRules = CSSRule.getAllDefinedColorProperties(this);
+    this.cssPropertyNames = this.cssPropertyRules.map(rule => rule.name);
     this.rules = CSSRule.getAllModifiable(this);
     this.apply();
   }
@@ -229,6 +231,8 @@ class Visua11y extends Backbone.Controller {
     this.measure();
     this.restore();
     this.setupNavigationButton();
+    this.cssPropertyRules = this.cssPropertyRules || CSSRule.getAllDefinedColorProperties(this);
+    this.cssPropertyNames = this.cssPropertyNames || this.cssPropertyRules.map(rule => rule.name);
     this.rules = this.rules || CSSRule.getAllModifiable(this);
     this.apply();
   }

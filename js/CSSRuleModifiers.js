@@ -1,4 +1,5 @@
 import Color from './Color';
+import Colors from './Colors';
 
 /**
  * List of objects representing stylesheet modifications
@@ -156,17 +157,7 @@ export default [
     'color',
     Color.parse,
     function (output) {
-      if (!this.highContrast) return;
-      const color = Color.parse(output);
-      if (color.isKeyword) return color.source;
-      if (color.isTransparent) return;
-      // Text: black or white
-      if (color.luminance <= 80) {
-        // Force black if lightness is less than 80%
-        return Color.BLACK.toRGBAString();
-      }
-      // Choose between black and white
-      return Color.bestLuminanceMatch(color, Color.BLACK, Color.WHITE).toRGBAString();
+      return Color.parse(output).applyTextContrast(this);
     }
   ],
   [
@@ -174,34 +165,50 @@ export default [
     name => /color/i.test(name),
     Color.parse,
     function (output) {
-      if (!this.noTransparency) return;
-      const color = Color.parse(output);
-      if (color.isKeyword) return color.source;
-      const isTransparent = (color.a <= 0.4);
-      if (isTransparent) {
-        // No color opacity less than 0.4
-        return Color.TRANSPARENT.toRGBAString();
-      }
-      // Bump opacity between 0.4 and 1 to 1
-      color.a = 1;
-      return color.toRGBAString();
+      return Color.parse(output).applyTransparency(this);
     }
   ],
   [
-    // Apply output color profile
-    name => /color/i.test(name) || name === 'initial-value',
+    // Apply output color profile to rule properties with 'color' in the name
+    // where the name is not a defined property (so that they don't get processed twice)
+    function (name) {
+      return /color/i.test(name) && !this.cssPropertyNames.includes(name);
+    },
     Color.parse,
     function (output) {
-      let color = Color.parse(output);
-      if (color.isKeyword) return color.source;
-      if (color.isTransparent) return color.toRGBAString();
-      const colorIndex = this.distinctColors.findIndex(primaryColor => {
-        return (color.r === primaryColor.r && color.g === primaryColor.g && color.b === primaryColor.b && color.a === primaryColor.a);
-      });
-      if (colorIndex !== -1) {
-        color = this.outputColors[colorIndex].clone();
-      }
-      return color.toRGBAString();
+      return Color.parse(output).applyColorProfile(this);
+    }
+  ],
+  [
+    // Apply output color profile to css color property rule 'initial-value'
+    function (name) {
+      return name === 'initial-value';
+    },
+    Color.parse,
+    function (output) {
+      return Color.parse(output).applyColorProfile(this);
+    }
+  ],
+  [
+    // Apply output color profile to properties containing many colour values
+    name => [
+      'background-image',
+      'background'
+    ].includes(name),
+    Colors.has,
+    function (output) {
+      return Colors.parse(output).applyColorProfile(this);
+    }
+  ],
+  [
+    // Apply output color profile to defined css color properties
+    // where they are defined in rules
+    function (name) {
+      return this.cssPropertyNames.includes(name);
+    },
+    Color.parse,
+    function (output) {
+      return Color.parse(output).applyColorProfile(this);
     }
   ]
 ];

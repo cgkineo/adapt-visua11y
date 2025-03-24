@@ -1,6 +1,7 @@
 import CSSRuleModifiers from './CSSRuleModifiers';
 import CSSPropertyRule from './CSSPropertyRule';
 import Color from './Color';
+import Colors from './Colors';
 
 export default class CSSRule {
 
@@ -75,14 +76,31 @@ export default class CSSRule {
   }
 
   get distinctColors() {
-    const colors = _.uniq(this.propertyNames.map((name, index) => {
+    const colors = _.uniq(_.flatten(this.propertyNames.map((name, index) => {
       try {
-        return Color.parse(this.original[index]);
+        return Colors.parse(this.original[index]).distinctColors;
       } catch (err) {
         return false;
       }
-    }).filter(Boolean));
+    })).filter(Boolean).map(Color.toRGBAString)).map(Color.parse);
     return colors;
+  }
+
+  static getAllDefinedColorProperties(context) {
+    const stylesheets = Array.prototype.slice.call(document.styleSheets, 0);
+    const allCSSRules = stylesheets.reduce((allCSSRules, stylesheet) => {
+      const rules = Array.prototype.slice.call(stylesheet.rules, 0);
+      if (window.CSSPropertyRule) {
+        allCSSRules.push(..._.flatten(rules.map(rule => {
+          if (!(rule instanceof window.CSSPropertyRule)) return false;
+          return new CSSPropertyRule(rule);
+        })));
+      }
+      return allCSSRules.filter(Boolean);
+    }, []);
+    // Filter rules with valid modifier matches
+    const rules = allCSSRules.map(rule => rule.initialize(context)).filter(rule => rule.isMatch());
+    return rules;
   }
 
   static getAllModifiable(context) {
