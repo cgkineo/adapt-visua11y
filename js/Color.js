@@ -157,7 +157,12 @@ class Color {
     let g = 0;
     let b = 0;
     let a = 255;
-    if (hex.length === 5) {
+    if (hex.length === 4) {
+      r = '0x' + hex[1] + hex[1];
+      g = '0x' + hex[2] + hex[2];
+      b = '0x' + hex[3] + hex[3];
+      a = '0xff';
+    } else if (hex.length === 5) {
       r = '0x' + hex[1] + hex[1];
       g = '0x' + hex[2] + hex[2];
       b = '0x' + hex[3] + hex[3];

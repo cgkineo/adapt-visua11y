@@ -19,7 +19,9 @@ export default class CSSRule {
         if (typeof matchName === 'string' && matchName !== name) return false;
         if (typeof matchName === 'function' && !matchName.call(context, name, this.selectorText)) return false;
         try {
-          const original = this.style[name];
+          const original = (name.startsWith('--'))
+            ? this.style.getPropertyValue(name)
+            : this.style[name];
           validation && validation.call(context, original);
           this.original.push(original);
           this.output.push(original);
