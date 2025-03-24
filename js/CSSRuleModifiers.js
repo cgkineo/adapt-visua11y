@@ -189,7 +189,7 @@ export default [
   ],
   [
     // Apply output color profile
-    name => /color/i.test(name),
+    name => /color/i.test(name) || name === 'initial-value',
     Color.parse,
     function (output) {
       let color = Color.parse(output);

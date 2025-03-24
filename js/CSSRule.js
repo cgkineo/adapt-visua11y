@@ -1,4 +1,5 @@
 import CSSRuleModifiers from './CSSRuleModifiers';
+import CSSPropertyRule from './CSSPropertyRule';
 import Color from './Color';
 
 export default class CSSRule {
@@ -102,6 +103,12 @@ export default class CSSRule {
         const rules = Array.prototype.slice.call(rule.cssRules, 0);
         return rules.map(rule => new CSSRule(rule));
       })));
+      if (window.CSSPropertyRule) {
+        allCSSRules.push(..._.flatten(rules.map(rule => {
+          if (!(rule instanceof window.CSSPropertyRule)) return false;
+          return new CSSPropertyRule(rule);
+        })));
+      }
       return allCSSRules.filter(Boolean);
     }, []).filter(rule => rule.selectorText || rule.keyText);
     // Filter rules with valid modifier matches
