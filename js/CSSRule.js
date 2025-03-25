@@ -17,12 +17,13 @@ export default class CSSRule {
 
   initialize(context) {
     const definedPropertyNames = Array.from(this.style);
-    const calculatedPropertyNames = definedPropertyNames.map(name => {
+    const calculatedPropertyNames = _.uniq(definedPropertyNames.map(name => {
       const prefixName = name.split('-')[0];
+      // i.e. drop down from background-image to background if defined there
       if (this.style[prefixName]) return prefixName;
       return name;
-    });
-    this.propertyNames = _.uniq(calculatedPropertyNames).concat(['margin-top', 'margin-bottom'])
+    }));
+    this.propertyNames = calculatedPropertyNames.concat(['margin-top', 'margin-bottom'])
       .filter(name => CSSRuleModifiers.some(([matchName, validation]) => {
         if (typeof matchName === 'string' && matchName !== name) return false;
         if (typeof matchName === 'function' && !matchName.call(context, name, this.selectorText)) return false;

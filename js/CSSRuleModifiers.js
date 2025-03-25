@@ -172,7 +172,7 @@ export default [
     // Apply output color profile to rule properties with 'color' in the name
     // where the name is not a defined property (so that they don't get processed twice)
     function (name) {
-      return /color/i.test(name) && !this.cssPropertyNames.includes(name);
+      return /color/i.test(name) && !this.cssPropertyNames?.includes(name);
     },
     Color.parse,
     function (output) {
