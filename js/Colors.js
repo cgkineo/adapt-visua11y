@@ -6,6 +6,9 @@ const SPECIFIC_NAMES = Object.entries(COLOR_NAMES)
   .map(([name]) => name);
 const COLOR_MATCH = new RegExp(`(?:rgb|hsl)\\([^)]+\\)|(?:rgba|hsla)\\([^)]+\\)|#[\\da-f]{3,8}|${SPECIFIC_NAMES.join('|')}`, 'gmi');
 
+/**
+ * For parsing and modifying css "func(color, color)" strings
+ */
 export default class Colors {
   constructor(source) {
     this.source = source;
@@ -34,11 +37,13 @@ export default class Colors {
         pair.push(this.parts[i]);
       }
       const [ firstPart, nextPart ] = pair;
-      output += String(this.source).slice(firstPart.index + firstPart[0].length, nextPart.index);
+      const start = firstPart.index + firstPart[0].length;
+      const end = nextPart.index;
+      output += String(this.source).slice(start, end);
       if (nextPart[0]) {
         const color = Color.parse(nextPart[0]);
         output += color.applyTransparency(context);
-      } else {
+      } else if (start < end) {
         output += String(this.source).slice(nextPart.index, this.source.length);
       }
       pair.shift();
@@ -61,11 +66,13 @@ export default class Colors {
         pair.push(this.parts[i]);
       }
       const [ firstPart, nextPart ] = pair;
-      output += String(this.source).slice(firstPart.index + firstPart[0].length, nextPart.index);
+      const start = firstPart.index + firstPart[0].length;
+      const end = nextPart.index;
+      output += String(this.source).slice(start, end);
       if (nextPart[0]) {
         const color = Color.parse(nextPart[0]);
         output += color.applyColorProfile(context);
-      } else {
+      } else if (start < end) {
         output += String(this.source).slice(nextPart.index, this.source.length);
       }
       pair.shift();

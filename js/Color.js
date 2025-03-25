@@ -1,5 +1,8 @@
 import NAMED_COLOR from './COLOR_NAMES';
 
+/**
+ * For parsing and modifying css color strings
+ */
 class Color {
 
   constructor(color = null) {
