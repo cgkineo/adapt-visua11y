@@ -20,7 +20,7 @@ export default [
   [
     // Remove text shadows
     'text-shadow',
-    null,
+    Boolean,
     function () {
       if (!this.noTransparency) return;
       return 'none';
@@ -29,7 +29,7 @@ export default [
   [
     // Remove box shadows with transparency
     'box-shadow',
-    null,
+    Boolean,
     function (output) {
       if (!this.noTransparency) return;
       const zeroOffsetAndBlur = '0px 0px 0px';
@@ -40,7 +40,7 @@ export default [
   [
     // Increase opacity either way
     'opacity',
-    null,
+    Boolean,
     function (output) {
       if (!this.noTransparency || isNaN(output)) return;
       return parseInt(output) <= 0.4 ? 0 : 1;
@@ -49,7 +49,7 @@ export default [
   [
     // Remove background images
     'background-image',
-    null,
+    Boolean,
     function () {
       return this.noBackgroundImages ? 'none !important' : undefined;
     }
@@ -197,14 +197,15 @@ export default [
     ].includes(name),
     Colors.has,
     function (output) {
-      return Colors.parse(output).applyColorProfile(this);
+      const color = Colors.parse(output).applyTransparency(this);
+      return Colors.parse(color).applyColorProfile(this);
     }
   ],
   [
     // Apply output color profile to defined css color properties
     // where they are defined in rules
     function (name) {
-      return this.cssPropertyNames.includes(name);
+      return this.cssPropertyNames?.includes(name);
     },
     Color.parse,
     function (output) {

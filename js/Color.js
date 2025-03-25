@@ -224,44 +224,40 @@ class Color {
   }
 
   applyTextContrast(context) {
-    if (!context.highContrast) return;
-    const color = this;
-    if (color.isKeyword) return color.source;
-    if (color.isTransparent) return;
+    if (!context.highContrast) return this.source;
+    if (this.isKeyword) return this.source;
+    if (this.isTransparent) return this.source;
     // Text: black or white
-    if (color.luminance <= 80) {
+    if (this.luminance <= 80) {
       // Force black if lightness is less than 80%
       return Color.BLACK.toRGBAString();
     }
     // Choose between black and white
-    return Color.bestLuminanceMatch(color, Color.BLACK, Color.WHITE).toRGBAString();
+    return Color.bestLuminanceMatch(this, Color.BLACK, Color.WHITE).toRGBAString();
   }
 
   applyTransparency(context) {
-    if (!context.noTransparency) return;
-    const color = this;
-    if (color.isKeyword) return color.source;
-    const isTransparent = (color.a <= 0.4);
+    if (!context.noTransparency) return this.source;
+    if (this.isKeyword) return this.source;
+    const isTransparent = (this.a <= 0.4);
     if (isTransparent) {
       // No color opacity less than 0.4
       return Color.TRANSPARENT.toRGBAString();
     }
     // Bump opacity between 0.4 and 1 to 1
-    color.a = 1;
-    return color.toRGBAString();
+    const output = this.clone();
+    output.a = 1;
+    return output.toRGBAString();
   }
 
   applyColorProfile(context) {
     if (this.isKeyword) return this.source;
     if (this.isTransparent) return this.toRGBAString();
-    let color = this;
     const colorIndex = context.distinctColors.findIndex(primaryColor => {
-      return (color.r === primaryColor.r && color.g === primaryColor.g && color.b === primaryColor.b && color.a === primaryColor.a);
+      return (this.r === primaryColor.r && this.g === primaryColor.g && this.b === primaryColor.b && this.a === primaryColor.a);
     });
-    if (colorIndex !== -1) {
-      color = context.outputColors[colorIndex].clone();
-    }
-    return color.toRGBAString();
+    if (colorIndex === -1) return this.toRGBAString();
+    return context.outputColors[colorIndex].toRGBAString();
   }
 
   /** @returns {Color} */

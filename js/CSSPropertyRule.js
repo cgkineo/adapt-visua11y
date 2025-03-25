@@ -16,9 +16,20 @@ export default class CSSPropertyRule {
   }
 
   initialize(context) {
-    this.propertyNames = ['initial-value'];
-    this.original.push(this.initialValue);
-    this.output.push(this.initialValue);
+    this.propertyNames = ['initial-value']
+      .filter(name => CSSRuleModifiers.some(([matchName, validation]) => {
+        if (typeof matchName === 'string' && matchName !== name) return false;
+        if (typeof matchName === 'function' && !matchName.call(context, name, this.selectorText)) return false;
+        try {
+          const original = this.initialValue;
+          if (validation && !validation.call(context, original)) return false;
+          this.original.push(original);
+          this.output.push(original);
+          return true;
+        } catch (err) {
+          return false;
+        }
+      }));
     return this;
   }
 
@@ -31,6 +42,7 @@ export default class CSSPropertyRule {
       CSSRuleModifiers.forEach(([matchName, validation, modifier]) => {
         if (typeof matchName === 'string' && matchName !== name) return;
         if (typeof matchName === 'function' && !matchName.call(context, name, '')) return;
+        if (validation && !validation.call(context, this.original[index])) return;
         const value = modifier.call(context, this.output[index], this.original[index], this.rule, this.selectorText, this.propertyNames[index]);
         if (value === undefined) return;
         this.output[index] = value;
