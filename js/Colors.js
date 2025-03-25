@@ -43,7 +43,7 @@ export default class Colors {
       if (nextPart[0]) {
         const color = Color.parse(nextPart[0]);
         output += color.applyTransparency(context);
-      } else if (start < end) {
+      } else if (start <= end) {
         output += String(this.source).slice(nextPart.index, this.source.length);
       }
       pair.shift();
@@ -72,7 +72,7 @@ export default class Colors {
       if (nextPart[0]) {
         const color = Color.parse(nextPart[0]);
         output += color.applyColorProfile(context);
-      } else if (start < end) {
+      } else if (start <= end) {
         output += String(this.source).slice(nextPart.index, this.source.length);
       }
       pair.shift();
