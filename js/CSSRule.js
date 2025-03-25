@@ -18,9 +18,12 @@ export default class CSSRule {
   initialize(context) {
     const definedPropertyNames = Array.from(this.style);
     const calculatedPropertyNames = _.uniq(definedPropertyNames.map(name => {
+      if (!/background/.test(name)) return name;
+      // drop down from background-image to background if defined there instead
+      // sometimes background-image is declared changed but background is set instead
       const prefixName = name.split('-')[0];
-      // i.e. drop down from background-image to background if defined there
-      if (this.style[prefixName]) return prefixName;
+      const shouldCorrect = (this.style[prefixName] && !this.style[name]);
+      if (shouldCorrect) return prefixName;
       return name;
     }));
     this.propertyNames = calculatedPropertyNames.concat(['margin-top', 'margin-bottom'])
