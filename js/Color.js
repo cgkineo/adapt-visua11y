@@ -1,5 +1,8 @@
 import NAMED_COLOR from './COLOR_NAMES';
 
+/**
+ * For parsing and modifying css color strings
+ */
 class Color {
 
   constructor(color = null) {
@@ -157,7 +160,12 @@ class Color {
     let g = 0;
     let b = 0;
     let a = 255;
-    if (hex.length === 5) {
+    if (hex.length === 4) {
+      r = '0x' + hex[1] + hex[1];
+      g = '0x' + hex[2] + hex[2];
+      b = '0x' + hex[3] + hex[3];
+      a = '0xff';
+    } else if (hex.length === 5) {
       r = '0x' + hex[1] + hex[1];
       g = '0x' + hex[2] + hex[2];
       b = '0x' + hex[3] + hex[3];
@@ -216,6 +224,43 @@ class Color {
       'revert-layer',
       'unset'
     ].includes(this.source);
+  }
+
+  applyTextContrast(context) {
+    if (!context.highContrast) return this.source;
+    if (this.isKeyword) return this.source;
+    if (this.isTransparent) return this.source;
+    // Text: black or white
+    if (this.luminance <= 80) {
+      // Force black if lightness is less than 80%
+      return Color.BLACK.toRGBAString();
+    }
+    // Choose between black and white
+    return Color.bestLuminanceMatch(this, Color.BLACK, Color.WHITE).toRGBAString();
+  }
+
+  applyTransparency(context) {
+    if (!context.noTransparency) return this.source;
+    if (this.isKeyword) return this.source;
+    const isTransparent = (this.a <= 0.4);
+    if (isTransparent) {
+      // No color opacity less than 0.4
+      return Color.TRANSPARENT.toRGBAString();
+    }
+    // Bump opacity between 0.4 and 1 to 1
+    const output = this.clone();
+    output.a = 1;
+    return output.toRGBAString();
+  }
+
+  applyColorProfile(context) {
+    if (this.isKeyword) return this.source;
+    if (this.isTransparent) return this.toRGBAString();
+    const colorIndex = context.distinctColors.findIndex(primaryColor => {
+      return (this.r === primaryColor.r && this.g === primaryColor.g && this.b === primaryColor.b && this.a === primaryColor.a);
+    });
+    if (colorIndex === -1) return this.toRGBAString();
+    return context.outputColors[colorIndex].toRGBAString();
   }
 
   /** @returns {Color} */

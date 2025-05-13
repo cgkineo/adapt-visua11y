@@ -1,5 +1,7 @@
 import CSSRuleModifiers from './CSSRuleModifiers';
+import CSSPropertyRule from './CSSPropertyRule';
 import Color from './Color';
+import Colors from './Colors';
 
 export default class CSSRule {
 
@@ -14,13 +16,25 @@ export default class CSSRule {
   }
 
   initialize(context) {
-    this.propertyNames = Array.prototype.slice.call(this.style).concat(['margin-top', 'margin-bottom'])
+    const definedPropertyNames = Array.from(this.style);
+    const calculatedPropertyNames = _.uniq(definedPropertyNames.map(name => {
+      if (!/background/.test(name)) return name;
+      // drop down from background-image to background if defined there instead
+      // sometimes background-image is declared changed but background is set instead
+      const prefixName = name.split('-')[0];
+      const shouldCorrect = (this.style[prefixName] && !this.style[name]);
+      if (shouldCorrect) return prefixName;
+      return name;
+    }));
+    this.propertyNames = calculatedPropertyNames.concat(['margin-top', 'margin-bottom'])
       .filter(name => CSSRuleModifiers.some(([matchName, validation]) => {
         if (typeof matchName === 'string' && matchName !== name) return false;
         if (typeof matchName === 'function' && !matchName.call(context, name, this.selectorText)) return false;
         try {
-          const original = this.style[name];
-          validation && validation.call(context, original);
+          const original = (name.startsWith('--'))
+            ? this.style.getPropertyValue(name)
+            : this.style[name];
+          if (validation && !validation.call(context, original)) return false;
           this.original.push(original);
           this.output.push(original);
           return true;
@@ -72,14 +86,31 @@ export default class CSSRule {
   }
 
   get distinctColors() {
-    const colors = _.uniq(this.propertyNames.map((name, index) => {
+    const colors = _.uniq(_.flatten(this.propertyNames.map((name, index) => {
       try {
-        return Color.parse(this.original[index]);
+        return Colors.parse(this.original[index]).distinctColors;
       } catch (err) {
         return false;
       }
-    }).filter(Boolean));
+    })).filter(Boolean).map(Color.toRGBAString)).map(Color.parse);
     return colors;
+  }
+
+  static getAllDefinedColorProperties(context) {
+    const stylesheets = Array.prototype.slice.call(document.styleSheets, 0);
+    const allCSSRules = stylesheets.reduce((allCSSRules, stylesheet) => {
+      const rules = Array.prototype.slice.call(stylesheet.rules, 0);
+      if (window.CSSPropertyRule) {
+        allCSSRules.push(..._.flatten(rules.map(rule => {
+          if (!(rule instanceof window.CSSPropertyRule)) return false;
+          return new CSSPropertyRule(rule);
+        })));
+      }
+      return allCSSRules.filter(Boolean);
+    }, []);
+    // Filter rules with valid modifier matches
+    const rules = allCSSRules.map(rule => rule.initialize(context)).filter(rule => rule.isMatch());
+    return rules;
   }
 
   static getAllModifiable(context) {
@@ -100,6 +131,12 @@ export default class CSSRule {
         const rules = Array.prototype.slice.call(rule.cssRules, 0);
         return rules.map(rule => new CSSRule(rule));
       })));
+      if (window.CSSPropertyRule) {
+        allCSSRules.push(..._.flatten(rules.map(rule => {
+          if (!(rule instanceof window.CSSPropertyRule)) return false;
+          return new CSSPropertyRule(rule);
+        })));
+      }
       return allCSSRules.filter(Boolean);
     }, []).filter(rule => rule.selectorText || rule.keyText);
     // Filter rules with valid modifier matches
