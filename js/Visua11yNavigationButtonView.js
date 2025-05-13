@@ -16,7 +16,7 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
       'data-order': attributes._order,
       'aria-label': Adapt.visua11y.config._button.navigationAriaLabel,
       'data-tooltip-id': 'visua11y',
-      'aria-expanded': false
+      'aria-haspopup': 'dialog'
     };
   }
 
@@ -47,12 +47,8 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
 
   setupEventListeners() {
     const config = Adapt.course.get('_visua11y');
-
-    if (config._location === 'drawer') {
-      this.listenTo(Adapt, 'drawer:closed', this.onDrawerClosed);
-      return;
-    };
-
+    if (config._location === 'drawer') return;
+    
     this.onNotifyClosed = this.onNotifyClosed.bind(this);
     this.onNotifyClicked = this.onNotifyClicked.bind(this);
   }
@@ -75,7 +71,6 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
     }
     this.render();
     Adapt.trigger('visua11y:opened');
-    this.$el.attr('aria-expanded', true);
   }
 
   onNotifyClicked(event) {
@@ -86,13 +81,8 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
     Adapt.visua11y.settingsPrompt.closeNotify();
   }
 
-  onDrawerClosed() {
-    this.$el.attr('aria-expanded', false);
-  }
-
   onNotifyClosed(notify) {
     if (notify !== Adapt.visua11y.settingsPrompt) return;
-    this.$el.attr('aria-expanded', false);
     Adapt.visua11y.settingsPrompt.$el.off('click', this.onNotifyClicked);
     Adapt.visua11y.settingsPrompt = null;
     this.stopListening(Adapt, 'notify:closed', this.onNotifyClosed);
