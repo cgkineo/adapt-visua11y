@@ -1,5 +1,5 @@
 /**
- * Apply svg filter to img, video, canvas and mejs-poster to match the text/color changes.
+ * Apply svg filter to img, video, canvas, svg and mejs-poster to match the text/color changes.
 
  * Note:
  * Applies filters to body children and notify children separately as filter affects fixed position elements
@@ -10,7 +10,7 @@ html:not([data-color-profile=default]) {
   body > *:not(.notify),
   .notify > * {
 
-    img, video, canvas, .mejs-poster, .has-bg-image > .background {
+    img, video, canvas, svg, .mejs-poster, .has-bg-image > .background {
       .visua11y-filters;
     }
 
@@ -26,7 +26,7 @@ html[data-color-profile=default] {
   body > *:not(.notify),
   .notify > * {
 
-    img, video, canvas, .mejs-poster, .has-bg-image > .background {
+    img, video, canvas, svg, .mejs-poster, .has-bg-image > .background {
       .visua11y-filters-no-profile;
     }
 
