@@ -5,7 +5,7 @@
     "url": "https://github.com/cgkineo/adapt-visua11y.git"
   },
   "version": "2.12.1",
-  "framework": ">=5.31.4",
+  "framework": ">=5.46.4",
   "homepage": "https://github.com/cgkineo/adapt-visua11y",
   "issues": "https://github.com/cgkineo/adapt-visua11y/issues/new",
   "extension": "visua11y",
