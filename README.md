@@ -16,8 +16,8 @@ It provides visual accessibility improvements.
 * Letter spacing (small, medium, large)
 * Word spacing (small, medium, large)
 
-### Note
-* IE11 cannot apply filters. This means that images and videos will not be transformed in IE11.
+## Note
+
 * Invert only inverts brightness, not colour.
 * Line height, paragraph spacing, letter spacing and word spacing are all ratio based. 1 is the current value, 1.2 is and uplift by 20%, 0.9 would be a shift downwards by 10%.
 * In order to support paragraph spacing, all body text needs to be wrapped in [paragraph tags](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/p).
@@ -25,19 +25,22 @@ It provides visual accessibility improvements.
 * Hide decorative images is contingent on alt text.
 * No transparency removes `box-shadow` (where transparency is used), `text-shadow` and `opacity` styles.
 
-### Theme considerations
+## Theme considerations
+
 * All colour transformations are applied by mathematical shifts. It is therefore important that the course start from AA colour contrast for the algorithms to be applicable.
 * Any custom CSS `background-image` will need to explicitly define support for colour profiles. For example:
-<pre>
+
+```less
 html:not([data-color-profile=default]) {
   .selector-with-css-bg-image {
     .visua11y-filters;
   }
 }
-</pre>
+```
+
 * For any text that overlays a background image, ensure an appropriate `background-color` is set to provide sufficient contrast in the instance decorative images are hidden (`"_noBackgroundImages": false`).
 
 ----------------------------
 **Author / maintainer:** Adapt Core Team with [contributors](https://github.com/cgkineo/adapt-visua11y/graphs/contributors)<br/>
 **Accessibility support:** WAI AA<br/>
-**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, IE11, Safari 12+13 for macOS/iOS/iPadOS, Opera<br/>
+**Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, Safari for macOS/iOS/iPadOS, Opera<br>
