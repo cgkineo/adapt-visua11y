@@ -20,6 +20,10 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
     };
   }
 
+  className() {
+    return 'btn-icon nav__btn nav__visua11y-btn';
+  }
+
   events() {
     return {
       click: 'onClick'
