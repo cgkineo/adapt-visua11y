@@ -2,10 +2,9 @@
  * Apply svg filter to img, video, canvas, svg and mejs-poster to match the text/color changes.
 
  * Note:
- * Applies filters to body children and notify children separately as filter affects fixed position elements
- * Filters do not work in ie11
+ * Applies filters to body children and notify children separately as filter affects fixed position elementsie11
  */
-html:not([data-color-profile=default]) {
+.html:not([data-color-profile=default]) {
 
   body > *:not(.notify),
   .notify > * {
@@ -21,7 +20,7 @@ html:not([data-color-profile=default]) {
 /**
  * Exclude filter url when on default profile
  */
-html[data-color-profile=default] {
+.html[data-color-profile=default] {
 
   body > *:not(.notify),
   .notify > * {

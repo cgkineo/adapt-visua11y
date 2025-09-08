@@ -26,23 +26,23 @@ It provides visual accessibility improvements.
 * Hide decorative images is contingent on alt text.
 * No transparency removes `box-shadow` (where transparency is used), `text-shadow` and `opacity` styles.
 
-### Theme considerations
+## Theme considerations
 
 * All colour transformations are applied by mathematical shifts. It is therefore important that the course start from AA colour contrast for the algorithms to be applicable.
 * Any custom CSS `background-image` will need to explicitly define support for colour profiles. For example:
 
-<pre>
+```less
 html:not([data-color-profile=default]) {
   .selector-with-css-bg-image {
     .visua11y-filters;
   }
 }
-</pre>
+```
 
 * For any text that overlays a background image, ensure an appropriate `background-color` is set to provide sufficient contrast in the instance decorative images are hidden (`"_noBackgroundImages": false`).
 
 ----------------------------
 **Author / maintainer:** Kineo<br/>
-**Accessibility support:** WAI AA<br>
 **RTL support:** Yes<br>
+**Accessibility support:** WAI AA<br/>
 **Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, Safari for macOS/iOS/iPadOS, Opera<br>
