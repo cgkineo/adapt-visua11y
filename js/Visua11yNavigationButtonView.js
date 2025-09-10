@@ -20,10 +20,6 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
     };
   }
 
-  className() {
-    return 'btn-icon nav__btn nav__visua11y-btn';
-  }
-
   events() {
     return {
       click: 'onClick'
@@ -48,7 +44,7 @@ class Visua11yNavigationButtonView extends NavigationButtonView {
   setupEventListeners() {
     const config = Adapt.course.get('_visua11y');
     if (config._location === 'drawer') return;
-    
+
     this.onNotifyClosed = this.onNotifyClosed.bind(this);
     this.onNotifyClicked = this.onNotifyClicked.bind(this);
   }
