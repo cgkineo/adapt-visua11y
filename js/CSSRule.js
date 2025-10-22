@@ -31,23 +31,10 @@ export default class CSSRule {
       ? calculatedPropertyNames
       : calculatedPropertyNames.concat(['margin-top', 'margin-bottom']);
     this.propertyNames = propertiesToCheck.filter(name => {
-      // Keyframe rules: preserve all properties
-      if (isKeyframeRule) {
-        try {
-          const original = (name.startsWith('--'))
-            ? this.style.getPropertyValue(name)
-            : this.style[name];
-          this.original.push(original);
-          this.output.push(original);
-          return true;
-        } catch (err) {
-          return false;
-        }
-      }
-      // Non-keyframe rules: only include properties with modifiers
-      return CSSRuleModifiers.some(([matchName, validation]) => {
-        if (typeof matchName === 'string' && matchName !== name) return false;
-        if (typeof matchName === 'function' && !matchName.call(context, name, this.selectorText)) return false;
+      const hasModifierMatch = CSSRuleModifiers.some(([matchName, validation]) => {
+        const isStringMatch = typeof matchName === 'string' && matchName === name;
+        const isFunctionMatch = typeof matchName === 'function' && matchName.call(context, name, this.selectorText);
+        if (!isStringMatch && !isFunctionMatch) return false;
         try {
           const original = (name.startsWith('--'))
             ? this.style.getPropertyValue(name)
@@ -60,6 +47,19 @@ export default class CSSRule {
           return false;
         }
       });
+      if (hasModifierMatch) return true;
+      // Keyframe rules: preserve properties without modifiers
+      if (!isKeyframeRule) return false;
+      try {
+        const original = (name.startsWith('--'))
+          ? this.style.getPropertyValue(name)
+          : this.style[name];
+        this.original.push(original);
+        this.output.push(original);
+        return true;
+      } catch (err) {
+        return false;
+      }
     });
     return this;
   }
@@ -69,8 +69,6 @@ export default class CSSRule {
   }
 
   modify(context) {
-    // Don't modify keyframe properties, preserve them as-is
-    if (this.rule.parentRule instanceof CSSKeyframesRule) return;
     this.propertyNames.forEach((name, index) => {
       CSSRuleModifiers.forEach(([matchName, validation, modifier]) => {
         if (typeof matchName === 'string' && matchName !== name) return;
