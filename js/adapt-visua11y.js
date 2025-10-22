@@ -368,10 +368,33 @@ class Visua11y extends Backbone.Controller {
       .toggleClass('a11y-no-animations', this.noAnimations)
       .toggleClass('a11y-no-background-images', this.noBackgroundImages);
     this.rules.forEach(rule => rule.modify(this));
-    const stylesheet = this.rules.map(rule => rule.styleSheetPart).filter(Boolean).join('\n');
+    const stylesheet = this.generateStylesheet();
     this._tag.html(stylesheet);
     $(window).resize();
     this.triggerChanged();
+  }
+
+  generateStylesheet() {
+    const keyframeGroups = {};
+    const nonKeyframeRules = [];
+
+    this.rules.forEach(rule => {
+      const keyframesName = rule.keyframesName;
+      if (keyframesName) {
+        if (!keyframeGroups[keyframesName]) {
+          keyframeGroups[keyframesName] = [];
+        }
+        keyframeGroups[keyframesName].push(rule.styleSheetPart);
+      } else {
+        nonKeyframeRules.push(rule.styleSheetPart);
+      }
+    });
+
+    const keyframeStylesheets = Object.keys(keyframeGroups).map(name => {
+      return `@keyframes ${name} {\n${keyframeGroups[name].join('\n')}\n}\n`;
+    });
+
+    return [...nonKeyframeRules, ...keyframeStylesheets].filter(Boolean).join('\n');
   }
 
   setupStyleTag () {
