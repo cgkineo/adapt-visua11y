@@ -30,33 +30,32 @@ export default class CSSRule {
     const propertiesToCheck = isKeyframeRule
       ? calculatedPropertyNames
       : calculatedPropertyNames.concat(['margin-top', 'margin-bottom']);
-
-    const addProperty = (name) => {
-      try {
-        const original = name.startsWith('--')
-          ? this.style.getPropertyValue(name)
-          : this.style[name];
-        this.original.push(original);
-        this.output.push(original);
-        return true;
-      } catch (err) {
-        return false;
-      }
-    };
-
     this.propertyNames = propertiesToCheck.filter(name => {
       // Keyframe rules: preserve all properties
-      if (isKeyframeRule) return addProperty(name);
+      if (isKeyframeRule) {
+        try {
+          const original = (name.startsWith('--'))
+            ? this.style.getPropertyValue(name)
+            : this.style[name];
+          this.original.push(original);
+          this.output.push(original);
+          return true;
+        } catch (err) {
+          return false;
+        }
+      }
       // Non-keyframe rules: only include properties with modifiers
       return CSSRuleModifiers.some(([matchName, validation]) => {
         if (typeof matchName === 'string' && matchName !== name) return false;
         if (typeof matchName === 'function' && !matchName.call(context, name, this.selectorText)) return false;
         try {
-          const original = name.startsWith('--')
+          const original = (name.startsWith('--'))
             ? this.style.getPropertyValue(name)
             : this.style[name];
           if (validation && !validation.call(context, original)) return false;
-          return addProperty(name);
+          this.original.push(original);
+          this.output.push(original);
+          return true;
         } catch (err) {
           return false;
         }
