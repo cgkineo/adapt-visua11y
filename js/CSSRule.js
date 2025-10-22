@@ -26,10 +26,15 @@ export default class CSSRule {
       if (shouldCorrect) return prefixName;
       return name;
     }));
-    this.propertyNames = calculatedPropertyNames.concat(['margin-top', 'margin-bottom'])
-      .filter(name => CSSRuleModifiers.some(([matchName, validation]) => {
-        if (typeof matchName === 'string' && matchName !== name) return false;
-        if (typeof matchName === 'function' && !matchName.call(context, name, this.selectorText)) return false;
+    const isKeyframeRule = this.rule.parentRule instanceof CSSKeyframesRule;
+    const propertiesToCheck = isKeyframeRule
+      ? calculatedPropertyNames
+      : calculatedPropertyNames.concat(['margin-top', 'margin-bottom']);
+    this.propertyNames = propertiesToCheck.filter(name => {
+      const hasModifierMatch = CSSRuleModifiers.some(([matchName, validation]) => {
+        const isStringMatch = typeof matchName === 'string' && matchName === name;
+        const isFunctionMatch = typeof matchName === 'function' && matchName.call(context, name, this.selectorText);
+        if (!isStringMatch && !isFunctionMatch) return false;
         try {
           const original = (name.startsWith('--'))
             ? this.style.getPropertyValue(name)
@@ -41,7 +46,21 @@ export default class CSSRule {
         } catch (err) {
           return false;
         }
-      }));
+      });
+      if (hasModifierMatch) return true;
+      // Keyframe rules: preserve properties without modifiers
+      if (!isKeyframeRule) return false;
+      try {
+        const original = (name.startsWith('--'))
+          ? this.style.getPropertyValue(name)
+          : this.style[name];
+        this.original.push(original);
+        this.output.push(original);
+        return true;
+      } catch (err) {
+        return false;
+      }
+    });
     return this;
   }
 
@@ -74,11 +93,17 @@ export default class CSSRule {
     if (parentRule) {
       if (parentRule instanceof CSSMediaRule) return `@media ${this.rule.parentRule.conditionText} {\n${leafRule(4)}\n}\n`;
       if (parentRule instanceof CSSKeyframesRule) {
-        return `@keyframes ${this.rule.parentRule.name} {\n${leafRule(4)}\n}\n`;
+        // Return just the keyframe percentage rule, parent grouping handled elsewhere
+        return leafRule(4);
       }
       throw new Error('parentRule type not supported:', parentRule);
     }
     return leafRule();
+  }
+
+  get keyframesName() {
+    const parentRule = this.rule.parentRule;
+    return (parentRule instanceof CSSKeyframesRule) ? parentRule.name : null;
   }
 
   isMatch() {
