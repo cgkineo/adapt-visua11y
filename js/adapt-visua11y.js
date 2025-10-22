@@ -380,14 +380,14 @@ class Visua11y extends Backbone.Controller {
 
     this.rules.forEach(rule => {
       const keyframesName = rule.keyframesName;
-      if (keyframesName) {
-        if (!keyframeGroups[keyframesName]) {
-          keyframeGroups[keyframesName] = [];
-        }
-        keyframeGroups[keyframesName].push(rule.styleSheetPart);
-      } else {
+      if (!keyframesName) {
         nonKeyframeRules.push(rule.styleSheetPart);
+        return;
       }
+      if (!keyframeGroups[keyframesName]) {
+        keyframeGroups[keyframesName] = [];
+      }
+      keyframeGroups[keyframesName].push(rule.styleSheetPart);
     });
 
     const keyframeStylesheets = Object.keys(keyframeGroups).map(name => {
