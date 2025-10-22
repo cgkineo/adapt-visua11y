@@ -55,6 +55,12 @@ export default [
     }
   ],
   [
+    // Preserve transform properties (no modification)
+    name => ['scale', 'transform', 'translate', 'rotate'].includes(name),
+    null,
+    output => output
+  ],
+  [
     // Filter psuedo element background images
     (name, selector) => {
       return (selector && name === 'background-image') && (
