@@ -24,6 +24,7 @@ It provides visual accessibility improvements.
 * Font size medium is the default font size (16px usually), large is 18pt, small is 9pt.
 * Hide decorative images is contingent on alt text.
 * No transparency removes `box-shadow` (where transparency is used), `text-shadow` and `opacity` styles.
+* Color profiles do not affect videos in Safari.
 
 ## Theme considerations
 
