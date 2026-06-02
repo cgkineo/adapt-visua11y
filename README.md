@@ -42,7 +42,7 @@ html:not([data-color-profile=default]) {
 * For any text that overlays a background image, ensure an appropriate `background-color` is set to provide sufficient contrast in the instance decorative images are hidden (`"_noBackgroundImages": false`).
 
 ----------------------------
-**Author / maintainer:** Kineo<br/>
+**Author / maintainer:** Mindtools Kineo<br/>
 **RTL support:** Yes<br>
 **Accessibility support:** WAI AA<br/>
 **Cross-platform coverage:** Chrome, Chrome for Android, Firefox (ESR + latest version), Edge, Safari for macOS/iOS/iPadOS, Opera<br>
