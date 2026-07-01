@@ -4,7 +4,7 @@ import COLOR_NAMES from './COLOR_NAMES';
 const SPECIFIC_NAMES = Object.entries(COLOR_NAMES)
   .filter(([name, value]) => name !== value)
   .map(([name]) => name);
-const COLOR_MATCH = new RegExp(`(?:rgb|hsl)\\([^)]+\\)|(?:rgba|hsla)\\([^)]+\\)|#[\\da-f]{3,8}|${SPECIFIC_NAMES.join('|')}`, 'gmi');
+const COLOR_MATCH = new RegExp(`url\\([^)]*\\)|(?:rgb|hsl)\\([^)]+\\)|(?:rgba|hsla)\\([^)]+\\)|#[\\da-f]{3,8}|${SPECIFIC_NAMES.join('|')}`, 'gmi');
 
 /**
  * For parsing and modifying css "func(color, color)" strings
@@ -17,7 +17,9 @@ export default class Colors {
   }
 
   get distinctColors() {
-    const allColors = this.parts.map(part => Color.parse(part[0]).toRGBAString());
+    const allColors = this.parts
+      .filter(part => !/^url\(/i.test(part[0]))
+      .map(part => Color.parse(part[0]).toRGBAString());
     const distinctColors = _.uniq(allColors).map(Color.parse);
     return distinctColors;
   }
@@ -41,8 +43,12 @@ export default class Colors {
       const end = nextPart.index;
       output += String(this.source).slice(start, end);
       if (nextPart[0]) {
-        const color = Color.parse(nextPart[0]);
-        output += color.applyTransparency(context);
+        if (/^url\(/i.test(nextPart[0])) {
+          output += nextPart[0];
+        } else {
+          const color = Color.parse(nextPart[0]);
+          output += color.applyTransparency(context);
+        }
       } else if (start <= end) {
         output += String(this.source).slice(nextPart.index, this.source.length);
       }
@@ -70,8 +76,12 @@ export default class Colors {
       const end = nextPart.index;
       output += String(this.source).slice(start, end);
       if (nextPart[0]) {
-        const color = Color.parse(nextPart[0]);
-        output += color.applyColorProfile(context);
+        if (/^url\(/i.test(nextPart[0])) {
+          output += nextPart[0];
+        } else {
+          const color = Color.parse(nextPart[0]);
+          output += color.applyColorProfile(context);
+        }
       } else if (start <= end) {
         output += String(this.source).slice(nextPart.index, this.source.length);
       }
