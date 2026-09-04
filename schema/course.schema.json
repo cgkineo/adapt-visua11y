@@ -21,14 +21,6 @@
                   "title": "Visua11y",
                   "default": {},
                   "properties": {
-                    "_ariaLabels": {
-                      "type": "string",
-                      "title": "Visual accessibility settings",
-                      "default": "Visual accessibility settings",
-                      "_adapt": {
-                        "translatable": true
-                      }
-                    },
                     "_navOrder": {
                       "type": "number",
                       "title": "Nav order",
