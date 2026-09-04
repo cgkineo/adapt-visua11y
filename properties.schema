@@ -913,7 +913,7 @@
                 "resetAriaMessage": {
                   "type": "string",
                   "required": false,
-                  "default": "Small",
+                  "default": "Accessibility controls reset",
                   "title": "Accessibility controls reset",
                   "inputType": "Text",
                   "validators": []
