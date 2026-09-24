@@ -436,6 +436,7 @@ class Visua11y extends Backbone.Controller {
     this._noTransparency = this.config._noTransparency._default;
     this._lowBrightness = this.config._lowBrightness._default;
     this._noBackgroundImages = this.config._noBackgroundImages._default;
+    this._outputColors = null;
     this.save();
     this.rules.forEach(rule => rule.reset());
     const $html = $('html');
@@ -455,6 +456,7 @@ class Visua11y extends Backbone.Controller {
     // Turn off css transitions & animations and background images
     $html
       .removeClass('a11y-high-contrast')
+      .removeClass('a11y-invert')
       .removeClass('a11y-no-animations')
       .removeClass('a11y-no-background-images');
     const stylesheet = this.rules.map(rule => rule.styleSheetPart).filter(Boolean).join('\n');
