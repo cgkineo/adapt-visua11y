@@ -92,11 +92,12 @@ describe('Visua11y - v2.2.3 to v2.2.4', async () => {
     return true;
   });
 
-  // v2.2.4 also added `_globals._accessibility._ariaLabels.visua11y`, which was live until
-  // v2.4.1 - commit 76dbed7 deleted templates/visua11yButton.hbs, its only reader, in favour of
-  // the Navigation Button API. It is deliberately NOT created here: it has been removed from
-  // schema/course.schema.json, so creating it now only to strip it again in the v2.5.1 block
-  // below would be churn that leaves nothing behind. The nav button's aria-label comes from
+  // v2.2.4 also added `_globals._accessibility._ariaLabels.visua11y`, the tooltip text, which was
+  // live until v2.4.1 - commit 76dbed7 deleted templates/visua11yButton.hbs, its only reader, in
+  // favour of the Navigation Button API. It is deliberately NOT created here: it has been removed
+  // from schema/course.schema.json, and the v2.5.1 block below strips it, carrying any existing
+  // value into _navTooltip.text. Creating the default now would only be churn, since that block
+  // writes the same default when nothing exists. The nav button's aria-label comes from
   // _visua11y._button.navigationAriaLabel.
 
   checkContent('Visua11y - check _globals._extensions._visua11y._navOrder move', async (content) => {
@@ -153,22 +154,27 @@ describe('Visua11y - v2.2.3 to v2.2.4', async () => {
 describe('Visua11y - v2.2.4 to v2.3.0', async () => {
   // https://github.com/cgkineo/adapt-visua11y/compare/v2.2.4..v2.3.0
 
-  let course;
+  let course, locationBefore;
 
   whereFromPlugin('Visua11y - from v2.2.4', { name: 'adapt-visua11y', version: '<2.3.0' });
 
   whereContent('Visua11y - where course._visua11y exists', async (content) => {
     course = content.find(({ _type }) => _type === 'course');
+    locationBefore = course?._visua11y?._location;
     return Boolean(course?._visua11y);
   });
 
+  // _location reached both schemas together at v2.3.0, so no authoring tool can have stored it
+  // behind this gate. Hand-written course JSON still can, so the write is guarded like the rest.
   mutateContent('Visua11y - add course._visua11y._location', async (content) => {
+    if (course._visua11y._location !== undefined) return true;
     course._visua11y._location = 'notify';
     return true;
   });
 
   checkContent('Visua11y - check course._visua11y._location', async (content) => {
-    if (course._visua11y._location !== 'notify') throw new Error('Visua11y - course._visua11y._location invalid');
+    const expected = locationBefore ?? 'notify';
+    if (course._visua11y._location !== expected) throw new Error('Visua11y - course._visua11y._location invalid');
     return true;
   });
 
@@ -178,6 +184,13 @@ describe('Visua11y - v2.2.4 to v2.3.0', async () => {
     fromPlugins: [{ name: 'adapt-visua11y', version: '2.2.4' }],
     content: [
       { _type: 'course', _visua11y: {} }
+    ]
+  });
+
+  testSuccessWhere('course with an existing _location - survives untouched', {
+    fromPlugins: [{ name: 'adapt-visua11y', version: '2.2.4' }],
+    content: [
+      { _type: 'course', _visua11y: { _location: 'drawer' } }
     ]
   });
 
@@ -197,9 +210,10 @@ describe('Visua11y - v2.5.0 to v2.5.1', async () => {
   // https://github.com/cgkineo/adapt-visua11y/compare/v2.5.0..v2.5.1
 
   let course;
-  let hadSourceBefore;
+  let hadSourceBefore, ariaLabelBefore;
   let ariaLabelSiblingsBefore, accessibilitySiblingsBefore;
-  let showLabelBefore, navLabelBefore, navTooltipEnabledBefore, navTooltipTextBefore;
+  let navTooltipEnabledBefore, navTooltipTextBefore;
+  const defaultTooltipText = 'Visual accessibility settings';
 
   // Each mutation re-derives the globals container rather than sharing a local, so neutralising
   // any one of them cannot cascade a TypeError into the next and mask its own assertion.
@@ -217,11 +231,10 @@ describe('Visua11y - v2.5.0 to v2.5.1', async () => {
     course = content.find(({ _type }) => _type === 'course');
     if (!course) return false;
     const globals = course._globals?._extensions?._visua11y;
-    showLabelBefore = globals?._showLabel;
-    navLabelBefore = globals?.navLabel;
     navTooltipEnabledBefore = globals?._navTooltip?._isEnabled;
     navTooltipTextBefore = globals?._navTooltip?.text;
     hadSourceBefore = _.has(course, '_globals._accessibility._ariaLabels.visua11y');
+    ariaLabelBefore = _.get(course, '_globals._accessibility._ariaLabels.visua11y');
     const ariaLabelsContainer = course._globals?._accessibility?._ariaLabels;
     ariaLabelSiblingsBefore = ariaLabelsContainer ? Object.keys(ariaLabelsContainer).filter(k => k !== 'visua11y') : [];
     const accessibilityContainer = course._globals?._accessibility;
@@ -231,10 +244,11 @@ describe('Visua11y - v2.5.0 to v2.5.1', async () => {
 
   // v2.5.1 relocated `_ariaLabels` from a keyed object under _accessibility to a string leaf on
   // the extension, but the property had already been dead since v2.4.1 (commit 76dbed7 removed
-  // its only reader) and has now been dropped from schema/course.schema.json altogether. So the
-  // legacy value is deleted rather than relocated - relocating it would leave a phantom property
-  // that no schema declares. Other plugins own keys under _accessibility, so cleanup must
-  // preserve them. _navOrder is not touched here - the v2.2.4 block above owns it.
+  // its only reader) and has now been dropped from schema/course.schema.json altogether. Up to
+  // then it was the tooltip text (templates/visua11yButton.hbs), so its value is carried into
+  // _navTooltip.text below rather than relocated to a phantom property no schema declares.
+  // Other plugins own keys under _accessibility, so cleanup must preserve them. _navOrder is not
+  // touched here - the v2.2.4 block above owns it.
   mutateContent('Visua11y - remove dead _globals._accessibility._ariaLabels.visua11y', async (content) => {
     if (!hadSourceBefore) return true;
     _.unset(course, '_globals._accessibility._ariaLabels.visua11y');
@@ -243,24 +257,10 @@ describe('Visua11y - v2.5.0 to v2.5.1', async () => {
     return true;
   });
 
-  // Backfill only what is absent - an authored value must never be overwritten. This matters most
-  // for _navTooltip: it reached properties.schema (the v5 AAT) at v2.4.0, ahead of the v6
-  // course.schema.json at v2.5.1, so a course authored at v2.4.0-v2.5.0 can already carry authored
-  // values that this block would otherwise clobber. _showLabel and navLabel only reached
-  // properties.schema at v2.8.2 and so cannot pre-exist behind this version gate, but they take
-  // the same guard so the whole group behaves consistently.
-  mutateContent('Visua11y - add course._globals._extensions._visua11y._showLabel', async (content) => {
-    const globals = ensureGlobals();
-    if (globals._showLabel === undefined) globals._showLabel = true;
-    return true;
-  });
-
-  mutateContent('Visua11y - add course._globals._extensions._visua11y.navLabel', async (content) => {
-    const globals = ensureGlobals();
-    if (globals.navLabel === undefined) globals.navLabel = 'Accessibility';
-    return true;
-  });
-
+  // Backfill only what is absent - an authored value must never be overwritten. _navTooltip
+  // reached properties.schema (the v5 AAT) at v2.4.0, ahead of the v6 course.schema.json at
+  // v2.5.1, so a course authored at v2.4.0-v2.5.0 can already carry authored values that this
+  // block would otherwise clobber. _showLabel and navLabel are backfilled by the v2.8.2 block.
   mutateContent('Visua11y - add course._globals._extensions._visua11y._navTooltip._isEnabled', async (content) => {
     const globals = ensureGlobals();
     if (!_.isObject(globals._navTooltip)) globals._navTooltip = {};
@@ -268,10 +268,13 @@ describe('Visua11y - v2.5.0 to v2.5.1', async () => {
     return true;
   });
 
+  // The legacy _ariaLabels.visua11y was the tooltip text and is translatable, so it is the
+  // fallback ahead of the English default. An empty legacy value falls through to the default
+  // rather than producing a blank tooltip.
   mutateContent('Visua11y - add course._globals._extensions._visua11y._navTooltip.text', async (content) => {
     const globals = ensureGlobals();
     if (!_.isObject(globals._navTooltip)) globals._navTooltip = {};
-    if (globals._navTooltip.text === undefined) globals._navTooltip.text = 'Visual accessibility settings';
+    if (globals._navTooltip.text === undefined) globals._navTooltip.text = ariaLabelBefore || defaultTooltipText;
     return true;
   });
 
@@ -285,18 +288,6 @@ describe('Visua11y - v2.5.0 to v2.5.1', async () => {
     return true;
   });
 
-  checkContent('Visua11y - check course._globals._extensions._visua11y._showLabel', async (content) => {
-    const expected = showLabelBefore ?? true;
-    if (course._globals?._extensions?._visua11y?._showLabel !== expected) throw new Error('Visua11y - course._globals._extensions._visua11y._showLabel invalid');
-    return true;
-  });
-
-  checkContent('Visua11y - check course._globals._extensions._visua11y.navLabel', async (content) => {
-    const expected = navLabelBefore ?? 'Accessibility';
-    if (course._globals?._extensions?._visua11y?.navLabel !== expected) throw new Error('Visua11y - course._globals._extensions._visua11y.navLabel invalid');
-    return true;
-  });
-
   checkContent('Visua11y - check course._globals._extensions._visua11y._navTooltip._isEnabled', async (content) => {
     const expected = navTooltipEnabledBefore ?? true;
     if (course._globals?._extensions?._visua11y?._navTooltip?._isEnabled !== expected) throw new Error('Visua11y - course._globals._extensions._visua11y._navTooltip._isEnabled invalid');
@@ -304,38 +295,58 @@ describe('Visua11y - v2.5.0 to v2.5.1', async () => {
   });
 
   checkContent('Visua11y - check course._globals._extensions._visua11y._navTooltip.text', async (content) => {
-    const expected = navTooltipTextBefore ?? 'Visual accessibility settings';
+    const expected = navTooltipTextBefore ?? (ariaLabelBefore || defaultTooltipText);
     if (course._globals?._extensions?._visua11y?._navTooltip?.text !== expected) throw new Error('Visua11y - course._globals._extensions._visua11y._navTooltip.text invalid');
     return true;
   });
 
   updatePlugin('Visua11y - update to v2.5.1', { name: 'adapt-visua11y', version: '2.5.1', framework: '>=5.31.4' });
 
-  testSuccessWhere('bare course - ariaLabels source absent, four new properties backfilled', {
+  testSuccessWhere('bare course - ariaLabels source absent, _navTooltip backfilled with the default', {
     fromPlugins: [{ name: 'adapt-visua11y', version: '2.5.0' }],
     content: [
       { _type: 'course' }
     ]
   });
 
-  testSuccessWhere('dead ariaLabels present - removed, not relocated', {
+  testSuccessWhere('dead ariaLabels present - removed and carried into _navTooltip.text', {
     fromPlugins: [{ name: 'adapt-visua11y', version: '2.5.0' }],
     content: [
       { _type: 'course', _globals: { _accessibility: { _ariaLabels: { visua11y: 'Visual accessibility settings' } } } }
     ]
   });
 
-  // An authored customisation of the dead property is still removed - it has had no effect
-  // since v2.4.1, and the property is no longer in the schema.
-  testSuccessWhere('authored dead ariaLabels - still removed', {
+  // A translated tooltip must survive the move rather than be replaced by the English default.
+  testSuccessWhere('translated dead ariaLabels - carried into _navTooltip.text, not replaced', {
     fromPlugins: [{ name: 'adapt-visua11y', version: '2.5.0' }],
     content: [
       {
         _type: 'course',
         _globals: {
-          _accessibility: { _ariaLabels: { visua11y: 'My custom aria label' } }
+          _accessibility: { _ariaLabels: { visua11y: 'Paramètres d\'accessibilité visuelle' } }
         }
       }
+    ]
+  });
+
+  // Both sources present: the authored _navTooltip.text wins over the legacy value.
+  testSuccessWhere('dead ariaLabels and authored _navTooltip.text - authored text kept', {
+    fromPlugins: [{ name: 'adapt-visua11y', version: '2.4.1' }],
+    content: [
+      {
+        _type: 'course',
+        _globals: {
+          _accessibility: { _ariaLabels: { visua11y: 'Legacy tooltip text' } },
+          _extensions: { _visua11y: { _navTooltip: { text: 'Authored tooltip text' } } }
+        }
+      }
+    ]
+  });
+
+  testSuccessWhere('empty dead ariaLabels - removed, _navTooltip.text falls back to the default', {
+    fromPlugins: [{ name: 'adapt-visua11y', version: '2.5.0' }],
+    content: [
+      { _type: 'course', _globals: { _accessibility: { _ariaLabels: { visua11y: '' } } } }
     ]
   });
 
@@ -388,16 +399,6 @@ describe('Visua11y - v2.5.0 to v2.5.1', async () => {
       {
         _type: 'course',
         _globals: { _extensions: { _visua11y: { _navTooltip: { text: 'Authored tooltip text' } } } }
-      }
-    ]
-  });
-
-  testSuccessWhere('authored _showLabel and navLabel - preserved, not overwritten', {
-    fromPlugins: [{ name: 'adapt-visua11y', version: '2.5.0' }],
-    content: [
-      {
-        _type: 'course',
-        _globals: { _extensions: { _visua11y: { _showLabel: false, navLabel: 'My label' } } }
       }
     ]
   });
@@ -482,6 +483,102 @@ describe('Visua11y - v2.8.0 to v2.8.1', async () => {
     fromPlugins: [{ name: 'adapt-visua11y', version: '2.8.0' }],
     content: [
       { _type: 'course' }
+    ]
+  });
+});
+
+describe('Visua11y - v2.8.1 to v2.8.2', async () => {
+  // https://github.com/cgkineo/adapt-visua11y/compare/v2.8.1..v2.8.2
+  // Fix: Add missing navLabel to properties.schema (#110)
+
+  let course;
+  let showLabelBefore, navLabelBefore;
+
+  // Each mutation re-derives the globals container rather than sharing a local, so neutralising
+  // either one cannot cascade a TypeError into the next and mask its own assertion.
+  const ensureGlobals = () => {
+    if (!_.has(course, '_globals._extensions._visua11y')) _.set(course, '_globals._extensions._visua11y', {});
+    return course._globals._extensions._visua11y;
+  };
+
+  whereFromPlugin('Visua11y - from v2.8.1', { name: 'adapt-visua11y', version: '<2.8.2' });
+
+  whereContent('Visua11y - where course exists', async (content) => {
+    course = content.find(({ _type }) => _type === 'course');
+    if (!course) return false;
+    const globals = course._globals?._extensions?._visua11y;
+    showLabelBefore = globals?._showLabel;
+    navLabelBefore = globals?.navLabel;
+    return true;
+  });
+
+  // _showLabel and navLabel reached schema/course.schema.json (the v6 AAT) at v2.5.1 but
+  // properties.schema (the v5 AAT) only here, so a v5 AAT course from any earlier version lacks
+  // them and renders an empty label (`navLabel = ''` in js/adapt-visua11y.js). Keyed to v2.8.2
+  // so those courses are covered too. Backfill only what is absent - a v6 course from v2.5.1
+  // onwards can already carry authored values.
+  mutateContent('Visua11y - add course._globals._extensions._visua11y._showLabel', async (content) => {
+    const globals = ensureGlobals();
+    if (globals._showLabel === undefined) globals._showLabel = true;
+    return true;
+  });
+
+  mutateContent('Visua11y - add course._globals._extensions._visua11y.navLabel', async (content) => {
+    const globals = ensureGlobals();
+    if (globals.navLabel === undefined) globals.navLabel = 'Accessibility';
+    return true;
+  });
+
+  checkContent('Visua11y - check course._globals._extensions._visua11y._showLabel', async (content) => {
+    const expected = showLabelBefore ?? true;
+    if (course._globals?._extensions?._visua11y?._showLabel !== expected) throw new Error('Visua11y - course._globals._extensions._visua11y._showLabel invalid');
+    return true;
+  });
+
+  checkContent('Visua11y - check course._globals._extensions._visua11y.navLabel', async (content) => {
+    const expected = navLabelBefore ?? 'Accessibility';
+    if (course._globals?._extensions?._visua11y?.navLabel !== expected) throw new Error('Visua11y - course._globals._extensions._visua11y.navLabel invalid');
+    return true;
+  });
+
+  updatePlugin('Visua11y - update to v2.8.2', { name: 'adapt-visua11y', version: '2.8.2', framework: '>=5.31.4' });
+
+  testSuccessWhere('bare course - _showLabel and navLabel backfilled', {
+    fromPlugins: [{ name: 'adapt-visua11y', version: '2.8.1' }],
+    content: [
+      { _type: 'course' }
+    ]
+  });
+
+  // A v2.5.1-v2.8.1 course from the v5 AAT: _navTooltip was authorable, the label fields were not.
+  testSuccessWhere('v5 AAT course with _navTooltip but no label fields - labels backfilled, tooltip untouched', {
+    fromPlugins: [{ name: 'adapt-visua11y', version: '2.6.0' }],
+    content: [
+      {
+        _type: 'course',
+        _globals: { _extensions: { _visua11y: { _navTooltip: { _isEnabled: true, text: 'Authored tooltip text' } } } }
+      }
+    ]
+  });
+
+  testSuccessWhere('authored _showLabel and navLabel - preserved, not overwritten', {
+    fromPlugins: [{ name: 'adapt-visua11y', version: '2.8.1' }],
+    content: [
+      {
+        _type: 'course',
+        _globals: { _extensions: { _visua11y: { _showLabel: false, navLabel: 'My label' } } }
+      }
+    ]
+  });
+
+  testStopWhere('incorrect version', {
+    fromPlugins: [{ name: 'adapt-visua11y', version: '2.8.2' }]
+  });
+
+  testStopWhere('no course content', {
+    fromPlugins: [{ name: 'adapt-visua11y', version: '2.8.1' }],
+    content: [
+      { _type: 'config' }
     ]
   });
 });
